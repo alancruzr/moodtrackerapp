@@ -12,8 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/breathing-exercise.css">
     <link rel="stylesheet" href="css/gamification.css">
+    <link rel="stylesheet" href="css/badges.css">
+    <link rel="stylesheet" href="css/fab.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
     <style>
         html {
             overflow-x: hidden;
@@ -1678,10 +1681,51 @@
 
         <!-- TAB 0: DASHBOARD -->
         <div id="tab0" class="tab-content active">
+            <!-- XP Progress Card -->
+            <div class="xp-card" id="xp-card">
+                <div class="xp-card-header">
+                    <div class="xp-card-level">
+                        <div class="xp-card-level-icon" id="xp-level-icon">👀</div>
+                        <div class="xp-card-level-info">
+                            <h3 id="xp-level-number">Nivel 1</h3>
+                            <div class="xp-card-level-title" id="xp-level-title">Observador</div>
+                        </div>
+                    </div>
+                    <div class="xp-card-xp">
+                        <div class="xp-card-xp-amount" id="xp-total">0 XP</div>
+                        <div class="xp-card-xp-label">Total acumulado</div>
+                    </div>
+                </div>
+                <div class="xp-progress-bar">
+                    <div class="xp-progress-fill" id="xp-progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="xp-progress-text" id="xp-progress-text">0 / 100 XP para Nivel 2</div>
+            </div>
+
+            <!-- Phase Progress Tracker -->
+            <div class="phase-tracker">
+                <div class="phase-tracker-title">🗺️ Fases del Programa</div>
+                <div class="phase-tracker-grid" id="phase-tracker-grid">
+                    <!-- Phases will be dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Badges Showcase -->
+            <div class="badges-container">
+                <div class="badges-header">
+                    <div class="badges-title">🏅 Logros Desbloqueados</div>
+                    <div class="badges-progress" id="badges-progress">0 / 0</div>
+                </div>
+                <div id="badges-showcase">
+                    <!-- Badges will be dynamically populated by category -->
+                </div>
+            </div>
+
+            <!-- Existing Dashboard Views -->
             <div class="card">
                 <h2>📊 Mi Progreso de Recuperación</h2>
                 <p style="margin-bottom:24px; color: var(--text-secondary);">Visualiza tu evolución y compara tu progreso en el tiempo</p>
-                
+
                 <!-- Vista Toggle -->
                 <div class="view-toggle">
                     <button class="view-btn active" onclick="switchDashboardView('gauge')">
@@ -4107,9 +4151,12 @@
     <!-- Gamification System -->
     <script src="js/gamification.js"></script>
 
+    <!-- Badge System -->
+    <script src="js/badges.js"></script>
+
     <!-- Initialize Systems -->
     <script>
-        // Hook into showTab to initialize breathing exercise
+        // Hook into showTab to initialize breathing exercise and dashboard
         const originalShowTab = showTab;
         showTab = function(index) {
             originalShowTab(index);
@@ -4118,15 +4165,21 @@
             if (index === 11 && currentUser && supabase) {
                 initializeBreathingExercise();
             }
+
+            // Load game dashboard when Tab 0 is shown
+            if (index === 0 && currentUser && supabase) {
+                loadGameDashboard();
+            }
         };
 
-        // Hook into loadAllData to initialize gamification
+        // Hook into loadAllData to initialize gamification and badges
         const originalLoadAllDataWithGamification = loadAllData;
         loadAllData = async function() {
             await originalLoadAllDataWithGamification();
             // Initialize gamification after user data is loaded
             if (currentUser && supabase) {
                 initializeGamification();
+                initializeBadgeSystem();
             }
         };
 
@@ -4165,12 +4218,22 @@
                 if (xpRewards[tabIndex]) {
                     await awardXP(xpRewards[tabIndex].amount, xpRewards[tabIndex].reason, `tab_${tabIndex}`);
                 }
+
+                // Check for badge unlocks after saving
+                if (badgeSystem) {
+                    await badgeSystem.checkAllBadges();
+                }
+            }
+
+            // Reload dashboard if on Tab 0
+            if (document.querySelector('#tab0.active')) {
+                await loadGameDashboard();
             }
 
             return result;
         };
 
-        // Hook into breathing exercise save to award XP
+        // Hook into breathing exercise save to award XP and check badges
         if (typeof BreathingExercise !== 'undefined') {
             const originalBreathingSave = BreathingExercise.prototype.saveSession;
             BreathingExercise.prototype.saveSession = async function() {
@@ -4180,7 +4243,199 @@
                 if (gamification) {
                     await awardXP(getXPReward('breathing_practice_session'), 'breathing_practice_session', 'breathing');
                 }
+
+                // Check for badge unlocks
+                if (badgeSystem) {
+                    await badgeSystem.checkAllBadges();
+                }
+
+                // Reload dashboard if on Tab 0
+                if (document.querySelector('#tab0.active')) {
+                    await loadGameDashboard();
+                }
             };
+        }
+
+        // ===================================================================
+        // LOAD GAME DASHBOARD (XP, Phases, Badges)
+        // ===================================================================
+        async function loadGameDashboard() {
+            if (!currentUser || !supabase) return;
+
+            try {
+                // 1. Load XP Data
+                if (gamification && gamification.xpData) {
+                    const xpData = gamification.xpData;
+                    const levelInfo = gamification.getLevelInfo(xpData.current_level);
+                    const progress = gamification.getProgressToNextLevel();
+
+                    document.getElementById('xp-level-icon').textContent = levelInfo.icon;
+                    document.getElementById('xp-level-number').textContent = `Nivel ${xpData.current_level}`;
+                    document.getElementById('xp-level-title').textContent = levelInfo.title;
+                    document.getElementById('xp-total').textContent = `${xpData.total_xp} XP`;
+                    document.getElementById('xp-progress-fill').style.width = `${progress.percent}%`;
+                    document.getElementById('xp-progress-text').textContent =
+                        `${progress.current} / ${progress.needed} XP para Nivel ${xpData.current_level + 1}`;
+                }
+
+                // 2. Load Phase Progress
+                if (guidedMode && guidedMode.userProgress) {
+                    const phaseGrid = document.getElementById('phase-tracker-grid');
+                    phaseGrid.innerHTML = '';
+
+                    for (let i = 1; i <= 9; i++) {
+                        const phaseInfo = PHASES[i];
+                        const currentPhase = guidedMode.userProgress.current_phase;
+                        const isCompleted = i < currentPhase;
+                        const isCurrent = i === currentPhase;
+                        const isLocked = i > currentPhase;
+
+                        const phaseItem = document.createElement('div');
+                        phaseItem.className = `phase-tracker-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`;
+                        phaseItem.innerHTML = `
+                            <div class="phase-number">Fase ${i}</div>
+                            <div class="phase-name">${phaseInfo.name}</div>
+                            <div class="phase-status ${isCompleted ? 'completed' : isCurrent ? 'current' : 'locked'}">
+                                ${isCompleted ? '✅ Completada' : isCurrent ? '⏳ En progreso' : '🔒 Bloqueada'}
+                            </div>
+                        `;
+                        phaseGrid.appendChild(phaseItem);
+                    }
+                }
+
+                // 3. Load Badges
+                if (badgeSystem) {
+                    const progress = badgeSystem.getProgress();
+                    document.getElementById('badges-progress').textContent =
+                        `${progress.unlocked} / ${progress.total}`;
+
+                    const badgesShowcase = document.getElementById('badges-showcase');
+                    badgesShowcase.innerHTML = '';
+
+                    const badgesByCategory = badgeSystem.getBadgesByCategory();
+                    const categoryNames = {
+                        inicio: '🚀 Inicio',
+                        monitoreo: '📝 Monitoreo',
+                        analisis: '🔍 Análisis',
+                        objetivos: '🎯 Objetivos',
+                        respiracion: '🫁 Respiración',
+                        pensamiento: '🧠 Pensamiento',
+                        exposicion: '💪 Exposición',
+                        especial: '⭐ Especial',
+                        fases: '🏆 Fases'
+                    };
+
+                    for (const [category, badges] of Object.entries(badgesByCategory)) {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'badges-category';
+
+                        const categoryTitle = document.createElement('div');
+                        categoryTitle.className = 'badges-category-title';
+                        categoryTitle.textContent = categoryNames[category] || category;
+                        categoryDiv.appendChild(categoryTitle);
+
+                        const badgesGrid = document.createElement('div');
+                        badgesGrid.className = 'badges-grid';
+
+                        badges.forEach(badge => {
+                            const isUnlocked = badgeSystem.hasBadge(badge.id);
+                            const badgeItem = document.createElement('div');
+                            badgeItem.className = `badge-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+                            badgeItem.innerHTML = `
+                                <div class="badge-icon">${badge.icon}</div>
+                                <div class="badge-name">${badge.name}</div>
+                                <div class="badge-xp">+${badge.xpReward} XP</div>
+                                ${!isUnlocked ? '<div class="badge-lock-icon">🔒</div>' : ''}
+                                <div class="badge-tooltip">${badge.description}</div>
+                            `;
+                            badgesGrid.appendChild(badgeItem);
+                        });
+
+                        categoryDiv.appendChild(badgesGrid);
+                        badgesShowcase.appendChild(categoryDiv);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading game dashboard:', error);
+            }
+        }
+
+        // ===================================================================
+        // FAB (FLOATING ACTION BUTTON) CONTROL
+        // ===================================================================
+        function toggleFAB() {
+            const fabContainer = document.getElementById('fab-container');
+            fabContainer.classList.toggle('expanded');
+        }
+
+        function fabQuickBreathing() {
+            showTab(11);
+            const fabContainer = document.getElementById('fab-container');
+            fabContainer.classList.remove('expanded');
+        }
+
+        function fabQuickPanic() {
+            showTab(1);
+            const fabContainer = document.getElementById('fab-container');
+            fabContainer.classList.remove('expanded');
+        }
+
+        // Hide FAB on breathing tab (tab 11)
+        const originalShowTabWithFAB = showTab;
+        showTab = function(index) {
+            originalShowTabWithFAB(index);
+
+            const fabContainer = document.getElementById('fab-container');
+            if (fabContainer) {
+                // Hide FAB on breathing tab
+                if (index === 11) {
+                    fabContainer.classList.add('hidden');
+                } else {
+                    fabContainer.classList.remove('hidden');
+                }
+            }
+        };
+    </script>
+
+    <!-- Floating Action Button -->
+    <div id="fab-container" class="fab-container" style="display: none;">
+        <div class="fab-menu">
+            <div class="fab-menu-item" onclick="fabQuickBreathing()">
+                <div class="fab-menu-icon">🫁</div>
+                <div class="fab-menu-text">
+                    <div class="fab-menu-title">Respiración</div>
+                    <div class="fab-menu-subtitle">Ejercicio rápido</div>
+                </div>
+            </div>
+            <div class="fab-menu-item" onclick="fabQuickPanic()">
+                <div class="fab-menu-icon">🚨</div>
+                <div class="fab-menu-text">
+                    <div class="fab-menu-title">Registro Pánico</div>
+                    <div class="fab-menu-subtitle">Registrar ahora</div>
+                </div>
+            </div>
+        </div>
+        <button class="fab" onclick="toggleFAB()">
+            ➕
+            <div class="fab-tooltip">Acceso Rápido</div>
+        </button>
+    </div>
+
+    <script>
+        // Show FAB after user is authenticated
+        if (typeof initializeAllAfterAuth !== 'undefined') {
+            const originalInitialize = initializeAllAfterAuth;
+            initializeAllAfterAuth = async function() {
+                await originalInitialize();
+                document.getElementById('fab-container').style.display = 'block';
+            };
+        } else {
+            // Fallback: show after 1 second
+            setTimeout(() => {
+                if (currentUser) {
+                    document.getElementById('fab-container').style.display = 'block';
+                }
+            }, 1000);
         }
     </script>
 </body>

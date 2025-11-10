@@ -281,6 +281,7 @@ class GamificationSystem {
     modal.innerHTML = `
       <div class="level-up-content">
         <div class="level-up-animation">
+          <div id="level-up-lottie" style="width: 200px; height: 200px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 0;"></div>
           <div class="level-up-icon">${levelInfo.icon}</div>
           <div class="level-up-rays"></div>
         </div>
@@ -302,6 +303,21 @@ class GamificationSystem {
     requestAnimationFrame(() => {
       modal.classList.add('show');
     });
+
+    // Add Lottie animation if available
+    if (typeof lottie !== 'undefined') {
+      try {
+        lottie.loadAnimation({
+          container: document.getElementById('level-up-lottie'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: 'https://assets2.lottiefiles.com/packages/lf20_touohxv0.json' // Celebration animation
+        });
+      } catch (e) {
+        console.log('Lottie animation not loaded:', e);
+      }
+    }
 
     // Confetti effect (simple CSS animation)
     this.triggerConfetti();

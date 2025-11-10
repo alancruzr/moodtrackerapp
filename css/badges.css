@@ -1,0 +1,587 @@
+/* ========================================
+ * BADGES SYSTEM STYLES
+ * Badge unlock modals, badge grid, progress
+ * ========================================*/
+
+/* Badge Unlock Modal */
+.badge-unlock-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.badge-unlock-modal.show {
+    opacity: 1;
+}
+
+.badge-unlock-content {
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B9D 100%);
+    border-radius: 24px;
+    padding: 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: badgePopIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes badgePopIn {
+    0% { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+    50% { transform: scale(1.08) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.badge-unlock-animation {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.badge-unlock-icon {
+    font-size: 100px;
+    animation: badgeBounce 1s ease infinite;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+    display: inline-block;
+}
+
+@keyframes badgeBounce {
+    0%, 100% { transform: scale(1) translateY(0); }
+    25% { transform: scale(1.1) translateY(-10px); }
+    50% { transform: scale(1.15) translateY(-15px); }
+    75% { transform: scale(1.1) translateY(-10px); }
+}
+
+.badge-unlock-sparkles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+}
+
+.sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkleFloat 2s ease-in-out infinite;
+}
+
+.sparkle:nth-child(1) { top: 0%; left: 50%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 15%; left: 85%; animation-delay: 0.2s; }
+.sparkle:nth-child(3) { top: 50%; left: 100%; animation-delay: 0.4s; }
+.sparkle:nth-child(4) { top: 85%; left: 85%; animation-delay: 0.6s; }
+.sparkle:nth-child(5) { top: 100%; left: 50%; animation-delay: 0.8s; }
+.sparkle:nth-child(6) { top: 85%; left: 15%; animation-delay: 1s; }
+.sparkle:nth-child(7) { top: 50%; left: 0%; animation-delay: 1.2s; }
+.sparkle:nth-child(8) { top: 15%; left: 15%; animation-delay: 1.4s; }
+
+@keyframes sparkleFloat {
+    0%, 100% { transform: scale(0) translateY(0); opacity: 0; }
+    50% { transform: scale(1.5) translateY(-20px); opacity: 1; }
+}
+
+.badge-unlock-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 16px 0;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    animation: titleShake 0.5s ease;
+}
+
+@keyframes titleShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.badge-unlock-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 12px 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.badge-unlock-description {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.95);
+    margin: 0 0 20px 0;
+    line-height: 1.5;
+}
+
+.badge-unlock-xp {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 32px 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.badge-unlock-btn {
+    font-size: 1.2rem;
+    padding: 16px 48px;
+    background: white;
+    color: #FF6B9D;
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.badge-unlock-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+
+.badge-unlock-btn:active {
+    transform: translateY(0) scale(1);
+}
+
+/* Badge Grid (for Dashboard) */
+.badges-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.badges-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.badges-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.badges-progress {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: rgba(74, 144, 226, 0.1);
+    padding: 8px 16px;
+    border-radius: 12px;
+}
+
+.badges-category {
+    margin-bottom: 24px;
+}
+
+.badges-category-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.badge-item {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.badge-item.unlocked {
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(157, 78, 221, 0.1) 100%);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+}
+
+.badge-item.locked {
+    opacity: 0.4;
+    filter: grayscale(100%);
+}
+
+.badge-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.badge-item.unlocked:hover {
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.3);
+}
+
+.badge-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.badge-item.unlocked .badge-icon {
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.badge-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.badge-xp {
+    font-size: 0.75rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.badge-lock-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 16px;
+}
+
+/* Badge Tooltip */
+.badge-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--text);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    white-space: normal;
+    max-width: 200px;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.badge-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--text);
+}
+
+.badge-item:hover .badge-tooltip {
+    opacity: 1;
+}
+
+/* Compact Badge Display (for header) */
+.header-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-badges:hover {
+    background: rgba(74, 144, 226, 0.2);
+    transform: translateY(-2px);
+}
+
+.header-badges-icon {
+    font-size: 20px;
+}
+
+.header-badges-count {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* XP Progress Card (for Dashboard) */
+.xp-card {
+    background: linear-gradient(135deg, #4A90E2 0%, #9D4EDD 100%);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.3);
+}
+
+.xp-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.xp-card-level {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.xp-card-level-icon {
+    font-size: 48px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.xp-card-level-info h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 4px 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.xp-card-level-title {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+.xp-card-xp {
+    text-align: right;
+}
+
+.xp-card-xp-amount {
+    font-size: 2rem;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.xp-card-xp-label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.xp-progress-bar {
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    height: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.xp-progress-fill {
+    background: white;
+    height: 100%;
+    border-radius: 12px;
+    transition: width 1s ease;
+    box-shadow: 0 0 12px rgba(255,255,255,0.5);
+}
+
+.xp-progress-text {
+    font-size: 0.85rem;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* Phase Progress Tracker (for Dashboard) */
+.phase-tracker {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.phase-tracker-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.phase-tracker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.phase-tracker-item {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.phase-tracker-item.completed {
+    background: rgba(168, 213, 186, 0.2);
+    border-color: var(--success);
+}
+
+.phase-tracker-item.current {
+    background: rgba(74, 144, 226, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.phase-tracker-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.phase-tracker-item:hover:not(.locked) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.phase-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.phase-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.phase-status {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.phase-status.completed {
+    background: var(--success);
+    color: white;
+}
+
+.phase-status.current {
+    background: var(--primary);
+    color: white;
+}
+
+.phase-status.locked {
+    background: var(--border);
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .badge-unlock-content {
+        padding: 32px 24px;
+        width: 95%;
+    }
+
+    .badge-unlock-icon {
+        font-size: 80px;
+    }
+
+    .badge-unlock-title {
+        font-size: 1.5rem;
+    }
+
+    .badge-unlock-name {
+        font-size: 1.4rem;
+    }
+
+    .badge-unlock-description {
+        font-size: 1rem;
+    }
+
+    .badge-unlock-btn {
+        font-size: 1rem;
+        padding: 14px 32px;
+    }
+
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 12px;
+    }
+
+    .badge-item {
+        padding: 12px;
+    }
+
+    .badge-icon {
+        font-size: 36px;
+    }
+
+    .badge-name {
+        font-size: 0.8rem;
+    }
+
+    .xp-card {
+        padding: 20px;
+    }
+
+    .xp-card-level-icon {
+        font-size: 36px;
+    }
+
+    .xp-card-level-info h3 {
+        font-size: 1.4rem;
+    }
+
+    .xp-card-xp-amount {
+        font-size: 1.5rem;
+    }
+
+    .phase-tracker-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .badge-icon {
+        font-size: 32px;
+    }
+
+    .phase-tracker-grid {
+        grid-template-columns: 1fr;
+    }
+}
