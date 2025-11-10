@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/breathing-exercise.css">
+    <link rel="stylesheet" href="css/gamification.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -4103,7 +4104,10 @@
     <!-- Breathing Exercise -->
     <script src="js/breathing-exercise.js"></script>
 
-    <!-- Initialize Breathing Exercise when tab 11 is shown -->
+    <!-- Gamification System -->
+    <script src="js/gamification.js"></script>
+
+    <!-- Initialize Systems -->
     <script>
         // Hook into showTab to initialize breathing exercise
         const originalShowTab = showTab;
@@ -4115,6 +4119,69 @@
                 initializeBreathingExercise();
             }
         };
+
+        // Hook into loadAllData to initialize gamification
+        const originalLoadAllDataWithGamification = loadAllData;
+        loadAllData = async function() {
+            await originalLoadAllDataWithGamification();
+            // Initialize gamification after user data is loaded
+            if (currentUser && supabase) {
+                initializeGamification();
+            }
+        };
+
+        // Hook into saveEntry to award XP automatically
+        const originalSaveEntry = saveEntry;
+        saveEntry = async function(tabIndex, event) {
+            // Call original saveEntry
+            const result = await originalSaveEntry(tabIndex, event);
+
+            // Award XP based on tab
+            if (currentUser && gamification) {
+                const xpRewards = {
+                    1: { amount: getXPReward('panic_attack_record'), reason: 'panic_attack_record' },
+                    2: { amount: getXPReward('daily_mood_record'), reason: 'daily_mood_record' },
+                    3: { amount: getXPReward('progress_record'), reason: 'progress_record' },
+                    4: { amount: getXPReward('parts_of_panic'), reason: 'parts_of_panic' },
+                    5: { amount: getXPReward('parts_of_anxiety'), reason: 'parts_of_anxiety' },
+                    6: { amount: getXPReward('step_by_step_analysis'), reason: 'step_by_step_analysis' },
+                    7: { amount: getXPReward('agoraphobia_situations'), reason: 'agoraphobia_situations' },
+                    8: { amount: getXPReward('agoraphobia_hierarchy_item'), reason: 'agoraphobia_hierarchy_item' },
+                    9: { amount: getXPReward('superstitious_objects'), reason: 'superstitious_objects' },
+                    10: { amount: getXPReward('safety_behaviors'), reason: 'safety_behaviors' },
+                    12: { amount: getXPReward('negative_thought_identified'), reason: 'negative_thought_identified' },
+                    13: { amount: getXPReward('changing_odds'), reason: 'changing_odds' },
+                    14: { amount: getXPReward('changing_perspective'), reason: 'changing_perspective' },
+                    15: { amount: getXPReward('facing_situation'), reason: 'facing_situation' },
+                    16: { amount: getXPReward('combined_exposure'), reason: 'combined_exposure' },
+                    17: { amount: getXPReward('symptom_assessment'), reason: 'symptom_assessment' },
+                    18: { amount: getXPReward('facing_symptoms_session'), reason: 'facing_symptoms_session' },
+                    19: { amount: getXPReward('agoraphobia_hierarchy_item'), reason: 'agoraphobia_hierarchy_item' },
+                    20: { amount: getXPReward('facing_activity'), reason: 'facing_activity' },
+                    21: { amount: 50, reason: 'practice_plan' },
+                    22: { amount: 100, reason: 'long_term_goals' }
+                };
+
+                if (xpRewards[tabIndex]) {
+                    await awardXP(xpRewards[tabIndex].amount, xpRewards[tabIndex].reason, `tab_${tabIndex}`);
+                }
+            }
+
+            return result;
+        };
+
+        // Hook into breathing exercise save to award XP
+        if (typeof BreathingExercise !== 'undefined') {
+            const originalBreathingSave = BreathingExercise.prototype.saveSession;
+            BreathingExercise.prototype.saveSession = async function() {
+                await originalBreathingSave.call(this);
+
+                // Award XP for breathing session
+                if (gamification) {
+                    await awardXP(getXPReward('breathing_practice_session'), 'breathing_practice_session', 'breathing');
+                }
+            };
+        }
     </script>
 </body>
 </html>
