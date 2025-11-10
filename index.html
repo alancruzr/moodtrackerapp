@@ -10,8 +10,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/breathing-exercise.css">
+    <link rel="stylesheet" href="css/gamification.css">
+    <link rel="stylesheet" href="css/badges.css">
+    <link rel="stylesheet" href="css/fab.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
     <style>
         html {
             overflow-x: hidden;
@@ -422,7 +427,123 @@
         .hamburger.active span:nth-child(3) {
             transform: rotate(-45deg) translate(7px, -7px);
         }
-        
+
+        /* Mode Toggle Switch */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 140px;
+            height: 44px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 22px;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            box-shadow: 0 2px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 36px;
+            width: 36px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(96px);
+        }
+
+        .mode-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            transition: 0.4s;
+            white-space: nowrap;
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .mode-label.guided {
+            left: 45px;
+            opacity: 1;
+        }
+
+        .mode-label.free {
+            right: 12px;
+            opacity: 0.5;
+        }
+
+        input:checked + .slider .mode-label.guided {
+            opacity: 0.5;
+        }
+
+        input:checked + .slider .mode-label.free {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .mode-toggle {
+                top: max(14px, env(safe-area-inset-top));
+                right: 10px;
+            }
+
+            .switch {
+                width: 120px;
+                height: 38px;
+            }
+
+            .slider::before {
+                height: 30px;
+                width: 30px;
+            }
+
+            input:checked + .slider::before {
+                transform: translateX(82px);
+            }
+
+            .mode-label {
+                font-size: 10px;
+            }
+
+            .mode-label.guided {
+                left: 38px;
+            }
+        }
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -498,7 +619,7 @@
             width: 24px;
             text-align: center;
         }
-        
+
         .phase-badge {
             font-size: 0.7rem;
             padding: 3px 8px;
@@ -507,6 +628,91 @@
             color: var(--primary);
             margin-left: auto;
             font-weight: 600;
+        }
+
+        /* Phase Status Indicators */
+        .phase-status {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 4px 24px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .unlock-hint {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            padding: 4px 24px;
+            font-style: italic;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .required-badge {
+            font-size: 0.7rem;
+            margin-left: auto;
+            animation: pulse-star 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-star {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+
+        /* Locked/Unlocked Phases */
+        .menu-section.locked {
+            opacity: 0.5;
+        }
+
+        .menu-section.locked .menu-item {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .menu-section.locked .menu-section-title::after {
+            content: ' 🔒';
+            font-size: 0.9rem;
+        }
+
+        .menu-section.current-phase {
+            border-left: 4px solid var(--primary);
+            background: rgba(74, 144, 226, 0.03);
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .menu-section.current-phase .menu-section-title {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .menu-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Quick Access Section */
+        .quick-access {
+            border-top: 2px solid var(--border);
+            margin-top: 16px;
+            padding-top: 16px;
+        }
+
+        .quick-access .menu-section-title {
+            color: var(--accent);
+        }
+
+        .quick-access .menu-item {
+            background: rgba(246, 161, 146, 0.05);
+            border-radius: 8px;
+            margin: 4px 16px;
+        }
+
+        .quick-access .menu-item:hover {
+            background: rgba(246, 161, 146, 0.15);
+            border-left-color: var(--accent);
+            transform: translateX(4px);
         }
         
         .tab-content { display: none; }
@@ -1266,169 +1472,260 @@
             <span></span>
         </div>
 
+        <!-- Mode Toggle: Guided vs Free -->
+        <div class="mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="guided-mode-toggle" checked onchange="toggleGuidedMode(this.checked)">
+                <span class="slider">
+                    <span class="mode-label guided">🎯 Guiado</span>
+                    <span class="mode-label free">🗺️ Libre</span>
+                </span>
+            </label>
+        </div>
+
         <div class="sidebar-overlay" onclick="toggleMenu()"></div>
         <div class="sidebar">
-            <div class="menu-section">
+            <!-- FASE 0: Dashboard -->
+            <div class="menu-section" data-phase="0">
                 <div class="menu-section-title">📊 INICIO</div>
-                <div class="menu-item active" onclick="showTab(0)">
+                <div class="menu-item active" onclick="showTab(0)" data-tab="0">
                     <span class="menu-icon">📊</span>
                     Panel
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 1: Monitoreo -->
+            <div class="menu-section" data-phase="1">
                 <div class="menu-section-title">📝 FASE 1: MONITOREO</div>
-                <div class="menu-item" onclick="showTab(1)">
+                <div class="phase-status" id="phase1-status">⏳ En progreso</div>
+                <div class="menu-item" onclick="showTab(1)" data-tab="1">
                     <span class="menu-icon">🚨</span>
                     Registro Pánico
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(2)">
+                <div class="menu-item" onclick="showTab(2)" data-tab="2">
                     <span class="menu-icon">😌</span>
                     Estado Ánimo
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(3)">
+                <div class="menu-item" onclick="showTab(3)" data-tab="3">
                     <span class="menu-icon">📈</span>
                     Progreso
-                    
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 2: Entender -->
+            <div class="menu-section" data-phase="2">
                 <div class="menu-section-title">🔍 FASE 2: ENTENDER</div>
-                <div class="menu-item" onclick="showTab(4)">
+                <div class="phase-status" id="phase2-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase2-hint">Completa 7 días de monitoreo</div>
+                <div class="menu-item" onclick="showTab(4)" data-tab="4">
                     <span class="menu-icon">🔄</span>
                     Partes Pánico
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(5)">
+                <div class="menu-item" onclick="showTab(5)" data-tab="5">
                     <span class="menu-icon">😰</span>
                     Partes Ansiedad
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(6)">
+                <div class="menu-item" onclick="showTab(6)" data-tab="6">
                     <span class="menu-icon">🔬</span>
                     Análisis
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">🫁 FASE 3: RESPIRACIÓN</div>
-                <div class="menu-item" onclick="showTab(11)">
-                    <span class="menu-icon">🫁</span>
-                    Práctica
-                    
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">🧠 FASE 4: PENSAMIENTO</div>
-                <div class="menu-item" onclick="showTab(12)">
-                    <span class="menu-icon">💭</span>
-                    Pensamientos
-                    
-                </div>
-                <div class="menu-item" onclick="showTab(13)">
-                    <span class="menu-icon">🎲</span>
-                    Probabilidades
-                    
-                </div>
-                <div class="menu-item" onclick="showTab(14)">
-                    <span class="menu-icon">👁️</span>
-                    Perspectiva
-                    
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">🎯 FASE 5: IDENTIFICAR</div>
-                <div class="menu-item" onclick="showTab(7)">
+            <!-- FASE 3: Identificar Objetivos -->
+            <div class="menu-section" data-phase="3">
+                <div class="menu-section-title">🎯 FASE 3: IDENTIFICAR</div>
+                <div class="phase-status" id="phase3-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase3-hint">Completa Fase 2</div>
+                <div class="menu-item" onclick="showTab(7)" data-tab="7">
                     <span class="menu-icon">🏪</span>
                     Situaciones
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(8)">
+                <div class="menu-item" onclick="showTab(8)" data-tab="8">
                     <span class="menu-icon">📊</span>
                     Jerarquía
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(9)">
+                <div class="menu-item" onclick="showTab(9)" data-tab="9">
                     <span class="menu-icon">🛡️</span>
                     Objetos
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(10)">
+                <div class="menu-item" onclick="showTab(10)" data-tab="10">
                     <span class="menu-icon">🚪</span>
                     Comportamientos
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">💪 FASE 6: EXPOSICIÓN</div>
-                <div class="menu-item" onclick="showTab(15)">
-                    <span class="menu-icon">🦁</span>
-                    Enfrentar
-                    
+            <!-- FASE 4: Respiración -->
+            <div class="menu-section" data-phase="4">
+                <div class="menu-section-title">🫁 FASE 4: RESPIRACIÓN</div>
+                <div class="phase-status" id="phase4-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase4-hint">Completa Fase 3</div>
+                <div class="menu-item" onclick="showTab(11)" data-tab="11">
+                    <span class="menu-icon">🫁</span>
+                    Práctica
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">⚡ FASE 7: SÍNTOMAS</div>
-                <div class="menu-item" onclick="showTab(17)">
+            <!-- FASE 5: Pensamiento -->
+            <div class="menu-section" data-phase="5">
+                <div class="menu-section-title">🧠 FASE 5: PENSAMIENTO</div>
+                <div class="phase-status" id="phase5-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase5-hint">Completa Fase 4</div>
+                <div class="menu-item" onclick="showTab(12)" data-tab="12">
+                    <span class="menu-icon">💭</span>
+                    Pensamientos
+                    <span class="required-badge">⭐</span>
+                </div>
+                <div class="menu-item" onclick="showTab(13)" data-tab="13">
+                    <span class="menu-icon">🎲</span>
+                    Probabilidades
+                    <span class="required-badge">⭐</span>
+                </div>
+                <div class="menu-item" onclick="showTab(14)" data-tab="14">
+                    <span class="menu-icon">👁️</span>
+                    Perspectiva
+                    <span class="required-badge">⭐</span>
+                </div>
+            </div>
+
+            <!-- FASE 6: Exposición a Síntomas -->
+            <div class="menu-section" data-phase="6">
+                <div class="menu-section-title">⚡ FASE 6: SÍNTOMAS</div>
+                <div class="phase-status" id="phase6-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase6-hint">Completa Fase 5</div>
+                <div class="menu-item" onclick="showTab(17)" data-tab="17">
                     <span class="menu-icon">🔍</span>
                     Evaluar
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(18)">
+                <div class="menu-item" onclick="showTab(18)" data-tab="18">
                     <span class="menu-icon">💪</span>
                     Enfrentar
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(19)">
+                <div class="menu-item" onclick="showTab(19)" data-tab="19">
                     <span class="menu-icon">🏃</span>
                     Actividades
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(20)">
+                <div class="menu-item" onclick="showTab(20)" data-tab="20">
                     <span class="menu-icon">🎯</span>
                     Practicar
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 7: Exposición a Situaciones -->
+            <div class="menu-section" data-phase="7">
+                <div class="menu-section-title">🦁 FASE 7: SITUACIONES</div>
+                <div class="phase-status" id="phase7-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase7-hint">Completa Fase 6</div>
+                <div class="menu-item" onclick="showTab(15)" data-tab="15">
+                    <span class="menu-icon">🦁</span>
+                    Enfrentar
+                    <span class="required-badge">⭐</span>
+                </div>
+            </div>
+
+            <!-- FASE 8: Exposición Combinada -->
+            <div class="menu-section" data-phase="8">
                 <div class="menu-section-title">🔥 FASE 8: COMBINADO</div>
-                <div class="menu-item" onclick="showTab(16)">
+                <div class="phase-status" id="phase8-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase8-hint">Completa Fase 7</div>
+                <div class="menu-item" onclick="showTab(16)" data-tab="16">
                     <span class="menu-icon">⚡</span>
                     Síntomas+
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 9: Mantenimiento -->
+            <div class="menu-section" data-phase="9">
                 <div class="menu-section-title">🎓 FASE 9: MANTENER</div>
-                <div class="menu-item" onclick="showTab(21)">
+                <div class="phase-status" id="phase9-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase9-hint">Completa Fase 8</div>
+                <div class="menu-item" onclick="showTab(21)" data-tab="21">
                     <span class="menu-icon">📋</span>
                     Plan
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(22)">
+                <div class="menu-item" onclick="showTab(22)" data-tab="22">
                     <span class="menu-icon">🎯</span>
                     Metas
-                    
+                    <span class="required-badge">⭐</span>
+                </div>
+            </div>
+
+            <!-- Acceso Rápido -->
+            <div class="menu-section quick-access" data-phase="quick">
+                <div class="menu-section-title">⚡ ACCESO RÁPIDO</div>
+                <div class="menu-item" onclick="quickBreathing()">
+                    <span class="menu-icon">🫁</span>
+                    Respiración
+                </div>
+                <div class="menu-item" onclick="quickPanicRecord()">
+                    <span class="menu-icon">🚨</span>
+                    Registrar Pánico
                 </div>
             </div>
         </div>
 
         <!-- TAB 0: DASHBOARD -->
         <div id="tab0" class="tab-content active">
+            <!-- XP Progress Card -->
+            <div class="xp-card" id="xp-card">
+                <div class="xp-card-header">
+                    <div class="xp-card-level">
+                        <div class="xp-card-level-icon" id="xp-level-icon">👀</div>
+                        <div class="xp-card-level-info">
+                            <h3 id="xp-level-number">Nivel 1</h3>
+                            <div class="xp-card-level-title" id="xp-level-title">Observador</div>
+                        </div>
+                    </div>
+                    <div class="xp-card-xp">
+                        <div class="xp-card-xp-amount" id="xp-total">0 XP</div>
+                        <div class="xp-card-xp-label">Total acumulado</div>
+                    </div>
+                </div>
+                <div class="xp-progress-bar">
+                    <div class="xp-progress-fill" id="xp-progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="xp-progress-text" id="xp-progress-text">0 / 100 XP para Nivel 2</div>
+            </div>
+
+            <!-- Phase Progress Tracker -->
+            <div class="phase-tracker">
+                <div class="phase-tracker-title">🗺️ Fases del Programa</div>
+                <div class="phase-tracker-grid" id="phase-tracker-grid">
+                    <!-- Phases will be dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Badges Showcase -->
+            <div class="badges-container">
+                <div class="badges-header">
+                    <div class="badges-title">🏅 Logros Desbloqueados</div>
+                    <div class="badges-progress" id="badges-progress">0 / 0</div>
+                </div>
+                <div id="badges-showcase">
+                    <!-- Badges will be dynamically populated by category -->
+                </div>
+            </div>
+
+            <!-- Existing Dashboard Views -->
             <div class="card">
                 <h2>📊 Mi Progreso de Recuperación</h2>
                 <p style="margin-bottom:24px; color: var(--text-secondary);">Visualiza tu evolución y compara tu progreso en el tiempo</p>
-                
+
                 <!-- Vista Toggle -->
                 <div class="view-toggle">
                     <button class="view-btn active" onclick="switchDashboardView('gauge')">
@@ -2083,42 +2380,125 @@
         </div>
 
         <!-- TAB 11: BREATHING SKILLS -->
+        <!-- TAB 11: BREATHING EXERCISE (NEW ADVANCED VERSION) -->
         <div id="tab11" class="tab-content">
             <div class="card">
-                <span class="category-badge">🫁 Habilidades de Respiración</span>
-                <h2>Registro de Habilidades de Respiración</h2>
-                <p style="margin-bottom:24px;">Practica dos veces al día y califica tu concentración y éxito</p>
-                <form onsubmit="saveEntry(11, event); return false;">
-                    <div class="form-group">
-                        <label>Fecha</label>
-                        <input type="date" name="date" required>
+                <span class="category-badge">🫁 Práctica de Respiración</span>
+                <h2>Ejercicio de Respiración Terapéutica</h2>
+                <p style="margin-bottom:24px;">Practica respiración diafragmática siguiendo la burbuja animada</p>
+
+                <!-- Mode Selector -->
+                <div class="breathing-mode-selector">
+                    <button class="mode-btn active" data-mode="therapeutic" onclick="breathingExercise.selectMode('therapeutic')">
+                        <span class="mode-icon">🫁</span>
+                        <span class="mode-title">Modo Terapéutico</span>
+                        <span class="mode-desc">Respiración 1:1 (3s in / 3s out)</span>
+                    </button>
+                    <button class="mode-btn" data-mode="resonance" onclick="breathingExercise.selectMode('resonance')">
+                        <span class="mode-icon">💙</span>
+                        <span class="mode-title">Modo Resonancia</span>
+                        <span class="mode-desc">Personalizable con retenciones</span>
+                    </button>
+                </div>
+
+                <!-- Settings Panel (only for Resonance mode) -->
+                <div id="breathing-settings" class="breathing-settings" style="display:none;">
+                    <h3>⚙️ Configuración Personalizada</h3>
+
+                    <!-- Presets -->
+                    <div class="preset-buttons">
+                        <button class="preset-btn active" onclick="breathingExercise.applyPreset('coherence')">
+                            Coherencia (5-0-5-0)
+                        </button>
+                        <button class="preset-btn" onclick="breathingExercise.applyPreset('box')">
+                            Box (4-4-4-4)
+                        </button>
+                        <button class="preset-btn" onclick="breathingExercise.applyPreset('478')">
+                            4-7-8
+                        </button>
+                        <button class="preset-btn" onclick="breathingExercise.applyPreset('calm')">
+                            Calma (4-0-6-0)
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label>Práctica (1 o 2)</label>
-                        <select name="practice" required>
-                            <option value="">Selecciona...</option>
-                            <option value="1">Práctica 1 (mañana)</option>
-                            <option value="2">Práctica 2 (tarde)</option>
-                        </select>
+
+                    <!-- Custom Sliders -->
+                    <div class="breath-sliders">
+                        <div class="slider-group">
+                            <label>🌬️ Inhalar: <span id="inhale-value">3</span>s</label>
+                            <input type="range" id="inhale-slider" min="2" max="8" value="3" step="0.5"
+                                   oninput="breathingExercise.updatePattern('inhale', this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <label>⏸️ Retener (inhalar): <span id="hold1-value">0</span>s</label>
+                            <input type="range" id="hold1-slider" min="0" max="8" value="0" step="0.5"
+                                   oninput="breathingExercise.updatePattern('hold1', this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <label>😮‍💨 Exhalar: <span id="exhale-value">3</span>s</label>
+                            <input type="range" id="exhale-slider" min="2" max="10" value="3" step="0.5"
+                                   oninput="breathingExercise.updatePattern('exhale', this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <label>⏸️ Retener (exhalar): <span id="hold2-value">0</span>s</label>
+                            <input type="range" id="hold2-slider" min="0" max="8" value="0" step="0.5"
+                                   oninput="breathingExercise.updatePattern('hold2', this.value)">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Concentración en respiración y conteo (0-10)</label>
-                        <div class="scale-selector" id="breath_conc"></div>
-                        <input type="hidden" name="concentration" id="breath_conc_val" required>
+
+                    <div class="pattern-summary">
+                        <strong>Patrón actual:</strong> <span id="pattern-display">3-0-3-0</span>
+                        <span class="pattern-bpm">≈ <span id="pattern-bpm">10</span> BPM</span>
                     </div>
-                    <div class="form-group">
-                        <label>Éxito con respiración diafragmática (0-10)</label>
-                        <div class="scale-selector" id="breath_succ"></div>
-                        <input type="hidden" name="success" id="breath_succ_val" required>
+                </div>
+
+                <!-- Breathing Bubble Animation -->
+                <div class="breathing-container">
+                    <div id="breathing-bubble" class="breathing-bubble"></div>
+                    <div id="breathing-instruction" class="breathing-instruction">
+                        Pulsa <strong>Iniciar</strong> para comenzar
                     </div>
-                    <div class="form-group">
-                        <label>Notas</label>
-                        <textarea name="notes" placeholder="Observaciones sobre la práctica..."></textarea>
+                </div>
+
+                <!-- Controls -->
+                <div class="breathing-controls">
+                    <button id="btn-start" class="control-btn primary" onclick="breathingExercise.start()">
+                        ▶️ Iniciar
+                    </button>
+                    <button id="btn-pause" class="control-btn" onclick="breathingExercise.pause()" style="display:none;">
+                        ⏸️ Pausar
+                    </button>
+                    <button id="btn-resume" class="control-btn" onclick="breathingExercise.resume()" style="display:none;">
+                        ▶️ Reanudar
+                    </button>
+                    <button id="btn-stop" class="control-btn danger" onclick="breathingExercise.stop()" style="display:none;">
+                        ⏹️ Detener
+                    </button>
+                </div>
+
+                <!-- Stats Panel -->
+                <div id="breathing-stats" class="breathing-stats" style="display:none;">
+                    <div class="stat-item">
+                        <span class="stat-label">⏱️ Tiempo</span>
+                        <span class="stat-value" id="stat-timer">0:00 / 10:00</span>
                     </div>
-                    <button type="submit" class="btn-primary">Guardar Práctica</button>
-                </form>
-                <h3>Registros Anteriores</h3>
-                <div id="entries11"></div>
+                    <div class="stat-item">
+                        <span class="stat-label">🔄 Ciclos</span>
+                        <span class="stat-value" id="stat-cycles">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">💓 BPM</span>
+                        <span class="stat-value" id="stat-bpm">--</span>
+                    </div>
+                    <div class="stat-progress">
+                        <div id="stat-progress-bar" class="progress-bar-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Previous Sessions -->
+                <div style="margin-top: 48px;">
+                    <h3>📊 Sesiones Anteriores</h3>
+                    <div id="breathing-history"></div>
+                </div>
             </div>
         </div>
 
@@ -2798,22 +3178,29 @@
         }
         
         function showTab(index) {
+            // Check if tab is accessible in guided mode
+            if (guidedMode && guidedMode.isGuidedMode && !guidedMode.canAccessTab(index)) {
+                showLockedMessage();
+                if (window.innerWidth < 768) toggleMenu();
+                return;
+            }
+
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             document.getElementById('tab' + index).classList.add('active');
-            
+
             // Find the menu item that has onclick with this index
             const menuItem = document.querySelector(`.menu-item[onclick*="showTab(${index})"]`);
             if (menuItem) {
                 menuItem.classList.add('active');
             }
-            
+
             if (index === 0) {
                 loadDashboard();
                 loadProgressDashboard(); // Reload progress dashboard when viewing
             }
             else loadEntries(index);
-            
+
             if (window.innerWidth < 768) toggleMenu();
         }
         
@@ -3729,6 +4116,326 @@
             alert.textContent = message;
             document.body.insertBefore(alert, document.body.firstChild);
             setTimeout(() => alert.remove(), 3500);
+        }
+
+        // ===================================================================
+        // GUIDED MODE INITIALIZATION
+        // ===================================================================
+        // Note: guidedMode will be initialized after auth in guided-mode.js
+        let guidedMode = null;
+
+        // Initialize after user is loaded
+        async function initGuidedModeAfterAuth() {
+            if (currentUser && !guidedMode) {
+                guidedMode = initializeGuidedMode();
+                await guidedMode.initialize(supabase, currentUser);
+                console.log('Guided mode initialized');
+            }
+        }
+
+        // Hook into loadAllData to initialize guided mode
+        const originalLoadAllData = loadAllData;
+        loadAllData = async function() {
+            await originalLoadAllData();
+            await initGuidedModeAfterAuth();
+        };
+    </script>
+
+    <!-- Guided Mode System -->
+    <script src="js/constants.js"></script>
+    <script src="js/guided-mode.js"></script>
+
+    <!-- Breathing Exercise -->
+    <script src="js/breathing-exercise.js"></script>
+
+    <!-- Gamification System -->
+    <script src="js/gamification.js"></script>
+
+    <!-- Badge System -->
+    <script src="js/badges.js"></script>
+
+    <!-- Initialize Systems -->
+    <script>
+        // Hook into showTab to initialize breathing exercise and dashboard
+        const originalShowTab = showTab;
+        showTab = function(index) {
+            originalShowTab(index);
+
+            // Initialize breathing exercise when tab 11 is shown
+            if (index === 11 && currentUser && supabase) {
+                initializeBreathingExercise();
+            }
+
+            // Load game dashboard when Tab 0 is shown
+            if (index === 0 && currentUser && supabase) {
+                loadGameDashboard();
+            }
+        };
+
+        // Hook into loadAllData to initialize gamification and badges
+        const originalLoadAllDataWithGamification = loadAllData;
+        loadAllData = async function() {
+            await originalLoadAllDataWithGamification();
+            // Initialize gamification after user data is loaded
+            if (currentUser && supabase) {
+                initializeGamification();
+                initializeBadgeSystem();
+            }
+        };
+
+        // Hook into saveEntry to award XP automatically
+        const originalSaveEntry = saveEntry;
+        saveEntry = async function(tabIndex, event) {
+            // Call original saveEntry
+            const result = await originalSaveEntry(tabIndex, event);
+
+            // Award XP based on tab
+            if (currentUser && gamification) {
+                const xpRewards = {
+                    1: { amount: getXPReward('panic_attack_record'), reason: 'panic_attack_record' },
+                    2: { amount: getXPReward('daily_mood_record'), reason: 'daily_mood_record' },
+                    3: { amount: getXPReward('progress_record'), reason: 'progress_record' },
+                    4: { amount: getXPReward('parts_of_panic'), reason: 'parts_of_panic' },
+                    5: { amount: getXPReward('parts_of_anxiety'), reason: 'parts_of_anxiety' },
+                    6: { amount: getXPReward('step_by_step_analysis'), reason: 'step_by_step_analysis' },
+                    7: { amount: getXPReward('agoraphobia_situations'), reason: 'agoraphobia_situations' },
+                    8: { amount: getXPReward('agoraphobia_hierarchy_item'), reason: 'agoraphobia_hierarchy_item' },
+                    9: { amount: getXPReward('superstitious_objects'), reason: 'superstitious_objects' },
+                    10: { amount: getXPReward('safety_behaviors'), reason: 'safety_behaviors' },
+                    12: { amount: getXPReward('negative_thought_identified'), reason: 'negative_thought_identified' },
+                    13: { amount: getXPReward('changing_odds'), reason: 'changing_odds' },
+                    14: { amount: getXPReward('changing_perspective'), reason: 'changing_perspective' },
+                    15: { amount: getXPReward('facing_situation'), reason: 'facing_situation' },
+                    16: { amount: getXPReward('combined_exposure'), reason: 'combined_exposure' },
+                    17: { amount: getXPReward('symptom_assessment'), reason: 'symptom_assessment' },
+                    18: { amount: getXPReward('facing_symptoms_session'), reason: 'facing_symptoms_session' },
+                    19: { amount: getXPReward('agoraphobia_hierarchy_item'), reason: 'agoraphobia_hierarchy_item' },
+                    20: { amount: getXPReward('facing_activity'), reason: 'facing_activity' },
+                    21: { amount: 50, reason: 'practice_plan' },
+                    22: { amount: 100, reason: 'long_term_goals' }
+                };
+
+                if (xpRewards[tabIndex]) {
+                    await awardXP(xpRewards[tabIndex].amount, xpRewards[tabIndex].reason, `tab_${tabIndex}`);
+                }
+
+                // Check for badge unlocks after saving
+                if (badgeSystem) {
+                    await badgeSystem.checkAllBadges();
+                }
+            }
+
+            // Reload dashboard if on Tab 0
+            if (document.querySelector('#tab0.active')) {
+                await loadGameDashboard();
+            }
+
+            return result;
+        };
+
+        // Hook into breathing exercise save to award XP and check badges
+        if (typeof BreathingExercise !== 'undefined') {
+            const originalBreathingSave = BreathingExercise.prototype.saveSession;
+            BreathingExercise.prototype.saveSession = async function() {
+                await originalBreathingSave.call(this);
+
+                // Award XP for breathing session
+                if (gamification) {
+                    await awardXP(getXPReward('breathing_practice_session'), 'breathing_practice_session', 'breathing');
+                }
+
+                // Check for badge unlocks
+                if (badgeSystem) {
+                    await badgeSystem.checkAllBadges();
+                }
+
+                // Reload dashboard if on Tab 0
+                if (document.querySelector('#tab0.active')) {
+                    await loadGameDashboard();
+                }
+            };
+        }
+
+        // ===================================================================
+        // LOAD GAME DASHBOARD (XP, Phases, Badges)
+        // ===================================================================
+        async function loadGameDashboard() {
+            if (!currentUser || !supabase) return;
+
+            try {
+                // 1. Load XP Data
+                if (gamification && gamification.xpData) {
+                    const xpData = gamification.xpData;
+                    const levelInfo = gamification.getLevelInfo(xpData.current_level);
+                    const progress = gamification.getProgressToNextLevel();
+
+                    document.getElementById('xp-level-icon').textContent = levelInfo.icon;
+                    document.getElementById('xp-level-number').textContent = `Nivel ${xpData.current_level}`;
+                    document.getElementById('xp-level-title').textContent = levelInfo.title;
+                    document.getElementById('xp-total').textContent = `${xpData.total_xp} XP`;
+                    document.getElementById('xp-progress-fill').style.width = `${progress.percent}%`;
+                    document.getElementById('xp-progress-text').textContent =
+                        `${progress.current} / ${progress.needed} XP para Nivel ${xpData.current_level + 1}`;
+                }
+
+                // 2. Load Phase Progress
+                if (guidedMode && guidedMode.userProgress) {
+                    const phaseGrid = document.getElementById('phase-tracker-grid');
+                    phaseGrid.innerHTML = '';
+
+                    for (let i = 1; i <= 9; i++) {
+                        const phaseInfo = PHASES[i];
+                        const currentPhase = guidedMode.userProgress.current_phase;
+                        const isCompleted = i < currentPhase;
+                        const isCurrent = i === currentPhase;
+                        const isLocked = i > currentPhase;
+
+                        const phaseItem = document.createElement('div');
+                        phaseItem.className = `phase-tracker-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`;
+                        phaseItem.innerHTML = `
+                            <div class="phase-number">Fase ${i}</div>
+                            <div class="phase-name">${phaseInfo.name}</div>
+                            <div class="phase-status ${isCompleted ? 'completed' : isCurrent ? 'current' : 'locked'}">
+                                ${isCompleted ? '✅ Completada' : isCurrent ? '⏳ En progreso' : '🔒 Bloqueada'}
+                            </div>
+                        `;
+                        phaseGrid.appendChild(phaseItem);
+                    }
+                }
+
+                // 3. Load Badges
+                if (badgeSystem) {
+                    const progress = badgeSystem.getProgress();
+                    document.getElementById('badges-progress').textContent =
+                        `${progress.unlocked} / ${progress.total}`;
+
+                    const badgesShowcase = document.getElementById('badges-showcase');
+                    badgesShowcase.innerHTML = '';
+
+                    const badgesByCategory = badgeSystem.getBadgesByCategory();
+                    const categoryNames = {
+                        inicio: '🚀 Inicio',
+                        monitoreo: '📝 Monitoreo',
+                        analisis: '🔍 Análisis',
+                        objetivos: '🎯 Objetivos',
+                        respiracion: '🫁 Respiración',
+                        pensamiento: '🧠 Pensamiento',
+                        exposicion: '💪 Exposición',
+                        especial: '⭐ Especial',
+                        fases: '🏆 Fases'
+                    };
+
+                    for (const [category, badges] of Object.entries(badgesByCategory)) {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'badges-category';
+
+                        const categoryTitle = document.createElement('div');
+                        categoryTitle.className = 'badges-category-title';
+                        categoryTitle.textContent = categoryNames[category] || category;
+                        categoryDiv.appendChild(categoryTitle);
+
+                        const badgesGrid = document.createElement('div');
+                        badgesGrid.className = 'badges-grid';
+
+                        badges.forEach(badge => {
+                            const isUnlocked = badgeSystem.hasBadge(badge.id);
+                            const badgeItem = document.createElement('div');
+                            badgeItem.className = `badge-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+                            badgeItem.innerHTML = `
+                                <div class="badge-icon">${badge.icon}</div>
+                                <div class="badge-name">${badge.name}</div>
+                                <div class="badge-xp">+${badge.xpReward} XP</div>
+                                ${!isUnlocked ? '<div class="badge-lock-icon">🔒</div>' : ''}
+                                <div class="badge-tooltip">${badge.description}</div>
+                            `;
+                            badgesGrid.appendChild(badgeItem);
+                        });
+
+                        categoryDiv.appendChild(badgesGrid);
+                        badgesShowcase.appendChild(categoryDiv);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading game dashboard:', error);
+            }
+        }
+
+        // ===================================================================
+        // FAB (FLOATING ACTION BUTTON) CONTROL
+        // ===================================================================
+        function toggleFAB() {
+            const fabContainer = document.getElementById('fab-container');
+            fabContainer.classList.toggle('expanded');
+        }
+
+        function fabQuickBreathing() {
+            showTab(11);
+            const fabContainer = document.getElementById('fab-container');
+            fabContainer.classList.remove('expanded');
+        }
+
+        function fabQuickPanic() {
+            showTab(1);
+            const fabContainer = document.getElementById('fab-container');
+            fabContainer.classList.remove('expanded');
+        }
+
+        // Hide FAB on breathing tab (tab 11)
+        const originalShowTabWithFAB = showTab;
+        showTab = function(index) {
+            originalShowTabWithFAB(index);
+
+            const fabContainer = document.getElementById('fab-container');
+            if (fabContainer) {
+                // Hide FAB on breathing tab
+                if (index === 11) {
+                    fabContainer.classList.add('hidden');
+                } else {
+                    fabContainer.classList.remove('hidden');
+                }
+            }
+        };
+    </script>
+
+    <!-- Floating Action Button -->
+    <div id="fab-container" class="fab-container" style="display: none;">
+        <div class="fab-menu">
+            <div class="fab-menu-item" onclick="fabQuickBreathing()">
+                <div class="fab-menu-icon">🫁</div>
+                <div class="fab-menu-text">
+                    <div class="fab-menu-title">Respiración</div>
+                    <div class="fab-menu-subtitle">Ejercicio rápido</div>
+                </div>
+            </div>
+            <div class="fab-menu-item" onclick="fabQuickPanic()">
+                <div class="fab-menu-icon">🚨</div>
+                <div class="fab-menu-text">
+                    <div class="fab-menu-title">Registro Pánico</div>
+                    <div class="fab-menu-subtitle">Registrar ahora</div>
+                </div>
+            </div>
+        </div>
+        <button class="fab" onclick="toggleFAB()">
+            ➕
+            <div class="fab-tooltip">Acceso Rápido</div>
+        </button>
+    </div>
+
+    <script>
+        // Show FAB after user is authenticated
+        if (typeof initializeAllAfterAuth !== 'undefined') {
+            const originalInitialize = initializeAllAfterAuth;
+            initializeAllAfterAuth = async function() {
+                await originalInitialize();
+                document.getElementById('fab-container').style.display = 'block';
+            };
+        } else {
+            // Fallback: show after 1 second
+            setTimeout(() => {
+                if (currentUser) {
+                    document.getElementById('fab-container').style.display = 'block';
+                }
+            }, 1000);
         }
     </script>
 </body>
