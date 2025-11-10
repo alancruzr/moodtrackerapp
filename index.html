@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/breathing-exercise.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -2334,42 +2335,125 @@
         </div>
 
         <!-- TAB 11: BREATHING SKILLS -->
+        <!-- TAB 11: BREATHING EXERCISE (NEW ADVANCED VERSION) -->
         <div id="tab11" class="tab-content">
             <div class="card">
-                <span class="category-badge">🫁 Habilidades de Respiración</span>
-                <h2>Registro de Habilidades de Respiración</h2>
-                <p style="margin-bottom:24px;">Practica dos veces al día y califica tu concentración y éxito</p>
-                <form onsubmit="saveEntry(11, event); return false;">
-                    <div class="form-group">
-                        <label>Fecha</label>
-                        <input type="date" name="date" required>
+                <span class="category-badge">🫁 Práctica de Respiración</span>
+                <h2>Ejercicio de Respiración Terapéutica</h2>
+                <p style="margin-bottom:24px;">Practica respiración diafragmática siguiendo la burbuja animada</p>
+
+                <!-- Mode Selector -->
+                <div class="breathing-mode-selector">
+                    <button class="mode-btn active" data-mode="therapeutic" onclick="breathingExercise.selectMode('therapeutic')">
+                        <span class="mode-icon">🫁</span>
+                        <span class="mode-title">Modo Terapéutico</span>
+                        <span class="mode-desc">Respiración 1:1 (3s in / 3s out)</span>
+                    </button>
+                    <button class="mode-btn" data-mode="resonance" onclick="breathingExercise.selectMode('resonance')">
+                        <span class="mode-icon">💙</span>
+                        <span class="mode-title">Modo Resonancia</span>
+                        <span class="mode-desc">Personalizable con retenciones</span>
+                    </button>
+                </div>
+
+                <!-- Settings Panel (only for Resonance mode) -->
+                <div id="breathing-settings" class="breathing-settings" style="display:none;">
+                    <h3>⚙️ Configuración Personalizada</h3>
+
+                    <!-- Presets -->
+                    <div class="preset-buttons">
+                        <button class="preset-btn active" onclick="breathingExercise.applyPreset('coherence')">
+                            Coherencia (5-0-5-0)
+                        </button>
+                        <button class="preset-btn" onclick="breathingExercise.applyPreset('box')">
+                            Box (4-4-4-4)
+                        </button>
+                        <button class="preset-btn" onclick="breathingExercise.applyPreset('478')">
+                            4-7-8
+                        </button>
+                        <button class="preset-btn" onclick="breathingExercise.applyPreset('calm')">
+                            Calma (4-0-6-0)
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label>Práctica (1 o 2)</label>
-                        <select name="practice" required>
-                            <option value="">Selecciona...</option>
-                            <option value="1">Práctica 1 (mañana)</option>
-                            <option value="2">Práctica 2 (tarde)</option>
-                        </select>
+
+                    <!-- Custom Sliders -->
+                    <div class="breath-sliders">
+                        <div class="slider-group">
+                            <label>🌬️ Inhalar: <span id="inhale-value">3</span>s</label>
+                            <input type="range" id="inhale-slider" min="2" max="8" value="3" step="0.5"
+                                   oninput="breathingExercise.updatePattern('inhale', this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <label>⏸️ Retener (inhalar): <span id="hold1-value">0</span>s</label>
+                            <input type="range" id="hold1-slider" min="0" max="8" value="0" step="0.5"
+                                   oninput="breathingExercise.updatePattern('hold1', this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <label>😮‍💨 Exhalar: <span id="exhale-value">3</span>s</label>
+                            <input type="range" id="exhale-slider" min="2" max="10" value="3" step="0.5"
+                                   oninput="breathingExercise.updatePattern('exhale', this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <label>⏸️ Retener (exhalar): <span id="hold2-value">0</span>s</label>
+                            <input type="range" id="hold2-slider" min="0" max="8" value="0" step="0.5"
+                                   oninput="breathingExercise.updatePattern('hold2', this.value)">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Concentración en respiración y conteo (0-10)</label>
-                        <div class="scale-selector" id="breath_conc"></div>
-                        <input type="hidden" name="concentration" id="breath_conc_val" required>
+
+                    <div class="pattern-summary">
+                        <strong>Patrón actual:</strong> <span id="pattern-display">3-0-3-0</span>
+                        <span class="pattern-bpm">≈ <span id="pattern-bpm">10</span> BPM</span>
                     </div>
-                    <div class="form-group">
-                        <label>Éxito con respiración diafragmática (0-10)</label>
-                        <div class="scale-selector" id="breath_succ"></div>
-                        <input type="hidden" name="success" id="breath_succ_val" required>
+                </div>
+
+                <!-- Breathing Bubble Animation -->
+                <div class="breathing-container">
+                    <div id="breathing-bubble" class="breathing-bubble"></div>
+                    <div id="breathing-instruction" class="breathing-instruction">
+                        Pulsa <strong>Iniciar</strong> para comenzar
                     </div>
-                    <div class="form-group">
-                        <label>Notas</label>
-                        <textarea name="notes" placeholder="Observaciones sobre la práctica..."></textarea>
+                </div>
+
+                <!-- Controls -->
+                <div class="breathing-controls">
+                    <button id="btn-start" class="control-btn primary" onclick="breathingExercise.start()">
+                        ▶️ Iniciar
+                    </button>
+                    <button id="btn-pause" class="control-btn" onclick="breathingExercise.pause()" style="display:none;">
+                        ⏸️ Pausar
+                    </button>
+                    <button id="btn-resume" class="control-btn" onclick="breathingExercise.resume()" style="display:none;">
+                        ▶️ Reanudar
+                    </button>
+                    <button id="btn-stop" class="control-btn danger" onclick="breathingExercise.stop()" style="display:none;">
+                        ⏹️ Detener
+                    </button>
+                </div>
+
+                <!-- Stats Panel -->
+                <div id="breathing-stats" class="breathing-stats" style="display:none;">
+                    <div class="stat-item">
+                        <span class="stat-label">⏱️ Tiempo</span>
+                        <span class="stat-value" id="stat-timer">0:00 / 10:00</span>
                     </div>
-                    <button type="submit" class="btn-primary">Guardar Práctica</button>
-                </form>
-                <h3>Registros Anteriores</h3>
-                <div id="entries11"></div>
+                    <div class="stat-item">
+                        <span class="stat-label">🔄 Ciclos</span>
+                        <span class="stat-value" id="stat-cycles">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">💓 BPM</span>
+                        <span class="stat-value" id="stat-bpm">--</span>
+                    </div>
+                    <div class="stat-progress">
+                        <div id="stat-progress-bar" class="progress-bar-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Previous Sessions -->
+                <div style="margin-top: 48px;">
+                    <h3>📊 Sesiones Anteriores</h3>
+                    <div id="breathing-history"></div>
+                </div>
             </div>
         </div>
 
@@ -4015,5 +4099,22 @@
     <!-- Guided Mode System -->
     <script src="js/constants.js"></script>
     <script src="js/guided-mode.js"></script>
+
+    <!-- Breathing Exercise -->
+    <script src="js/breathing-exercise.js"></script>
+
+    <!-- Initialize Breathing Exercise when tab 11 is shown -->
+    <script>
+        // Hook into showTab to initialize breathing exercise
+        const originalShowTab = showTab;
+        showTab = function(index) {
+            originalShowTab(index);
+
+            // Initialize breathing exercise when tab 11 is shown
+            if (index === 11 && currentUser && supabase) {
+                initializeBreathingExercise();
+            }
+        };
+    </script>
 </body>
 </html>
