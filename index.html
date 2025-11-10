@@ -422,7 +422,123 @@
         .hamburger.active span:nth-child(3) {
             transform: rotate(-45deg) translate(7px, -7px);
         }
-        
+
+        /* Mode Toggle Switch */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 140px;
+            height: 44px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 22px;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            box-shadow: 0 2px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 36px;
+            width: 36px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(96px);
+        }
+
+        .mode-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            transition: 0.4s;
+            white-space: nowrap;
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .mode-label.guided {
+            left: 45px;
+            opacity: 1;
+        }
+
+        .mode-label.free {
+            right: 12px;
+            opacity: 0.5;
+        }
+
+        input:checked + .slider .mode-label.guided {
+            opacity: 0.5;
+        }
+
+        input:checked + .slider .mode-label.free {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .mode-toggle {
+                top: max(14px, env(safe-area-inset-top));
+                right: 10px;
+            }
+
+            .switch {
+                width: 120px;
+                height: 38px;
+            }
+
+            .slider::before {
+                height: 30px;
+                width: 30px;
+            }
+
+            input:checked + .slider::before {
+                transform: translateX(82px);
+            }
+
+            .mode-label {
+                font-size: 10px;
+            }
+
+            .mode-label.guided {
+                left: 38px;
+            }
+        }
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -498,7 +614,7 @@
             width: 24px;
             text-align: center;
         }
-        
+
         .phase-badge {
             font-size: 0.7rem;
             padding: 3px 8px;
@@ -507,6 +623,91 @@
             color: var(--primary);
             margin-left: auto;
             font-weight: 600;
+        }
+
+        /* Phase Status Indicators */
+        .phase-status {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 4px 24px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .unlock-hint {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            padding: 4px 24px;
+            font-style: italic;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .required-badge {
+            font-size: 0.7rem;
+            margin-left: auto;
+            animation: pulse-star 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-star {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+
+        /* Locked/Unlocked Phases */
+        .menu-section.locked {
+            opacity: 0.5;
+        }
+
+        .menu-section.locked .menu-item {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .menu-section.locked .menu-section-title::after {
+            content: ' 🔒';
+            font-size: 0.9rem;
+        }
+
+        .menu-section.current-phase {
+            border-left: 4px solid var(--primary);
+            background: rgba(74, 144, 226, 0.03);
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .menu-section.current-phase .menu-section-title {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .menu-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Quick Access Section */
+        .quick-access {
+            border-top: 2px solid var(--border);
+            margin-top: 16px;
+            padding-top: 16px;
+        }
+
+        .quick-access .menu-section-title {
+            color: var(--accent);
+        }
+
+        .quick-access .menu-item {
+            background: rgba(246, 161, 146, 0.05);
+            border-radius: 8px;
+            margin: 4px 16px;
+        }
+
+        .quick-access .menu-item:hover {
+            background: rgba(246, 161, 146, 0.15);
+            border-left-color: var(--accent);
+            transform: translateX(4px);
         }
         
         .tab-content { display: none; }
@@ -1266,159 +1467,209 @@
             <span></span>
         </div>
 
+        <!-- Mode Toggle: Guided vs Free -->
+        <div class="mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="guided-mode-toggle" checked onchange="toggleGuidedMode(this.checked)">
+                <span class="slider">
+                    <span class="mode-label guided">🎯 Guiado</span>
+                    <span class="mode-label free">🗺️ Libre</span>
+                </span>
+            </label>
+        </div>
+
         <div class="sidebar-overlay" onclick="toggleMenu()"></div>
         <div class="sidebar">
-            <div class="menu-section">
+            <!-- FASE 0: Dashboard -->
+            <div class="menu-section" data-phase="0">
                 <div class="menu-section-title">📊 INICIO</div>
-                <div class="menu-item active" onclick="showTab(0)">
+                <div class="menu-item active" onclick="showTab(0)" data-tab="0">
                     <span class="menu-icon">📊</span>
                     Panel
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 1: Monitoreo -->
+            <div class="menu-section" data-phase="1">
                 <div class="menu-section-title">📝 FASE 1: MONITOREO</div>
-                <div class="menu-item" onclick="showTab(1)">
+                <div class="phase-status" id="phase1-status">⏳ En progreso</div>
+                <div class="menu-item" onclick="showTab(1)" data-tab="1">
                     <span class="menu-icon">🚨</span>
                     Registro Pánico
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(2)">
+                <div class="menu-item" onclick="showTab(2)" data-tab="2">
                     <span class="menu-icon">😌</span>
                     Estado Ánimo
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(3)">
+                <div class="menu-item" onclick="showTab(3)" data-tab="3">
                     <span class="menu-icon">📈</span>
                     Progreso
-                    
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 2: Entender -->
+            <div class="menu-section" data-phase="2">
                 <div class="menu-section-title">🔍 FASE 2: ENTENDER</div>
-                <div class="menu-item" onclick="showTab(4)">
+                <div class="phase-status" id="phase2-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase2-hint">Completa 7 días de monitoreo</div>
+                <div class="menu-item" onclick="showTab(4)" data-tab="4">
                     <span class="menu-icon">🔄</span>
                     Partes Pánico
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(5)">
+                <div class="menu-item" onclick="showTab(5)" data-tab="5">
                     <span class="menu-icon">😰</span>
                     Partes Ansiedad
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(6)">
+                <div class="menu-item" onclick="showTab(6)" data-tab="6">
                     <span class="menu-icon">🔬</span>
                     Análisis
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">🫁 FASE 3: RESPIRACIÓN</div>
-                <div class="menu-item" onclick="showTab(11)">
-                    <span class="menu-icon">🫁</span>
-                    Práctica
-                    
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">🧠 FASE 4: PENSAMIENTO</div>
-                <div class="menu-item" onclick="showTab(12)">
-                    <span class="menu-icon">💭</span>
-                    Pensamientos
-                    
-                </div>
-                <div class="menu-item" onclick="showTab(13)">
-                    <span class="menu-icon">🎲</span>
-                    Probabilidades
-                    
-                </div>
-                <div class="menu-item" onclick="showTab(14)">
-                    <span class="menu-icon">👁️</span>
-                    Perspectiva
-                    
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">🎯 FASE 5: IDENTIFICAR</div>
-                <div class="menu-item" onclick="showTab(7)">
+            <!-- FASE 3: Identificar Objetivos -->
+            <div class="menu-section" data-phase="3">
+                <div class="menu-section-title">🎯 FASE 3: IDENTIFICAR</div>
+                <div class="phase-status" id="phase3-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase3-hint">Completa Fase 2</div>
+                <div class="menu-item" onclick="showTab(7)" data-tab="7">
                     <span class="menu-icon">🏪</span>
                     Situaciones
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(8)">
+                <div class="menu-item" onclick="showTab(8)" data-tab="8">
                     <span class="menu-icon">📊</span>
                     Jerarquía
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(9)">
+                <div class="menu-item" onclick="showTab(9)" data-tab="9">
                     <span class="menu-icon">🛡️</span>
                     Objetos
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(10)">
+                <div class="menu-item" onclick="showTab(10)" data-tab="10">
                     <span class="menu-icon">🚪</span>
                     Comportamientos
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">💪 FASE 6: EXPOSICIÓN</div>
-                <div class="menu-item" onclick="showTab(15)">
-                    <span class="menu-icon">🦁</span>
-                    Enfrentar
-                    
+            <!-- FASE 4: Respiración -->
+            <div class="menu-section" data-phase="4">
+                <div class="menu-section-title">🫁 FASE 4: RESPIRACIÓN</div>
+                <div class="phase-status" id="phase4-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase4-hint">Completa Fase 3</div>
+                <div class="menu-item" onclick="showTab(11)" data-tab="11">
+                    <span class="menu-icon">🫁</span>
+                    Práctica
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">⚡ FASE 7: SÍNTOMAS</div>
-                <div class="menu-item" onclick="showTab(17)">
+            <!-- FASE 5: Pensamiento -->
+            <div class="menu-section" data-phase="5">
+                <div class="menu-section-title">🧠 FASE 5: PENSAMIENTO</div>
+                <div class="phase-status" id="phase5-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase5-hint">Completa Fase 4</div>
+                <div class="menu-item" onclick="showTab(12)" data-tab="12">
+                    <span class="menu-icon">💭</span>
+                    Pensamientos
+                    <span class="required-badge">⭐</span>
+                </div>
+                <div class="menu-item" onclick="showTab(13)" data-tab="13">
+                    <span class="menu-icon">🎲</span>
+                    Probabilidades
+                    <span class="required-badge">⭐</span>
+                </div>
+                <div class="menu-item" onclick="showTab(14)" data-tab="14">
+                    <span class="menu-icon">👁️</span>
+                    Perspectiva
+                    <span class="required-badge">⭐</span>
+                </div>
+            </div>
+
+            <!-- FASE 6: Exposición a Síntomas -->
+            <div class="menu-section" data-phase="6">
+                <div class="menu-section-title">⚡ FASE 6: SÍNTOMAS</div>
+                <div class="phase-status" id="phase6-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase6-hint">Completa Fase 5</div>
+                <div class="menu-item" onclick="showTab(17)" data-tab="17">
                     <span class="menu-icon">🔍</span>
                     Evaluar
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(18)">
+                <div class="menu-item" onclick="showTab(18)" data-tab="18">
                     <span class="menu-icon">💪</span>
                     Enfrentar
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(19)">
+                <div class="menu-item" onclick="showTab(19)" data-tab="19">
                     <span class="menu-icon">🏃</span>
                     Actividades
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(20)">
+                <div class="menu-item" onclick="showTab(20)" data-tab="20">
                     <span class="menu-icon">🎯</span>
                     Practicar
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 7: Exposición a Situaciones -->
+            <div class="menu-section" data-phase="7">
+                <div class="menu-section-title">🦁 FASE 7: SITUACIONES</div>
+                <div class="phase-status" id="phase7-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase7-hint">Completa Fase 6</div>
+                <div class="menu-item" onclick="showTab(15)" data-tab="15">
+                    <span class="menu-icon">🦁</span>
+                    Enfrentar
+                    <span class="required-badge">⭐</span>
+                </div>
+            </div>
+
+            <!-- FASE 8: Exposición Combinada -->
+            <div class="menu-section" data-phase="8">
                 <div class="menu-section-title">🔥 FASE 8: COMBINADO</div>
-                <div class="menu-item" onclick="showTab(16)">
+                <div class="phase-status" id="phase8-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase8-hint">Completa Fase 7</div>
+                <div class="menu-item" onclick="showTab(16)" data-tab="16">
                     <span class="menu-icon">⚡</span>
                     Síntomas+
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
             </div>
 
-            <div class="menu-section">
+            <!-- FASE 9: Mantenimiento -->
+            <div class="menu-section" data-phase="9">
                 <div class="menu-section-title">🎓 FASE 9: MANTENER</div>
-                <div class="menu-item" onclick="showTab(21)">
+                <div class="phase-status" id="phase9-status">🔒 Bloqueada</div>
+                <div class="unlock-hint" id="phase9-hint">Completa Fase 8</div>
+                <div class="menu-item" onclick="showTab(21)" data-tab="21">
                     <span class="menu-icon">📋</span>
                     Plan
-                    
+                    <span class="required-badge">⭐</span>
                 </div>
-                <div class="menu-item" onclick="showTab(22)">
+                <div class="menu-item" onclick="showTab(22)" data-tab="22">
                     <span class="menu-icon">🎯</span>
                     Metas
-                    
+                    <span class="required-badge">⭐</span>
+                </div>
+            </div>
+
+            <!-- Acceso Rápido -->
+            <div class="menu-section quick-access" data-phase="quick">
+                <div class="menu-section-title">⚡ ACCESO RÁPIDO</div>
+                <div class="menu-item" onclick="quickBreathing()">
+                    <span class="menu-icon">🫁</span>
+                    Respiración
+                </div>
+                <div class="menu-item" onclick="quickPanicRecord()">
+                    <span class="menu-icon">🚨</span>
+                    Registrar Pánico
                 </div>
             </div>
         </div>
@@ -2798,22 +3049,29 @@
         }
         
         function showTab(index) {
+            // Check if tab is accessible in guided mode
+            if (guidedMode && guidedMode.isGuidedMode && !guidedMode.canAccessTab(index)) {
+                showLockedMessage();
+                if (window.innerWidth < 768) toggleMenu();
+                return;
+            }
+
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             document.getElementById('tab' + index).classList.add('active');
-            
+
             // Find the menu item that has onclick with this index
             const menuItem = document.querySelector(`.menu-item[onclick*="showTab(${index})"]`);
             if (menuItem) {
                 menuItem.classList.add('active');
             }
-            
+
             if (index === 0) {
                 loadDashboard();
                 loadProgressDashboard(); // Reload progress dashboard when viewing
             }
             else loadEntries(index);
-            
+
             if (window.innerWidth < 768) toggleMenu();
         }
         
@@ -3730,6 +3988,32 @@
             document.body.insertBefore(alert, document.body.firstChild);
             setTimeout(() => alert.remove(), 3500);
         }
+
+        // ===================================================================
+        // GUIDED MODE INITIALIZATION
+        // ===================================================================
+        // Note: guidedMode will be initialized after auth in guided-mode.js
+        let guidedMode = null;
+
+        // Initialize after user is loaded
+        async function initGuidedModeAfterAuth() {
+            if (currentUser && !guidedMode) {
+                guidedMode = initializeGuidedMode();
+                await guidedMode.initialize(supabase, currentUser);
+                console.log('Guided mode initialized');
+            }
+        }
+
+        // Hook into loadAllData to initialize guided mode
+        const originalLoadAllData = loadAllData;
+        loadAllData = async function() {
+            await originalLoadAllData();
+            await initGuidedModeAfterAuth();
+        };
     </script>
+
+    <!-- Guided Mode System -->
+    <script src="js/constants.js"></script>
+    <script src="js/guided-mode.js"></script>
 </body>
 </html>
