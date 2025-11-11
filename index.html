@@ -1084,6 +1084,354 @@
                 grid-template-columns: 1fr;
             }
 
+        /* Situations Grid (Tab 7) */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .situation-item {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .situation-item:has(input[type="checkbox"]:checked) {
+            border-color: var(--primary);
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .situation-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .situation-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .situation-checkbox label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+
+        .situation-scale {
+            padding-left: 32px;
+            margin-top: 12px;
+        }
+
+        .scale-selector-small {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .scale-selector-small .scale-option {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .scale-selector-small .scale-option:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .scale-selector-small .scale-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Custom Situations */
+        .custom-situations {
+            border-top: 2px dashed var(--border);
+            padding-top: 24px;
+            margin-top: 24px;
+        }
+
+        .custom-situation-item {
+            background: rgba(246, 161, 146, 0.05);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .custom-situation-input {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .custom-situation-input input.form-control {
+            flex: 1;
+        }
+
+        .btn-remove {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove:hover {
+            background: #c46a6a;
+            transform: scale(1.1);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+
+        /* Hierarchy (Tab 8) Styles */
+        .hierarchy-container {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            border: 2px solid var(--border);
+        }
+
+        .hierarchy-header h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .hierarchy-list {
+            margin-top: 20px;
+            min-height: 100px;
+        }
+
+        .hierarchy-empty {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .hierarchy-empty p:first-child {
+            font-size: 1.2rem;
+            margin: 0 0 8px 0;
+        }
+
+        .hierarchy-item {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            cursor: move;
+            transition: all 0.3s ease;
+            touch-action: none;
+        }
+
+        .hierarchy-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .hierarchy-item.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .hierarchy-handle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            cursor: grab;
+            background: rgba(74, 144, 226, 0.08);
+            border-radius: 8px;
+            min-width: 56px;
+        }
+
+        .hierarchy-handle:active {
+            cursor: grabbing;
+        }
+
+        .hierarchy-number {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .drag-icon {
+            font-size: 1.2rem;
+            color: var(--primary);
+            line-height: 0.8;
+        }
+
+        .hierarchy-content {
+            flex: 1;
+        }
+
+        .hierarchy-situation {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .hierarchy-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .anxiety-badge {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .anxiety-0, .anxiety-1, .anxiety-2 {
+            background: rgba(180, 225, 179, 0.3);
+            color: #4a7c59;
+        }
+
+        .anxiety-3, .anxiety-4 {
+            background: rgba(168, 213, 186, 0.3);
+            color: #5a8c6a;
+        }
+
+        .anxiety-5, .anxiety-6 {
+            background: rgba(255, 235, 153, 0.5);
+            color: #8c6a1a;
+        }
+
+        .anxiety-7, .anxiety-8 {
+            background: rgba(246, 161, 146, 0.3);
+            color: #c4543c;
+        }
+
+        .anxiety-9, .anxiety-10 {
+            background: rgba(217, 122, 122, 0.3);
+            color: #a44a4a;
+        }
+
+        .hierarchy-notes {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .hierarchy-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-icon:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: scale(1.1);
+        }
+
+        .add-hierarchy-form {
+            border-top: 2px dashed var(--border);
+            padding-top: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hierarchy-item {
+                flex-wrap: wrap;
+            }
+
+            .hierarchy-handle {
+                min-width: 48px;
+            }
+
+            .hierarchy-number {
+                font-size: 1rem;
+            }
+
+            .drag-icon {
+                font-size: 1rem;
+            }
+
+            .hierarchy-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .hierarchy-meta {
+                font-size: 0.85rem;
+            }
+        }
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f08a7a;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .situations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scale-selector-small {
+                gap: 4px;
+            }
+
+            .scale-selector-small .scale-option {
+                width: 32px;
+                height: 32px;
+                font-size: 0.85rem;
+            }
+        }
+
             .guide-timeline {
                 padding-left: 32px;
             }
@@ -2669,77 +3017,166 @@
         <div id="tab7" class="tab-content">
             <div class="card">
                 <span class="category-badge">🎯 Jerarquía de Agorafobia</span>
-                <h2>Situaciones Agorafóbicas Típicas</h2>
-                <p style="margin-bottom:24px;">Califica el nivel de ansiedad/evitación para cada situación (0-10)</p>
+                <h2>Situaciones Temidas</h2>
+                <p style="margin-bottom:24px;">Selecciona las situaciones que te causan ansiedad y califícalas de 0-10</p>
                 <form onsubmit="saveEntry(7, event); return false;">
                     <div class="form-group">
                         <label>Fecha</label>
                         <input type="date" name="date" required>
                     </div>
-                    <div class="form-group">
-                        <label>Conducir</label>
-                        <div class="scale-selector" id="sit_driving"></div>
-                        <input type="hidden" name="driving" id="sit_driving_val">
+
+                    <div class="situations-grid" id="situationsGrid">
+                        <!-- Situaciones predefinidas -->
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_driving" value="driving" onchange="toggleSituationScale(this, 'driving')">
+                                <label for="sit_driving">🚗 Conducir</label>
+                            </div>
+                            <div class="situation-scale" id="scale_driving" style="display:none;">
+                                <div class="scale-selector-small" id="scale_driving_selector"></div>
+                                <input type="hidden" name="driving" id="scale_driving_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_transport" value="transport" onchange="toggleSituationScale(this, 'transport')">
+                                <label for="sit_transport">🚌 Metro/Autobús/Taxi</label>
+                            </div>
+                            <div class="situation-scale" id="scale_transport" style="display:none;">
+                                <div class="scale-selector-small" id="scale_transport_selector"></div>
+                                <input type="hidden" name="transport" id="scale_transport_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_flying" value="flying" onchange="toggleSituationScale(this, 'flying')">
+                                <label for="sit_flying">✈️ Volar</label>
+                            </div>
+                            <div class="situation-scale" id="scale_flying" style="display:none;">
+                                <div class="scale-selector-small" id="scale_flying_selector"></div>
+                                <input type="hidden" name="flying" id="scale_flying_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_lines" value="lines" onchange="toggleSituationScale(this, 'lines')">
+                                <label for="sit_lines">🧍 Hacer Fila</label>
+                            </div>
+                            <div class="situation-scale" id="scale_lines" style="display:none;">
+                                <div class="scale-selector-small" id="scale_lines_selector"></div>
+                                <input type="hidden" name="lines" id="scale_lines_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_crowds" value="crowds" onchange="toggleSituationScale(this, 'crowds')">
+                                <label for="sit_crowds">👥 Multitudes</label>
+                            </div>
+                            <div class="situation-scale" id="scale_crowds" style="display:none;">
+                                <div class="scale-selector-small" id="scale_crowds_selector"></div>
+                                <input type="hidden" name="crowds" id="scale_crowds_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_stores" value="stores" onchange="toggleSituationScale(this, 'stores')">
+                                <label for="sit_stores">🏬 Tiendas/Supermercados</label>
+                            </div>
+                            <div class="situation-scale" id="scale_stores" style="display:none;">
+                                <div class="scale-selector-small" id="scale_stores_selector"></div>
+                                <input type="hidden" name="stores" id="scale_stores_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_restaurants" value="restaurants" onchange="toggleSituationScale(this, 'restaurants')">
+                                <label for="sit_restaurants">🍽️ Restaurantes</label>
+                            </div>
+                            <div class="situation-scale" id="scale_restaurants" style="display:none;">
+                                <div class="scale-selector-small" id="scale_restaurants_selector"></div>
+                                <input type="hidden" name="restaurants" id="scale_restaurants_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_theaters" value="theaters" onchange="toggleSituationScale(this, 'theaters')">
+                                <label for="sit_theaters">🎭 Teatros/Cines</label>
+                            </div>
+                            <div class="situation-scale" id="scale_theaters" style="display:none;">
+                                <div class="scale-selector-small" id="scale_theaters_selector"></div>
+                                <input type="hidden" name="theaters" id="scale_theaters_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_farFromHome" value="farFromHome" onchange="toggleSituationScale(this, 'farFromHome')">
+                                <label for="sit_farFromHome">🏠 Lejos de Casa</label>
+                            </div>
+                            <div class="situation-scale" id="scale_farFromHome" style="display:none;">
+                                <div class="scale-selector-small" id="scale_farFromHome_selector"></div>
+                                <input type="hidden" name="farFromHome" id="scale_farFromHome_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_unfamiliar" value="unfamiliar" onchange="toggleSituationScale(this, 'unfamiliar')">
+                                <label for="sit_unfamiliar">🗺️ Áreas Desconocidas</label>
+                            </div>
+                            <div class="situation-scale" id="scale_unfamiliar" style="display:none;">
+                                <div class="scale-selector-small" id="scale_unfamiliar_selector"></div>
+                                <input type="hidden" name="unfamiliar" id="scale_unfamiliar_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_aloneHome" value="aloneHome" onchange="toggleSituationScale(this, 'aloneHome')">
+                                <label for="sit_aloneHome">🔇 Estar Solo en Casa</label>
+                            </div>
+                            <div class="situation-scale" id="scale_aloneHome" style="display:none;">
+                                <div class="scale-selector-small" id="scale_aloneHome_selector"></div>
+                                <input type="hidden" name="aloneHome" id="scale_aloneHome_val">
+                            </div>
+                        </div>
+
+                        <div class="situation-item">
+                            <div class="situation-checkbox">
+                                <input type="checkbox" id="sit_elevators" value="elevators" onchange="toggleSituationScale(this, 'elevators')">
+                                <label for="sit_elevators">🛗 Elevadores</label>
+                            </div>
+                            <div class="situation-scale" id="scale_elevators" style="display:none;">
+                                <div class="scale-selector-small" id="scale_elevators_selector"></div>
+                                <input type="hidden" name="elevators" id="scale_elevators_val">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Viajar en metro/autobús/taxi</label>
-                        <div class="scale-selector" id="sit_transport"></div>
-                        <input type="hidden" name="transport" id="sit_transport_val">
+
+                    <!-- Situaciones personalizadas -->
+                    <div class="custom-situations">
+                        <h3 style="margin-top: 32px; margin-bottom: 16px;">➕ Otras Situaciones</h3>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary); font-size: 0.9rem;">
+                            Agrega situaciones que no están en la lista
+                        </p>
+                        <div id="customSituationsContainer"></div>
+                        <button type="button" class="btn-secondary" onclick="addCustomSituation()" style="margin-top: 12px;">
+                            ➕ Agregar Otra Situación
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label>Volar</label>
-                        <div class="scale-selector" id="sit_flying"></div>
-                        <input type="hidden" name="flying" id="sit_flying_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Hacer fila</label>
-                        <div class="scale-selector" id="sit_lines"></div>
-                        <input type="hidden" name="lines" id="sit_lines_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Multitudes</label>
-                        <div class="scale-selector" id="sit_crowds"></div>
-                        <input type="hidden" name="crowds" id="sit_crowds_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Tiendas</label>
-                        <div class="scale-selector" id="sit_stores"></div>
-                        <input type="hidden" name="stores" id="sit_stores_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Restaurantes</label>
-                        <div class="scale-selector" id="sit_restaurants"></div>
-                        <input type="hidden" name="restaurants" id="sit_restaurants_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Teatros/cines</label>
-                        <div class="scale-selector" id="sit_theaters"></div>
-                        <input type="hidden" name="theaters" id="sit_theaters_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Lejos de casa</label>
-                        <div class="scale-selector" id="sit_home"></div>
-                        <input type="hidden" name="farFromHome" id="sit_home_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Áreas desconocidas</label>
-                        <div class="scale-selector" id="sit_unfamiliar"></div>
-                        <input type="hidden" name="unfamiliar" id="sit_unfamiliar_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Estar solo en casa</label>
-                        <div class="scale-selector" id="sit_alone"></div>
-                        <input type="hidden" name="aloneHome" id="sit_alone_val">
-                    </div>
-                    <div class="form-group">
-                        <label>Elevadores</label>
-                        <div class="scale-selector" id="sit_elevators"></div>
-                        <input type="hidden" name="elevators" id="sit_elevators_val">
-                    </div>
-                    <div class="form-group">
+
+                    <div class="form-group" style="margin-top: 32px;">
                         <label>Notas adicionales</label>
-                        <textarea name="notes" placeholder="Otras situaciones o comentarios..."></textarea>
+                        <textarea name="notes" placeholder="Comentarios o contexto adicional..."></textarea>
                     </div>
+
                     <button type="submit" class="btn-primary">Guardar Evaluación</button>
                 </form>
                 <h3>Registros Anteriores</h3>
@@ -2747,36 +3184,395 @@
             </div>
         </div>
 
+        <script>
+        // Toggle situation scale visibility
+        function toggleSituationScale(checkbox, situationId) {
+            const scaleDiv = document.getElementById(`scale_${situationId}`);
+            if (checkbox.checked) {
+                scaleDiv.style.display = 'block';
+                // Initialize scale if not already done
+                if (!scaleDiv.dataset.initialized) {
+                    initializeScale(`scale_${situationId}_selector`, `scale_${situationId}_val`, true);
+                    scaleDiv.dataset.initialized = 'true';
+                }
+            } else {
+                scaleDiv.style.display = 'none';
+                // Clear value
+                document.getElementById(`scale_${situationId}_val`).value = '';
+            }
+        }
+
+        // Add custom situation
+        let customSituationCount = 0;
+        function addCustomSituation() {
+            customSituationCount++;
+            const container = document.getElementById('customSituationsContainer');
+            const customId = `custom_${customSituationCount}`;
+
+            const customDiv = document.createElement('div');
+            customDiv.className = 'custom-situation-item';
+            customDiv.innerHTML = `
+                <div class="custom-situation-input">
+                    <input type="text"
+                           class="form-control"
+                           name="customSituation_${customSituationCount}"
+                           id="${customId}_name"
+                           placeholder="Describe la situación..."
+                           required>
+                    <button type="button" class="btn-remove" onclick="removeCustomSituation(this)">🗑️</button>
+                </div>
+                <div class="situation-scale" style="display:block; margin-top: 8px;">
+                    <label style="font-size: 0.85rem; margin-bottom: 6px;">Nivel de ansiedad (0-10):</label>
+                    <div class="scale-selector-small" id="${customId}_selector"></div>
+                    <input type="hidden" name="customSituationRating_${customSituationCount}" id="${customId}_val">
+                </div>
+            `;
+
+            container.appendChild(customDiv);
+
+            // Initialize scale for custom situation
+            initializeScale(`${customId}_selector`, `${customId}_val`, true);
+        }
+
+        // Remove custom situation
+        function removeCustomSituation(button) {
+            button.closest('.custom-situation-item').remove();
+        }
+        </script>
+
         <!-- TAB 8: HIERARCHY -->
         <div id="tab8" class="tab-content">
             <div class="card">
                 <span class="category-badge">🎯 Jerarquía de Agorafobia</span>
-                <h2>Jerarquía de Agorafobia Personalizada</h2>
-                <p style="margin-bottom:24px;">Crea tu propia jerarquía de situaciones ordenadas por nivel de ansiedad/evitación</p>
-                <form onsubmit="saveEntry(8, event); return false;">
-                    <div class="form-group">
-                        <label>Fecha</label>
-                        <input type="date" name="date" required>
+                <h2>🗂️ Jerarquía de Metas</h2>
+                <p style="margin-bottom:24px;">Crea tu jerarquía ordenada de situaciones. Arrastra para reordenar de menos a más difícil.</p>
+
+                <!-- Sección de lista de jerarquía drag & drop -->
+                <div class="hierarchy-container">
+                    <div class="hierarchy-header">
+                        <h3>Tu Jerarquía Personalizada</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">
+                            👆 Arrastra con el dedo o mouse para ordenar de <strong>fácil a difícil</strong>
+                        </p>
                     </div>
-                    <div class="form-group">
-                        <label>Situación</label>
-                        <textarea name="situation" required></textarea>
+
+                    <div id="hierarchyList" class="hierarchy-list">
+                        <!-- Hierarchy items will be dynamically populated -->
+                        <div class="hierarchy-empty">
+                            <p>📋 Tu jerarquía está vacía</p>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px;">
+                                Agrega situaciones usando el formulario abajo
+                            </p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Nivel de Ansiedad/Evitación (0-10)</label>
-                        <div class="scale-selector" id="hier_anxiety"></div>
-                        <input type="hidden" name="anxietyLevel" id="hier_anxiety_val" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Notas</label>
-                        <textarea name="notes" placeholder="Detalles sobre esta situación..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Agregar a Jerarquía</button>
-                </form>
-                <h3>Tu Jerarquía</h3>
+
+                    <button type="button" class="btn-secondary" onclick="saveHierarchyOrder()" style="margin-top: 16px;" id="saveOrderBtn" style="display:none;">
+                        💾 Guardar Orden Actual
+                    </button>
+                </div>
+
+                <!-- Formulario para agregar nueva situación -->
+                <div class="add-hierarchy-form">
+                    <h3 style="margin-top: 32px; margin-bottom: 16px;">➕ Agregar Nueva Situación</h3>
+                    <form onsubmit="addToHierarchy(event); return false;" id="hierarchyForm">
+                        <div class="form-group">
+                            <label>Situación o Meta</label>
+                            <textarea name="situation" id="hier_situation" placeholder="Ej: Ir solo al supermercado" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel de Ansiedad Estimado (0-10)</label>
+                            <div class="scale-selector" id="hier_anxiety"></div>
+                            <input type="hidden" name="anxietyLevel" id="hier_anxiety_val" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Notas (opcional)</label>
+                            <textarea name="notes" id="hier_notes" placeholder="Detalles, estrategias, qué te ayudaría..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">➕ Agregar a Jerarquía</button>
+                    </form>
+                </div>
+
+                <h3 style="margin-top: 48px;">📋 Historial de Cambios</h3>
                 <div id="entries8"></div>
             </div>
         </div>
+
+        <script>
+        // Hierarchy management
+        let hierarchyItems = [];
+        let draggedElement = null;
+
+        // Load hierarchy from storage
+        async function loadHierarchy() {
+            if (!currentUser) return;
+
+            try {
+                const { data, error } = await supabase
+                    .from('hierarchy_records')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('order_position', { ascending: true });
+
+                if (error) throw error;
+
+                hierarchyItems = data || [];
+                renderHierarchy();
+            } catch (error) {
+                console.error('Error loading hierarchy:', error);
+            }
+        }
+
+        // Render hierarchy list
+        function renderHierarchy() {
+            const listContainer = document.getElementById('hierarchyList');
+
+            if (hierarchyItems.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="hierarchy-empty">
+                        <p>📋 Tu jerarquía está vacía</p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px;">
+                            Agrega situaciones usando el formulario abajo
+                        </p>
+                    </div>
+                `;
+                document.getElementById('saveOrderBtn').style.display = 'none';
+                return;
+            }
+
+            listContainer.innerHTML = hierarchyItems.map((item, index) => `
+                <div class="hierarchy-item" draggable="true" data-id="${item.id}" data-index="${index}"
+                     ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)"
+                     ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"
+                     ontouchstart="handleTouchStart(event)" ontouchmove="handleTouchMove(event)"
+                     ontouchend="handleTouchEnd(event)">
+                    <div class="hierarchy-handle">
+                        <span class="hierarchy-number">#${index + 1}</span>
+                        <span class="drag-icon">⋮⋮</span>
+                    </div>
+                    <div class="hierarchy-content">
+                        <div class="hierarchy-situation">${item.situation}</div>
+                        <div class="hierarchy-meta">
+                            <span class="anxiety-badge anxiety-${item.anxietyLevel}">
+                                ${getAnxietyLabel(item.anxietyLevel)}
+                            </span>
+                            ${item.notes ? `<span class="hierarchy-notes">📝 ${item.notes}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="hierarchy-actions">
+                        <button type="button" class="btn-icon" onclick="editHierarchyItem(${item.id})" title="Editar">✏️</button>
+                        <button type="button" class="btn-icon" onclick="deleteHierarchyItem(${item.id})" title="Eliminar">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('saveOrderBtn').style.display = 'block';
+        }
+
+        // Get anxiety label
+        function getAnxietyLabel(level) {
+            if (level <= 2) return `${level}/10 - Muy Fácil`;
+            if (level <= 4) return `${level}/10 - Fácil`;
+            if (level <= 6) return `${level}/10 - Moderado`;
+            if (level <= 8) return `${level}/10 - Difícil`;
+            return `${level}/10 - Muy Difícil`;
+        }
+
+        // Add to hierarchy
+        async function addToHierarchy(event) {
+            event.preventDefault();
+            if (!currentUser) return;
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const newItem = {
+                    user_id: currentUser.id,
+                    date: new Date().toISOString().split('T')[0],
+                    situation: formData.get('situation'),
+                    anxietyLevel: parseInt(formData.get('anxietyLevel')),
+                    notes: formData.get('notes') || '',
+                    order_position: hierarchyItems.length
+                };
+
+                const { data, error } = await supabase
+                    .from('hierarchy_records')
+                    .insert([newItem])
+                    .select();
+
+                if (error) throw error;
+
+                hierarchyItems.push(data[0]);
+                renderHierarchy();
+                form.reset();
+                document.getElementById('hier_anxiety_val').value = '';
+                showAlert('✅ Situación agregada a tu jerarquía', 'success');
+
+            } catch (error) {
+                console.error('Error adding to hierarchy:', error);
+                showAlert('❌ Error al agregar: ' + error.message, 'error');
+            }
+        }
+
+        // Drag and Drop handlers
+        function handleDragStart(e) {
+            draggedElement = e.target.closest('.hierarchy-item');
+            draggedElement.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+
+            const target = e.target.closest('.hierarchy-item');
+            if (target && target !== draggedElement) {
+                const listContainer = document.getElementById('hierarchyList');
+                const allItems = [...listContainer.querySelectorAll('.hierarchy-item')];
+                const draggedIndex = allItems.indexOf(draggedElement);
+                const targetIndex = allItems.indexOf(target);
+
+                if (draggedIndex < targetIndex) {
+                    target.after(draggedElement);
+                } else {
+                    target.before(draggedElement);
+                }
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnd(e) {
+            draggedElement.classList.remove('dragging');
+            updateHierarchyOrder();
+        }
+
+        // Touch support for mobile
+        let touchStartY = 0;
+        let touchElement = null;
+
+        function handleTouchStart(e) {
+            touchElement = e.target.closest('.hierarchy-item');
+            touchStartY = e.touches[0].clientY;
+            touchElement.classList.add('dragging');
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!touchElement) return;
+
+            const touchY = e.touches[0].clientY;
+            const target = document.elementFromPoint(e.touches[0].clientX, touchY);
+            const targetItem = target?.closest('.hierarchy-item');
+
+            if (targetItem && targetItem !== touchElement) {
+                const listContainer = document.getElementById('hierarchyList');
+                const allItems = [...listContainer.querySelectorAll('.hierarchy-item')];
+                const draggedIndex = allItems.indexOf(touchElement);
+                const targetIndex = allItems.indexOf(targetItem);
+
+                if (draggedIndex < targetIndex) {
+                    targetItem.after(touchElement);
+                } else {
+                    targetItem.before(touchElement);
+                }
+            }
+        }
+
+        function handleTouchEnd(e) {
+            if (touchElement) {
+                touchElement.classList.remove('dragging');
+                updateHierarchyOrder();
+                touchElement = null;
+            }
+        }
+
+        // Update order after drag
+        function updateHierarchyOrder() {
+            const listContainer = document.getElementById('hierarchyList');
+            const items = listContainer.querySelectorAll('.hierarchy-item');
+            const newOrder = [];
+
+            items.forEach((item, index) => {
+                const id = item.dataset.id;
+                const hierarchyItem = hierarchyItems.find(h => h.id == id);
+                if (hierarchyItem) {
+                    hierarchyItem.order_position = index;
+                    newOrder.push(hierarchyItem);
+                }
+            });
+
+            hierarchyItems = newOrder;
+            renderHierarchy();
+        }
+
+        // Save hierarchy order to database
+        async function saveHierarchyOrder() {
+            if (!currentUser) return;
+
+            try {
+                const updates = hierarchyItems.map(item => ({
+                    id: item.id,
+                    order_position: item.order_position
+                }));
+
+                for (const update of updates) {
+                    await supabase
+                        .from('hierarchy_records')
+                        .update({ order_position: update.order_position })
+                        .eq('id', update.id);
+                }
+
+                showAlert('✅ Orden guardado correctamente', 'success');
+            } catch (error) {
+                console.error('Error saving order:', error);
+                showAlert('❌ Error al guardar: ' + error.message, 'error');
+            }
+        }
+
+        // Delete hierarchy item
+        async function deleteHierarchyItem(id) {
+            if (!confirm('¿Eliminar esta situación de tu jerarquía?')) return;
+
+            try {
+                await supabase
+                    .from('hierarchy_records')
+                    .delete()
+                    .eq('id', id);
+
+                hierarchyItems = hierarchyItems.filter(item => item.id !== id);
+                renderHierarchy();
+                showAlert('✅ Situación eliminada', 'success');
+            } catch (error) {
+                console.error('Error deleting:', error);
+                showAlert('❌ Error al eliminar', 'error');
+            }
+        }
+
+        // Edit hierarchy item
+        function editHierarchyItem(id) {
+            const item = hierarchyItems.find(h => h.id === id);
+            if (!item) return;
+
+            document.getElementById('hier_situation').value = item.situation;
+            document.getElementById('hier_anxiety_val').value = item.anxietyLevel;
+            document.getElementById('hier_notes').value = item.notes || '';
+
+            // Highlight the selected scale value
+            const scaleOptions = document.querySelectorAll('#hier_anxiety .scale-option');
+            scaleOptions.forEach(opt => {
+                opt.classList.toggle('selected', parseInt(opt.dataset.value) === item.anxietyLevel);
+            });
+
+            // Delete old and will add new
+            deleteHierarchyItem(id);
+
+            // Scroll to form
+            document.getElementById('hierarchyForm').scrollIntoView({ behavior: 'smooth' });
+        }
+        </script>
 
         <!-- TAB 9: SAFETY OBJECTS -->
         <div id="tab9" class="tab-content">
