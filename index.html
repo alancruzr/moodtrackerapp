@@ -692,6 +692,406 @@
             pointer-events: none;
         }
 
+        /* Menu Groups (Accordion) */
+        .menu-group {
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-group-header {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(168, 213, 186, 0.06) 100%);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-group-header:hover {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.12) 0%, rgba(168, 213, 186, 0.08) 100%);
+            border-left-color: var(--primary);
+        }
+
+        .menu-group-icon {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .menu-group.collapsed .menu-group-icon {
+            transform: rotate(-90deg);
+        }
+
+        .menu-group-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+
+        .menu-group-progress {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: rgba(74, 144, 226, 0.15);
+            color: var(--primary);
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .menu-group-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .menu-group.collapsed .menu-group-content {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .menu-group-content.expanded {
+            padding-bottom: 12px;
+        }
+
+        /* Menu Subsections */
+        .menu-subsection {
+            margin: 8px 0;
+        }
+
+        .menu-subsection-title {
+            padding: 10px 24px 6px 24px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .phase-status-mini {
+            font-size: 0.85rem;
+        }
+
+        .menu-subsection .menu-item {
+            padding-left: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* Subsection styling based on phase status */
+        .menu-subsection[data-phase].locked {
+            opacity: 0.5;
+        }
+
+        .menu-subsection[data-phase].locked .menu-item {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+
+
+        /* Guide Page Styles */
+        .guide-section {
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .guide-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .guide-section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+
+        .guide-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .guide-content p {
+            margin-bottom: 16px;
+        }
+
+        .guide-content strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Pillars */
+        .guide-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .guide-pillar {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(168, 213, 186, 0.08) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .guide-pillar:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.2);
+        }
+
+        .pillar-number {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .pillar-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 8px 0;
+        }
+
+        .pillar-content p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Mindset List */
+        .mindset-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .mindset-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 16px;
+            background: rgba(168, 213, 186, 0.06);
+            border-radius: 12px;
+            border-left: 4px solid var(--success);
+        }
+
+        .mindset-check {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        /* Timeline */
+        .guide-timeline {
+            margin-top: 24px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .guide-timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--success) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            background: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 12px 0;
+        }
+
+        .timeline-content ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .timeline-content li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline-content li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Practice Cards */
+        .when-to-practice {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .practice-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .practice-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .practice-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 16px 0;
+        }
+
+        .practice-card ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .practice-card li {
+            margin-bottom: 10px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .practice-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* FAQ */
+        .faq-list {
+            margin-top: 20px;
+        }
+
+        .faq-item {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .faq-question {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .faq-answer {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-answer ol {
+            margin: 12px 0 0 0;
+            padding-left: 24px;
+        }
+
+        .faq-answer li {
+            margin-bottom: 6px;
+        }
+
+        .guide-footer {
+            margin-top: 40px;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05) 0%, rgba(168, 213, 186, 0.05) 100%);
+            border-radius: 16px;
+            border: 2px dashed var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .guide-pillars {
+                grid-template-columns: 1fr;
+            }
+
+            .when-to-practice {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-timeline {
+                padding-left: 32px;
+            }
+
+            .guide-section-title {
+                font-size: 1.2rem;
+            }
+        }
         /* Quick Access Section */
         .quick-access {
             border-top: 2px solid var(--border);
@@ -1485,7 +1885,7 @@
 
         <div class="sidebar-overlay" onclick="toggleMenu()"></div>
         <div class="sidebar">
-            <!-- FASE 0: Dashboard -->
+            <!-- INICIO -->
             <div class="menu-section" data-phase="0">
                 <div class="menu-section-title">📊 INICIO</div>
                 <div class="menu-item active" onclick="showTab(0)" data-tab="0">
@@ -1494,178 +1894,237 @@
                 </div>
             </div>
 
-            <!-- FASE 1: Monitoreo -->
-            <div class="menu-section" data-phase="1">
-                <div class="menu-section-title">📝 FASE 1: MONITOREO</div>
-                <div class="phase-status" id="phase1-status">⏳ En progreso</div>
-                <div class="menu-item" onclick="showTab(1)" data-tab="1">
-                    <span class="menu-icon">🚨</span>
-                    Registro Pánico
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(2)" data-tab="2">
-                    <span class="menu-icon">😌</span>
-                    Estado Ánimo
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(3)" data-tab="3">
-                    <span class="menu-icon">📈</span>
-                    Progreso
+            <!-- GUÍA DEL PROGRAMA -->
+            <div class="menu-section" data-phase="guide">
+                <div class="menu-section-title">📚 GUÍA DEL PROGRAMA</div>
+                <div class="menu-item" onclick="showTab(23)" data-tab="23">
+                    <span class="menu-icon">📖</span>
+                    Cómo Funciona
                 </div>
             </div>
 
-            <!-- FASE 2: Entender -->
-            <div class="menu-section" data-phase="2">
-                <div class="menu-section-title">🔍 FASE 2: ENTENDER</div>
-                <div class="phase-status" id="phase2-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase2-hint">Completa 7 días de monitoreo</div>
-                <div class="menu-item" onclick="showTab(4)" data-tab="4">
-                    <span class="menu-icon">🔄</span>
-                    Partes Pánico
-                    <span class="required-badge">⭐</span>
+            <!-- GRUPO 1: FUNDAMENTOS (acordeón colapsable) -->
+            <div class="menu-group" data-group="fundamentos">
+                <div class="menu-group-header" onclick="toggleMenuGroup('fundamentos')">
+                    <span class="menu-group-icon">▼</span>
+                    <span class="menu-group-title">🏁 FUNDAMENTOS</span>
+                    <span class="menu-group-progress" id="progress-fundamentos">0/10</span>
                 </div>
-                <div class="menu-item" onclick="showTab(5)" data-tab="5">
-                    <span class="menu-icon">😰</span>
-                    Partes Ansiedad
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(6)" data-tab="6">
-                    <span class="menu-icon">🔬</span>
-                    Análisis
-                    <span class="required-badge">⭐</span>
+                <div class="menu-group-content expanded">
+                    <!-- FASE 1: Monitoreo -->
+                    <div class="menu-subsection" data-phase="1">
+                        <div class="menu-subsection-title">
+                            <span>📝 1. Monitoreo</span>
+                            <span class="phase-status-mini" id="phase1-status-mini">⏳</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(1)" data-tab="1">
+                            <span class="menu-icon">🚨</span>
+                            Registro Pánico
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(2)" data-tab="2">
+                            <span class="menu-icon">😌</span>
+                            Estado Ánimo
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(3)" data-tab="3">
+                            <span class="menu-icon">📈</span>
+                            Progreso
+                        </div>
+                    </div>
+
+                    <!-- FASE 2: Entender tu Ciclo -->
+                    <div class="menu-subsection" data-phase="2">
+                        <div class="menu-subsection-title">
+                            <span>🔍 2. Entender tu Ciclo</span>
+                            <span class="phase-status-mini" id="phase2-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(4)" data-tab="4">
+                            <span class="menu-icon">🔄</span>
+                            Partes del Pánico
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(5)" data-tab="5">
+                            <span class="menu-icon">😰</span>
+                            Partes de Ansiedad
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(6)" data-tab="6">
+                            <span class="menu-icon">🔬</span>
+                            Análisis Detallado
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
+
+                    <!-- FASE 3: Identificar Objetivos -->
+                    <div class="menu-subsection" data-phase="3">
+                        <div class="menu-subsection-title">
+                            <span>🎯 3. Identificar Objetivos</span>
+                            <span class="phase-status-mini" id="phase3-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(7)" data-tab="7">
+                            <span class="menu-icon">🏪</span>
+                            Situaciones Temidas
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(8)" data-tab="8">
+                            <span class="menu-icon">📊</span>
+                            Jerarquía de Metas
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(9)" data-tab="9">
+                            <span class="menu-icon">🛡️</span>
+                            Objetos de Seguridad
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(10)" data-tab="10">
+                            <span class="menu-icon">🚪</span>
+                            Comportamientos
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- FASE 3: Identificar Objetivos -->
-            <div class="menu-section" data-phase="3">
-                <div class="menu-section-title">🎯 FASE 3: IDENTIFICAR</div>
-                <div class="phase-status" id="phase3-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase3-hint">Completa Fase 2</div>
-                <div class="menu-item" onclick="showTab(7)" data-tab="7">
-                    <span class="menu-icon">🏪</span>
-                    Situaciones
-                    <span class="required-badge">⭐</span>
+            <!-- GRUPO 2: HERRAMIENTAS (acordeón colapsable) -->
+            <div class="menu-group" data-group="herramientas">
+                <div class="menu-group-header" onclick="toggleMenuGroup('herramientas')">
+                    <span class="menu-group-icon">▼</span>
+                    <span class="menu-group-title">🛠️ HERRAMIENTAS</span>
+                    <span class="menu-group-progress" id="progress-herramientas">0/4</span>
                 </div>
-                <div class="menu-item" onclick="showTab(8)" data-tab="8">
-                    <span class="menu-icon">📊</span>
-                    Jerarquía
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(9)" data-tab="9">
-                    <span class="menu-icon">🛡️</span>
-                    Objetos
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(10)" data-tab="10">
-                    <span class="menu-icon">🚪</span>
-                    Comportamientos
-                    <span class="required-badge">⭐</span>
+                <div class="menu-group-content expanded">
+                    <!-- FASE 4: Respiración -->
+                    <div class="menu-subsection" data-phase="4">
+                        <div class="menu-subsection-title">
+                            <span>🫁 4. Respiración Terapéutica</span>
+                            <span class="phase-status-mini" id="phase4-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(11)" data-tab="11">
+                            <span class="menu-icon">🫁</span>
+                            Práctica Diaria
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
+
+                    <!-- FASE 5: Pensamiento -->
+                    <div class="menu-subsection" data-phase="5">
+                        <div class="menu-subsection-title">
+                            <span>🧠 5. Reestructurar Pensamientos</span>
+                            <span class="phase-status-mini" id="phase5-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(12)" data-tab="12">
+                            <span class="menu-icon">💭</span>
+                            Identificar Pensamientos
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(13)" data-tab="13">
+                            <span class="menu-icon">🎲</span>
+                            Cambiar Probabilidades
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(14)" data-tab="14">
+                            <span class="menu-icon">👁️</span>
+                            Cambiar Perspectiva
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- FASE 4: Respiración -->
-            <div class="menu-section" data-phase="4">
-                <div class="menu-section-title">🫁 FASE 4: RESPIRACIÓN</div>
-                <div class="phase-status" id="phase4-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase4-hint">Completa Fase 3</div>
-                <div class="menu-item" onclick="showTab(11)" data-tab="11">
-                    <span class="menu-icon">🫁</span>
-                    Práctica
-                    <span class="required-badge">⭐</span>
+            <!-- GRUPO 3: EXPOSICIÓN (acordeón colapsable) -->
+            <div class="menu-group" data-group="exposicion">
+                <div class="menu-group-header" onclick="toggleMenuGroup('exposicion')">
+                    <span class="menu-group-icon">▼</span>
+                    <span class="menu-group-title">💪 EXPOSICIÓN</span>
+                    <span class="menu-group-progress" id="progress-exposicion">0/6</span>
+                </div>
+                <div class="menu-group-content expanded">
+                    <!-- FASE 6: Síntomas -->
+                    <div class="menu-subsection" data-phase="6">
+                        <div class="menu-subsection-title">
+                            <span>⚡ 6. A Síntomas (Interoceptiva)</span>
+                            <span class="phase-status-mini" id="phase6-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(17)" data-tab="17">
+                            <span class="menu-icon">🔍</span>
+                            Evaluar Síntomas
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(18)" data-tab="18">
+                            <span class="menu-icon">💪</span>
+                            Enfrentar Síntomas
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(19)" data-tab="19">
+                            <span class="menu-icon">🏃</span>
+                            Actividades Físicas
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(20)" data-tab="20">
+                            <span class="menu-icon">🎯</span>
+                            Practicar Regularmente
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
+
+                    <!-- FASE 7: Situaciones -->
+                    <div class="menu-subsection" data-phase="7">
+                        <div class="menu-subsection-title">
+                            <span>🦁 7. A Situaciones (In Vivo)</span>
+                            <span class="phase-status-mini" id="phase7-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(15)" data-tab="15">
+                            <span class="menu-icon">🦁</span>
+                            Enfrentar Situaciones
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
+
+                    <!-- FASE 8: Combinada -->
+                    <div class="menu-subsection" data-phase="8">
+                        <div class="menu-subsection-title">
+                            <span>🔥 8. Combinada (Avanzada)</span>
+                            <span class="phase-status-mini" id="phase8-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(16)" data-tab="16">
+                            <span class="menu-icon">⚡</span>
+                            Síntomas + Situaciones
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- FASE 5: Pensamiento -->
-            <div class="menu-section" data-phase="5">
-                <div class="menu-section-title">🧠 FASE 5: PENSAMIENTO</div>
-                <div class="phase-status" id="phase5-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase5-hint">Completa Fase 4</div>
-                <div class="menu-item" onclick="showTab(12)" data-tab="12">
-                    <span class="menu-icon">💭</span>
-                    Pensamientos
-                    <span class="required-badge">⭐</span>
+            <!-- GRUPO 4: MANTENIMIENTO (acordeón colapsable) -->
+            <div class="menu-group" data-group="mantenimiento">
+                <div class="menu-group-header" onclick="toggleMenuGroup('mantenimiento')">
+                    <span class="menu-group-icon">▼</span>
+                    <span class="menu-group-title">🎓 MANTENIMIENTO</span>
+                    <span class="menu-group-progress" id="progress-mantenimiento">0/2</span>
                 </div>
-                <div class="menu-item" onclick="showTab(13)" data-tab="13">
-                    <span class="menu-icon">🎲</span>
-                    Probabilidades
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(14)" data-tab="14">
-                    <span class="menu-icon">👁️</span>
-                    Perspectiva
-                    <span class="required-badge">⭐</span>
-                </div>
-            </div>
-
-            <!-- FASE 6: Exposición a Síntomas -->
-            <div class="menu-section" data-phase="6">
-                <div class="menu-section-title">⚡ FASE 6: SÍNTOMAS</div>
-                <div class="phase-status" id="phase6-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase6-hint">Completa Fase 5</div>
-                <div class="menu-item" onclick="showTab(17)" data-tab="17">
-                    <span class="menu-icon">🔍</span>
-                    Evaluar
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(18)" data-tab="18">
-                    <span class="menu-icon">💪</span>
-                    Enfrentar
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(19)" data-tab="19">
-                    <span class="menu-icon">🏃</span>
-                    Actividades
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(20)" data-tab="20">
-                    <span class="menu-icon">🎯</span>
-                    Practicar
-                    <span class="required-badge">⭐</span>
+                <div class="menu-group-content expanded">
+                    <!-- FASE 9: Mantenimiento -->
+                    <div class="menu-subsection" data-phase="9">
+                        <div class="menu-subsection-title">
+                            <span>📋 9. Mantener el Progreso</span>
+                            <span class="phase-status-mini" id="phase9-status-mini">🔒</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(21)" data-tab="21">
+                            <span class="menu-icon">📋</span>
+                            Plan de Práctica
+                            <span class="required-badge">⭐</span>
+                        </div>
+                        <div class="menu-item" onclick="showTab(22)" data-tab="22">
+                            <span class="menu-icon">🎯</span>
+                            Metas a Largo Plazo
+                            <span class="required-badge">⭐</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- FASE 7: Exposición a Situaciones -->
-            <div class="menu-section" data-phase="7">
-                <div class="menu-section-title">🦁 FASE 7: SITUACIONES</div>
-                <div class="phase-status" id="phase7-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase7-hint">Completa Fase 6</div>
-                <div class="menu-item" onclick="showTab(15)" data-tab="15">
-                    <span class="menu-icon">🦁</span>
-                    Enfrentar
-                    <span class="required-badge">⭐</span>
-                </div>
-            </div>
-
-            <!-- FASE 8: Exposición Combinada -->
-            <div class="menu-section" data-phase="8">
-                <div class="menu-section-title">🔥 FASE 8: COMBINADO</div>
-                <div class="phase-status" id="phase8-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase8-hint">Completa Fase 7</div>
-                <div class="menu-item" onclick="showTab(16)" data-tab="16">
-                    <span class="menu-icon">⚡</span>
-                    Síntomas+
-                    <span class="required-badge">⭐</span>
-                </div>
-            </div>
-
-            <!-- FASE 9: Mantenimiento -->
-            <div class="menu-section" data-phase="9">
-                <div class="menu-section-title">🎓 FASE 9: MANTENER</div>
-                <div class="phase-status" id="phase9-status">🔒 Bloqueada</div>
-                <div class="unlock-hint" id="phase9-hint">Completa Fase 8</div>
-                <div class="menu-item" onclick="showTab(21)" data-tab="21">
-                    <span class="menu-icon">📋</span>
-                    Plan
-                    <span class="required-badge">⭐</span>
-                </div>
-                <div class="menu-item" onclick="showTab(22)" data-tab="22">
-                    <span class="menu-icon">🎯</span>
-                    Metas
-                    <span class="required-badge">⭐</span>
-                </div>
-            </div>
-
-            <!-- Acceso Rápido -->
+            <!-- ACCESO RÁPIDO -->
             <div class="menu-section quick-access" data-phase="quick">
                 <div class="menu-section-title">⚡ ACCESO RÁPIDO</div>
                 <div class="menu-item" onclick="quickBreathing()">
@@ -3033,6 +3492,212 @@
                 <div id="entries22"></div>
             </div>
         </div>
+
+        <!-- TAB 23: GUÍA DEL PROGRAMA -->
+        <div id="tab23" class="tab-content">
+            <div class="card">
+                <span class="category-badge">📚 Guía</span>
+                <h2>📚 Guía del Programa</h2>
+                <p style="margin-bottom:32px; color: var(--text-secondary); line-height: 1.6;">
+                    Aprende cómo funciona el programa, el mindset correcto y el orden recomendado de ejercicios
+                </p>
+
+                <!-- Sección 1: Cómo funciona -->
+                <div class="guide-section">
+                    <h3 class="guide-section-title">🎯 ¿Cómo Funciona Este Programa?</h3>
+                    <div class="guide-content">
+                        <p>Este es el programa <strong>"Mastery of Your Anxiety and Panic"</strong> de Barlow & Craske - comprobado científicamente.</p>
+
+                        <div class="guide-pillars">
+                            <div class="guide-pillar">
+                                <div class="pillar-number">1</div>
+                                <div class="pillar-content">
+                                    <h4>ENTENDER</h4>
+                                    <p>Comprender tu ansiedad y cómo funciona el pánico</p>
+                                </div>
+                            </div>
+                            <div class="guide-pillar">
+                                <div class="pillar-number">2</div>
+                                <div class="pillar-content">
+                                    <h4>HERRAMIENTAS</h4>
+                                    <p>Respiración y reestructuración de pensamientos</p>
+                                </div>
+                            </div>
+                            <div class="guide-pillar">
+                                <div class="pillar-number">3</div>
+                                <div class="pillar-content">
+                                    <h4>EXPOSICIÓN</h4>
+                                    <p>Enfrentar gradualmente tus miedos para vencerlos</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 2: Mindset -->
+                <div class="guide-section">
+                    <h3 class="guide-section-title">💡 Mindset para el Éxito</h3>
+                    <div class="guide-content">
+                        <div class="mindset-list">
+                            <div class="mindset-item">
+                                <span class="mindset-check">✅</span>
+                                <span><strong>La ansiedad NO es peligrosa</strong> - Es incómoda, pero no puede hacerte daño</span>
+                            </div>
+                            <div class="mindset-item">
+                                <span class="mindset-check">✅</span>
+                                <span><strong>Los síntomas son molestos, NO mortales</strong> - Tu cuerpo está diseñado para sobrevivir</span>
+                            </div>
+                            <div class="mindset-item">
+                                <span class="mindset-check">✅</span>
+                                <span><strong>La evitación MANTIENE el problema</strong> - Huir refuerza el miedo</span>
+                            </div>
+                            <div class="mindset-item">
+                                <span class="mindset-check">✅</span>
+                                <span><strong>La exposición gradual CURA</strong> - Enfrentar tus miedos los debilita</span>
+                            </div>
+                            <div class="mindset-item">
+                                <span class="mindset-check">✅</span>
+                                <span><strong>El malestar temporal es PROGRESO</strong> - Sentirte mal significa que estás avanzando</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Orden de Ejercicios -->
+                <div class="guide-section">
+                    <h3 class="guide-section-title">📋 Orden de Ejercicios</h3>
+                    <div class="guide-content">
+                        <div class="guide-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-badge">SEMANA 1-2</div>
+                                <div class="timeline-content">
+                                    <h4>🏁 FUNDAMENTOS</h4>
+                                    <ul>
+                                        <li><strong>Monitorear DIARIAMENTE</strong> - Mínimo 7 días consecutivos</li>
+                                        <li><strong>Entender el ciclo</strong> - Identificar partes del pánico y ansiedad</li>
+                                        <li><strong>Identificar tus objetivos</strong> - Situaciones, jerarquía, objetos de seguridad</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-badge">SEMANA 3-4</div>
+                                <div class="timeline-content">
+                                    <h4>🛠️ HERRAMIENTAS</h4>
+                                    <ul>
+                                        <li><strong>Respiración:</strong> 2 veces al día (mañana y noche)</li>
+                                        <li><strong>Pensamientos:</strong> Identificar y desafiar cuando aparezcan</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-badge">SEMANA 5-8</div>
+                                <div class="timeline-content">
+                                    <h4>💪 EXPOSICIÓN</h4>
+                                    <ul>
+                                        <li><strong>Interoceptiva:</strong> Provocar síntomas 3-5 veces/semana</li>
+                                        <li><strong>Situaciones:</strong> Seguir jerarquía de fácil a difícil</li>
+                                        <li><strong>Combinada:</strong> Síntomas + situaciones juntos</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-badge">SEMANA 9+</div>
+                                <div class="timeline-content">
+                                    <h4>🎓 MANTENIMIENTO</h4>
+                                    <ul>
+                                        <li><strong>Practicar regularmente</strong> - No abandones</li>
+                                        <li><strong>Prevenir recaídas</strong> - Usa tus herramientas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 4: Cuándo hacer cada ejercicio -->
+                <div class="guide-section">
+                    <h3 class="guide-section-title">🤔 ¿Cuándo Hacer Cada Ejercicio?</h3>
+                    <div class="guide-content">
+                        <div class="when-to-practice">
+                            <div class="practice-card">
+                                <h4>🫁 RESPIRACIÓN</h4>
+                                <ul>
+                                    <li>Mañana (al despertar)</li>
+                                    <li>Noche (antes de dormir)</li>
+                                    <li>Durante ansiedad alta</li>
+                                </ul>
+                            </div>
+
+                            <div class="practice-card">
+                                <h4>⚡ EXPOSICIÓN INTEROCEPTIVA</h4>
+                                <ul>
+                                    <li>Cuando NO estés en pánico</li>
+                                    <li>3-5 veces por semana</li>
+                                    <li>Hasta que ansiedad baje a 2-3/10</li>
+                                </ul>
+                            </div>
+
+                            <div class="practice-card">
+                                <h4>🦁 EXPOSICIÓN A SITUACIONES</h4>
+                                <ul>
+                                    <li>Sigue tu jerarquía (fácil → difícil)</li>
+                                    <li>Quédate hasta que ansiedad baje</li>
+                                    <li>NO uses objetos de seguridad</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 5: FAQs -->
+                <div class="guide-section">
+                    <h3 class="guide-section-title">❓ Preguntas Frecuentes</h3>
+                    <div class="guide-content">
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <div class="faq-question">¿Puedo saltarme el monitoreo?</div>
+                                <div class="faq-answer">No. Es la base del programa. Sin monitoreo no puedes medir tu progreso ni entender tus patrones.</div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">¿Cuánto tarda en funcionar?</div>
+                                <div class="faq-answer">8-12 semanas con práctica diaria y consistente. Algunos ven mejoras en 4-6 semanas.</div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">¿Qué hago si tengo un ataque de pánico?</div>
+                                <div class="faq-answer">
+                                    <ol>
+                                        <li>Usa tu respiración terapéutica</li>
+                                        <li>Regístralo inmediatamente</li>
+                                        <li>Recuerda: NO es peligroso, pasará</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">¿Debo hacer exposición solo o acompañado?</div>
+                                <div class="faq-answer">Empieza con un compañero de confianza si lo necesitas. Gradualmente hazlo solo - es importante para tu independencia.</div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">¿Puedo usar medicación mientras hago el programa?</div>
+                                <div class="faq-answer">Consulta con tu médico. Muchas personas usan el programa con medicación y gradualmente la reducen bajo supervisión médica.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-footer">
+                    <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-top: 32px;">
+                        💪 <strong>Recuerda:</strong> La recuperación no es lineal. Habrá altibajos, pero cada paso cuenta.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -3176,7 +3841,15 @@
             document.querySelector('.sidebar').classList.toggle('active');
             document.querySelector('.sidebar-overlay').classList.toggle('active');
         }
-        
+
+        // Toggle accordion groups in sidebar
+        function toggleMenuGroup(groupName) {
+            const group = document.querySelector(`.menu-group[data-group="${groupName}"]`);
+            if (group) {
+                group.classList.toggle('collapsed');
+            }
+        }
+
         function showTab(index) {
             // Check if tab is accessible in guided mode
             if (guidedMode && guidedMode.isGuidedMode && !guidedMode.canAccessTab(index)) {
