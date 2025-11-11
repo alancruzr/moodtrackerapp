@@ -21,14 +21,26 @@
         html {
             overflow-x: hidden;
             width: 100%;
+            position: relative;
         }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        /* Prevent horizontal scroll */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Prevent horizontal scroll - COMPREHENSIVE */
         html, body {
             max-width: 100vw;
             overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Ensure ALL children respect viewport */
+        body > * {
+            max-width: 100vw;
         }
         
         /* iOS Touch Optimizations */
@@ -86,6 +98,7 @@
             width: 100%;
             color: var(--text-primary);
             font-size: 17px;
+            touch-action: pan-y pinch-zoom; /* Allow vertical scroll, prevent horizontal */
         }
         
         .auth-overlay {
@@ -152,6 +165,8 @@
             padding: 16px;
             padding-left: 80px;
             display: none;
+            overflow-x: hidden;
+            width: 100%;
         }
         
         .app-container.active { display: block; }
@@ -160,10 +175,22 @@
             * {
                 max-width: 100vw;
             }
-            
+
             body {
                 padding: 0;
                 overflow-x: hidden;
+                position: relative;
+            }
+
+            /* Force all containers to respect viewport */
+            .card, .form-group, form, div, section {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            /* Ensure inputs don't overflow */
+            input, textarea, select, button {
+                max-width: 100%;
             }
             
             .auth-card {
@@ -428,119 +455,110 @@
             transform: rotate(-45deg) translate(7px, -7px);
         }
 
-        /* Mode Toggle Switch */
+        /* Mode Toggle - Pressed Button Style */
         .mode-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 1000;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 140px;
-            height: 44px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 22px;
-            transition: 0.4s;
             display: flex;
-            align-items: center;
-            padding: 4px;
-            box-shadow: 0 2px 12px rgba(74, 144, 226, 0.3);
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
-        .slider::before {
-            content: "";
-            position: absolute;
-            height: 36px;
-            width: 36px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            border-radius: 50%;
-            transition: 0.4s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        input:checked + .slider {
-            background: linear-gradient(135deg, #8B5CF6, #EC4899);
-        }
-
-        input:checked + .slider::before {
-            transform: translateX(96px);
-        }
-
-        .mode-label {
-            position: absolute;
-            font-size: 11px;
+        .mode-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 700;
-            color: white;
-            transition: 0.4s;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             user-select: none;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: manipulation;
         }
 
-        .mode-label.guided {
-            left: 45px;
-            opacity: 1;
+        .mode-btn:active {
+            transform: scale(0.96);
         }
 
-        .mode-label.free {
-            right: 12px;
-            opacity: 0.5;
+        /* Guided Mode Button */
+        .mode-btn.guided {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.12), rgba(168, 213, 186, 0.08));
+            color: #2d5a8c;
+            border: 2px solid transparent;
         }
 
-        input:checked + .slider .mode-label.guided {
-            opacity: 0.5;
+        .mode-btn.guided:hover {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.18), rgba(168, 213, 186, 0.12));
         }
 
-        input:checked + .slider .mode-label.free {
-            opacity: 1;
+        .mode-btn.guided.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 16px rgba(74, 144, 226, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Free Mode Button */
+        .mode-btn.free {
+            background: rgba(139, 92, 246, 0.12);
+            color: #6b21a8;
+            border: 2px solid transparent;
+        }
+
+        .mode-btn.free:hover {
+            background: rgba(139, 92, 246, 0.18);
+        }
+
+        .mode-btn.free.active {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
         }
 
         @media (max-width: 768px) {
             .mode-toggle {
                 top: max(14px, env(safe-area-inset-top));
                 right: 10px;
+                gap: 6px;
+                padding: 5px;
             }
 
-            .switch {
-                width: 120px;
-                height: 38px;
+            .mode-btn {
+                padding: 9px 14px;
+                font-size: 14px;
+                min-width: 90px;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mode-toggle {
+                right: 8px;
+                gap: 4px;
+                padding: 4px;
             }
 
-            .slider::before {
-                height: 30px;
-                width: 30px;
-            }
-
-            input:checked + .slider::before {
-                transform: translateX(82px);
-            }
-
-            .mode-label {
-                font-size: 10px;
-            }
-
-            .mode-label.guided {
-                left: 38px;
+            .mode-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+                min-width: 80px;
             }
         }
 
@@ -1110,13 +1128,17 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 8px;
+            flex-direction: row; /* Ensure horizontal layout */
         }
 
         .situation-checkbox input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
             accent-color: var(--primary);
+            flex-shrink: 0; /* Prevent checkbox from shrinking */
+            order: -1; /* Force checkbox to always be first */
+            margin: 0;
         }
 
         .situation-checkbox label {
@@ -1126,6 +1148,10 @@
             cursor: pointer;
             flex: 1;
             margin: 0;
+            order: 1; /* Label comes after checkbox */
+            display: flex;
+            align-items: center;
+            line-height: 1.4;
         }
 
         .situation-scale {
@@ -1419,6 +1445,8 @@
         @media (max-width: 768px) {
             .situations-grid {
                 grid-template-columns: 1fr;
+                width: 100%;
+                max-width: 100%;
             }
 
             .scale-selector-small {
@@ -1463,7 +1491,12 @@
             transform: translateX(4px);
         }
         
-        .tab-content { display: none; }
+        .tab-content {
+            display: none;
+            overflow-x: hidden;
+            max-width: 100%;
+            width: 100%;
+        }
         .tab-content.active { display: block; }
         
         .card {
@@ -2222,13 +2255,14 @@
 
         <!-- Mode Toggle: Guided vs Free -->
         <div class="mode-toggle">
-            <label class="switch">
-                <input type="checkbox" id="guided-mode-toggle" checked onchange="toggleGuidedMode(this.checked)">
-                <span class="slider">
-                    <span class="mode-label guided">🎯 Guiado</span>
-                    <span class="mode-label free">🗺️ Libre</span>
-                </span>
-            </label>
+            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided">
+                <span>🎯</span>
+                <span>Guiado</span>
+            </button>
+            <button class="mode-btn free" onclick="setMode('free')" id="btn-free">
+                <span>🗺️</span>
+                <span>Libre</span>
+            </button>
         </div>
 
         <div class="sidebar-overlay" onclick="toggleMenu()"></div>
@@ -4643,6 +4677,24 @@
             const group = document.querySelector(`.menu-group[data-group="${groupName}"]`);
             if (group) {
                 group.classList.toggle('collapsed');
+            }
+        }
+
+        // Set mode (guided or free) with new button design
+        function setMode(mode) {
+            const guidedBtn = document.getElementById('btn-guided');
+            const freeBtn = document.getElementById('btn-free');
+
+            if (mode === 'guided') {
+                guidedBtn.classList.add('active');
+                freeBtn.classList.remove('active');
+                // Call the existing toggle function with true (guided mode ON)
+                toggleGuidedMode(true);
+            } else {
+                guidedBtn.classList.remove('active');
+                freeBtn.classList.add('active');
+                // Call the existing toggle function with false (free mode ON)
+                toggleGuidedMode(false);
             }
         }
 

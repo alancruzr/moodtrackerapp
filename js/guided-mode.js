@@ -44,10 +44,17 @@ class GuidedModeController {
     // Update UI based on progress
     this.updateUI();
 
-    // Set toggle state
-    const toggle = document.getElementById('guided-mode-toggle');
-    if (toggle) {
-      toggle.checked = this.isGuidedMode;
+    // Set button states (new button design)
+    const guidedBtn = document.getElementById('btn-guided');
+    const freeBtn = document.getElementById('btn-free');
+    if (guidedBtn && freeBtn) {
+      if (this.isGuidedMode) {
+        guidedBtn.classList.add('active');
+        freeBtn.classList.remove('active');
+      } else {
+        guidedBtn.classList.remove('active');
+        freeBtn.classList.add('active');
+      }
     }
 
     console.log('GuidedMode initialized:', {
