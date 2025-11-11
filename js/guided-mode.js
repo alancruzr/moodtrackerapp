@@ -117,7 +117,7 @@ class GuidedModeController {
 
   // Check if user can access a specific tab
   canAccessTab(tabIndex) {
-    // Free mode: allow everything
+    // Free mode: allow EVERYTHING
     if (!this.isGuidedMode) return true;
 
     // No progress loaded: allow only dashboard and phase 1
@@ -128,8 +128,8 @@ class GuidedModeController {
     const phase = TAB_TO_PHASE[tabIndex];
     const currentPhase = this.userProgress.current_phase;
 
-    // Dashboard always available
-    if (tabIndex === 0) return true;
+    // Dashboard and Guide always available
+    if (tabIndex === 0 || tabIndex === 23) return true;
 
     // Phase 1 (monitoring) always available
     if (phase === 1) return true;
@@ -138,12 +138,8 @@ class GuidedModeController {
     const phaseInfo = PHASES[phase];
     if (!phaseInfo) return false;
 
-    // Check prerequisite
-    if (phaseInfo.prerequisite && currentPhase < phaseInfo.prerequisite) {
-      return false;
-    }
-
-    // If current phase or earlier, allow access
+    // STRICT BLOCKING: Only allow if phase is unlocked
+    // User must complete current phase to unlock next
     return phase <= currentPhase;
   }
 

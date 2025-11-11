@@ -5278,7 +5278,7 @@
         }
 
         // Set mode (guided or free) with new button design
-        function setMode(mode) {
+        async function setMode(mode) {
             const guidedBtn = document.getElementById('btn-guided');
             const freeBtn = document.getElementById('btn-free');
 
@@ -5286,13 +5286,31 @@
                 guidedBtn.classList.add('active');
                 freeBtn.classList.remove('active');
                 // Call the existing toggle function with true (guided mode ON)
-                toggleGuidedMode(true);
+                await toggleGuidedMode(true);
             } else {
                 guidedBtn.classList.remove('active');
                 freeBtn.classList.add('active');
                 // Call the existing toggle function with false (free mode ON)
-                toggleGuidedMode(false);
+                await toggleGuidedMode(false);
             }
+
+            // Force UI update after mode change
+            if (guidedMode) {
+                guidedMode.updateUI();
+            }
+
+            // Update timeline view to reflect mode change
+            if (typeof updateTimelineView === 'function') {
+                updateTimelineView();
+            }
+
+            // Show notification
+            const modeText = mode === 'guided' ? '🎯 Modo Guiado' : '🗺️ Modo Libre';
+            const description = mode === 'guided'
+                ? 'Progresa paso a paso completando cada fase'
+                : 'Navega libremente por todos los ejercicios';
+
+            showAlert(`${modeText} activado - ${description}`, 'success');
         }
 
         function showTab(index) {
@@ -6558,18 +6576,25 @@
     <!-- Floating Action Button -->
     <div id="fab-container" class="fab-container" style="display: none;">
         <div class="fab-menu">
-            <div class="fab-menu-item" onclick="fabQuickBreathing()">
+            <div class="fab-menu-item" onclick="quickBreathing(); toggleFAB();">
                 <div class="fab-menu-icon">🫁</div>
                 <div class="fab-menu-text">
                     <div class="fab-menu-title">Respiración</div>
                     <div class="fab-menu-subtitle">Ejercicio rápido</div>
                 </div>
             </div>
-            <div class="fab-menu-item" onclick="fabQuickPanic()">
+            <div class="fab-menu-item" onclick="quickPanicRecord(); toggleFAB();">
                 <div class="fab-menu-icon">🚨</div>
                 <div class="fab-menu-text">
                     <div class="fab-menu-title">Registro Pánico</div>
                     <div class="fab-menu-subtitle">Registrar ahora</div>
+                </div>
+            </div>
+            <div class="fab-menu-item" onclick="if(typeof showBadges === 'function') showBadges(); toggleFAB();">
+                <div class="fab-menu-icon">🏆</div>
+                <div class="fab-menu-text">
+                    <div class="fab-menu-title">Mis Logros</div>
+                    <div class="fab-menu-subtitle">Ver badges</div>
                 </div>
             </div>
         </div>
@@ -6779,28 +6804,35 @@
         // TIMELINE VIEW - ACTUALIZAR DINÁMICAMENTE
         // ===================================================================
         function updateTimelineView() {
-            if (!guidedMode || !guidedMode.userProgress) return;
+            if (!guidedMode) return;
 
-            const currentPhase = guidedMode.userProgress.current_phase;
+            const currentPhase = guidedMode.userProgress ? guidedMode.userProgress.current_phase : 1;
+            const isFreeMode = !guidedMode.isGuidedMode;
 
             // Update week markers based on current phase
             document.querySelectorAll('.timeline-week').forEach((weekEl, index) => {
                 const week = index + 1;
                 const marker = weekEl.querySelector('.timeline-marker');
+                const icon = marker.querySelector('.timeline-icon');
 
                 // Remove all classes
                 marker.classList.remove('completed', 'current', 'locked');
 
-                if (week < currentPhase) {
+                // FREE MODE: All weeks unlocked
+                if (isFreeMode) {
                     marker.classList.add('completed');
-                    const icon = marker.querySelector('.timeline-icon');
+                    icon.textContent = week;
+                }
+                // GUIDED MODE: Phase-based locking
+                else if (week < currentPhase) {
+                    marker.classList.add('completed');
                     icon.textContent = '✓';
                 } else if (week === currentPhase) {
                     marker.classList.add('current');
-                    const icon = marker.querySelector('.timeline-icon');
                     icon.textContent = week;
                 } else {
                     marker.classList.add('locked');
+                    icon.textContent = '🔒';
                 }
             });
 
