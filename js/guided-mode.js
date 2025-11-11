@@ -281,7 +281,8 @@ class GuidedModeController {
 
   // Update UI based on current mode and progress
   updateUI() {
-    const menuSections = document.querySelectorAll('.menu-section');
+    // Update both menu-section and menu-subsection
+    const menuSections = document.querySelectorAll('.menu-section, .menu-subsection');
 
     menuSections.forEach(section => {
       const phase = parseInt(section.getAttribute('data-phase'));
@@ -289,6 +290,7 @@ class GuidedModeController {
 
       const phaseStatus = document.getElementById(`phase${phase}-status`);
       const phaseHint = document.getElementById(`phase${phase}-hint`);
+      const phaseStatusMini = document.getElementById(`phase${phase}-status-mini`);
 
       if (this.isGuidedMode && this.userProgress) {
         const currentPhase = this.userProgress.current_phase;
@@ -299,7 +301,11 @@ class GuidedModeController {
         section.classList.toggle('locked', !isUnlocked && phase !== 0);
         section.classList.toggle('current-phase', isCurrent);
 
-        // Update status text
+        // Update status text (both full and mini)
+        const statusText = (phase === 0 || phase === 1) ? '✓' :
+                          isCurrent ? '⏳' :
+                          (phase < currentPhase) ? '✅' : '🔒';
+
         if (phaseStatus) {
           if (phase === 0 || phase === 1) {
             phaseStatus.textContent = '✓ Disponible';
@@ -313,6 +319,18 @@ class GuidedModeController {
           } else {
             phaseStatus.textContent = '🔒 Bloqueada';
             phaseStatus.style.color = 'var(--text-secondary)';
+          }
+        }
+
+        // Update mini status in subsections
+        if (phaseStatusMini) {
+          phaseStatusMini.textContent = statusText;
+          if (phase === 0 || phase === 1 || phase < currentPhase) {
+            phaseStatusMini.style.color = 'var(--success)';
+          } else if (isCurrent) {
+            phaseStatusMini.style.color = 'var(--primary)';
+          } else {
+            phaseStatusMini.style.color = 'var(--text-secondary)';
           }
         }
 
@@ -346,12 +364,18 @@ class GuidedModeController {
           }
         });
       } else {
-        // Free mode: unlock everything
+        // Free mode: unlock everything, REMOVE LOCKS
         section.classList.remove('locked', 'current-phase');
 
         if (phaseStatus) {
           phaseStatus.textContent = '✓ Disponible';
           phaseStatus.style.color = 'var(--success)';
+        }
+
+        // Remove locks from mini status
+        if (phaseStatusMini) {
+          phaseStatusMini.textContent = '✓';
+          phaseStatusMini.style.color = 'var(--success)';
         }
 
         if (phaseHint) {
