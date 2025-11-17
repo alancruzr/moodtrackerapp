@@ -170,7 +170,7 @@
     font-size: 0.9rem;
 }
 
-/* Breathing Container - iOS Style */
+/* Breathing Container - Modern Refined */
 .breathing-container {
     position: relative;
     display: flex;
@@ -178,50 +178,37 @@
     justify-content: center;
     min-height: 500px;
     margin: 32px 0;
-    background: linear-gradient(135deg,
-        rgba(74, 144, 226, 0.03) 0%,
-        rgba(168, 213, 186, 0.03) 50%,
-        rgba(246, 161, 146, 0.03) 100%);
-    border-radius: 32px;
+    background: linear-gradient(135deg, #EFF6FF 0%, #F3F4F6 100%);
+    border-radius: 16px;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid #D1D5DB;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* Breathing Bubble - iOS Style with Glassmorphism */
+/* Breathing Bubble - Modern Refined */
 .breathing-bubble {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    background: linear-gradient(135deg,
-        rgba(74, 144, 226, 0.7) 0%,
-        rgba(168, 213, 186, 0.7) 100%);
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
     box-shadow:
-        0 8px 32px 0 rgba(74, 144, 226, 0.37),
-        0 0 0 1px rgba(255, 255, 255, 0.18),
-        inset 0 0 20px rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 20px 40px rgba(37, 99, 235, 0.3),
+        0 10px 20px rgba(37, 99, 235, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0.95;
     will-change: transform, opacity;
     position: relative;
 }
 
-/* Glow effect */
+/* Refined highlight */
 .breathing-bubble::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    inset: 20%;
     border-radius: 50%;
-    background: radial-gradient(circle,
-        rgba(255, 255, 255, 0.6) 0%,
+    background: radial-gradient(circle at 30% 30%,
+        rgba(255, 255, 255, 0.4) 0%,
         transparent 70%);
-    opacity: 0.5;
 }
 
 /* Smooth iOS animations with cubic-bezier */
@@ -244,35 +231,35 @@
 @keyframes inhale-animation {
     0% {
         transform: scale(1);
-        opacity: 0.75;
+        opacity: 1;
         box-shadow:
-            0 8px 32px 0 rgba(74, 144, 226, 0.37),
-            0 0 0 1px rgba(255, 255, 255, 0.18);
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            0 10px 20px rgba(37, 99, 235, 0.2);
     }
     100% {
         transform: scale(2.5);
-        opacity: 0.95;
+        opacity: 1;
         box-shadow:
-            0 12px 48px 0 rgba(74, 144, 226, 0.5),
             0 0 0 1px rgba(255, 255, 255, 0.3),
-            0 0 60px rgba(74, 144, 226, 0.3);
+            0 30px 60px rgba(37, 99, 235, 0.4),
+            0 15px 30px rgba(37, 99, 235, 0.3);
     }
 }
 
 @keyframes exhale-animation {
     0% {
         transform: scale(2.5);
-        opacity: 0.95;
+        opacity: 1;
         box-shadow:
-            0 12px 48px 0 rgba(74, 144, 226, 0.5),
-            0 0 0 1px rgba(255, 255, 255, 0.3);
+            0 0 0 1px rgba(255, 255, 255, 0.3),
+            0 30px 60px rgba(37, 99, 235, 0.4);
     }
     100% {
         transform: scale(1);
-        opacity: 0.75;
+        opacity: 1;
         box-shadow:
-            0 8px 32px 0 rgba(74, 144, 226, 0.37),
-            0 0 0 1px rgba(255, 255, 255, 0.18);
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            0 10px 20px rgba(37, 99, 235, 0.2);
     }
 }
 
