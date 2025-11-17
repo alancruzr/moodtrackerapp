@@ -304,55 +304,60 @@
 /* Controls - iOS Style */
 .breathing-controls {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
     margin-bottom: 32px;
     flex-wrap: wrap;
 }
 
 .control-btn {
-    padding: 16px 32px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 14px;
-    font-size: 17px;
+    border-radius: 10px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.95);
     color: var(--primary);
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    min-width: 120px;
+    min-width: 100px;
+    min-height: 44px;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 }
 
 .control-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
 }
 
 .control-btn:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
     transition: all 0.1s;
 }
 
 .control-btn.primary {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
+    box-shadow: 0 3px 12px rgba(74, 144, 226, 0.3);
 }
 
 .control-btn.primary:hover {
     background: #3A7BC1;
-    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.35);
 }
 
 .control-btn.danger {
     background: rgba(217, 122, 122, 0.1);
     color: var(--danger);
     border: 1.5px solid var(--danger);
+}
+
+.control-btn.danger:hover {
+    background: rgba(217, 122, 122, 0.15);
 }
 
 /* Stats Panel */
