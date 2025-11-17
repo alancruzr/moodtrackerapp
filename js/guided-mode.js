@@ -261,16 +261,21 @@ class GuidedModeController {
     const phaseInfo = PHASES[completedPhase];
     const nextPhaseInfo = PHASES[nextPhase];
 
-    // Show celebration message
+    // Show celebration message with reminder
     this.showNotification(
-      `🎉 ¡Fase ${completedPhase} Completada! Ahora: ${nextPhaseInfo.title}`,
+      `🎉 ¡Fase ${completedPhase} Completada!`,
       'success',
-      7000
+      3000
     );
 
-    // TODO: Award XP bonus (will be implemented in Week 2)
-    // TODO: Show celebration modal with Lottie animation (Week 4)
-    // TODO: Check and award phase completion badge (Week 3)
+    // Show reminder after 3.5 seconds
+    setTimeout(() => {
+      this.showNotification(
+        `💡 Ahora: Fase ${nextPhase} - ${nextPhaseInfo.title}. Los ejercicios funcionan mejor en orden para máximo beneficio.`,
+        'info',
+        5000
+      );
+    }, 3500);
 
     console.log(`Phase ${completedPhase} completed! Advanced to phase ${nextPhase}`);
   }
@@ -468,34 +473,58 @@ class GuidedModeController {
 
   // Show notification
   showNotification(message, type = 'info', duration = 3000) {
-    // Check if notification system exists
-    if (typeof showNotification === 'function') {
-      showNotification(message, type, duration);
-      return;
-    }
-
-    // Fallback: create simple toast
+    // Create modern toast notification
     const toast = document.createElement('div');
-    toast.className = `notification-toast ${type}`;
-    toast.textContent = message;
+    toast.className = `guided-toast ${type}`;
+
+    const colors = {
+      success: '#10B981',
+      warning: '#F59E0B',
+      info: '#3B82F6',
+      error: '#EF4444'
+    };
+
     toast.style.cssText = `
       position: fixed;
-      top: 80px;
-      right: 20px;
+      top: max(80px, calc(env(safe-area-inset-top) + 60px));
+      left: 50%;
+      transform: translateX(-50%);
       padding: 16px 24px;
-      background: ${type === 'success' ? 'var(--success)' : type === 'warning' ? 'var(--warning)' : 'var(--primary)'};
+      background: ${colors[type] || colors.info};
       color: white;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
       z-index: 10000;
-      animation: slideIn 0.3s ease;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      max-width: 90%;
+      text-align: center;
+      animation: slideDown 0.3s ease;
     `;
 
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+      }
+      @keyframes slideUp {
+        from { opacity: 1; transform: translateX(-50%) translateY(0); }
+        to { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    toast.textContent = message;
     document.body.appendChild(toast);
 
     setTimeout(() => {
-      toast.style.animation = 'slideOut 0.3s ease';
-      setTimeout(() => toast.remove(), 300);
+      toast.style.animation = 'slideUp 0.3s ease';
+      setTimeout(() => {
+        toast.remove();
+        style.remove();
+      }, 300);
     }, duration);
   }
 }
