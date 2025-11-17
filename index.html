@@ -144,19 +144,28 @@
             cursor: pointer;
             font-size: 17px;
             margin-bottom: 12px;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            /* iOS touch target minimum */
+            min-height: 48px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
-        
+
         .btn-primary {
             background: var(--primary);
             color: white;
         }
-        
+
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
             background: #3A7BC1;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            transition: transform 0.1s;
         }
         
         .app-container {
@@ -413,8 +422,8 @@
         
         .hamburger {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: max(20px, env(safe-area-inset-top, 20px));
+            left: max(20px, env(safe-area-inset-left, 20px));
             z-index: 1000;
             background: var(--bg-card);
             width: 50px;
@@ -427,12 +436,18 @@
             gap: 5px;
             cursor: pointer;
             box-shadow: 0 2px 12px rgba(47, 58, 71, 0.08);
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(74, 144, 226, 0.2);
         }
-        
+
         .hamburger:hover {
-            transform: translateY(-1px);
+            transform: scale(1.05);
             box-shadow: 0 4px 16px rgba(47, 58, 71, 0.12);
+        }
+
+        .hamburger:active {
+            transform: scale(0.95);
         }
         
         .hamburger span {
@@ -570,14 +585,35 @@
             height: 100vh;
             background: var(--bg-card);
             box-shadow: 2px 0 20px rgba(47, 58, 71, 0.1);
-            transition: left 0.3s ease-in-out;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 999;
             overflow-y: auto;
-            padding: 80px 0 20px 0;
+            overflow-x: hidden;
+            padding: 80px 0 max(20px, env(safe-area-inset-bottom)) 0;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
-        
+
         .sidebar.active {
             left: 0;
+        }
+
+        /* Smooth scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(74, 144, 226, 0.3);
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(74, 144, 226, 0.5);
         }
         
         .sidebar-overlay {
@@ -612,18 +648,29 @@
             padding: 14px 24px;
             color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 12px;
             border-left: 3px solid transparent;
+            /* Ensure minimum touch target */
+            min-height: 48px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(74, 144, 226, 0.1);
+            user-select: none;
         }
         
         .menu-item:hover {
-            background: rgba(168, 213, 186, 0.08);
+            background: rgba(168, 213, 186, 0.12);
             border-left-color: var(--secondary);
+            transform: translateX(2px);
         }
-        
+
+        .menu-item:active {
+            transform: scale(0.98);
+            transition: transform 0.1s;
+        }
+
         .menu-item.active {
             background: linear-gradient(90deg, rgba(74, 144, 226, 0.15) 0%, rgba(74, 144, 226, 0.05) 100%);
             border-left: 4px solid var(--primary);
@@ -1580,7 +1627,7 @@
             gap: 6px;
             width: 100%;
         }
-        
+
         .scale-option {
             padding: 10px 4px;
             text-align: center;
@@ -1589,7 +1636,16 @@
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Ensure minimum touch target */
+            min-height: 44px;
+            min-width: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(74, 144, 226, 0.2);
+            user-select: none;
             font-size: 16px;
             min-width: 0;
             color: var(--text-secondary);
@@ -1597,14 +1653,21 @@
         
         .scale-option:hover {
             border-color: var(--primary);
-            transform: translateY(-2px);
+            transform: scale(1.05);
+            background: rgba(74, 144, 226, 0.05);
         }
-        
+
+        .scale-option:active {
+            transform: scale(0.95);
+            transition: transform 0.1s;
+        }
+
         .scale-option.selected {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            box-shadow: 0 3px 8px rgba(74, 144, 226, 0.25);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            transform: scale(1.02);
         }
         
         .checkbox-group {
@@ -1626,9 +1689,14 @@
             line-height: 1.5;
             width: 100%;
             border: 1.5px solid var(--border);
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             font-size: 16px;
+            /* Ensure minimum touch target */
+            min-height: 48px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(74, 144, 226, 0.1);
+            user-select: none;
         }
         
         .checkbox-label:hover {
