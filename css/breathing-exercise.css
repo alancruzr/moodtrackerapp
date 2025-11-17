@@ -170,33 +170,50 @@
     font-size: 0.9rem;
 }
 
-/* Breathing Container */
+/* Breathing Container - Modern Refined */
 .breathing-container {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    min-height: 500px;
     margin: 32px 0;
-    background: linear-gradient(135deg, rgba(74, 144, 226, 0.05) 0%, rgba(168, 213, 186, 0.05) 100%);
-    border-radius: 24px;
+    background: linear-gradient(135deg, #EFF6FF 0%, #F3F4F6 100%);
+    border-radius: 16px;
     overflow: hidden;
+    border: 1px solid #D1D5DB;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* Breathing Bubble */
+/* Breathing Bubble - Modern Refined */
 .breathing-bubble {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, var(--primary), var(--secondary));
-    box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4),
-                inset 0 -8px 16px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    opacity: 0.8;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 20px 40px rgba(37, 99, 235, 0.3),
+        0 10px 20px rgba(37, 99, 235, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+    position: relative;
 }
 
+/* Refined highlight */
+.breathing-bubble::before {
+    content: '';
+    position: absolute;
+    inset: 20%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 70%);
+}
+
+/* Smooth iOS animations with cubic-bezier */
 .breathing-bubble.inhale {
-    animation: inhale-animation var(--inhale-duration, 3s) ease-in-out;
+    animation: inhale-animation var(--inhale-duration, 3s) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .breathing-bubble.hold1 {
@@ -204,7 +221,7 @@
 }
 
 .breathing-bubble.exhale {
-    animation: exhale-animation var(--exhale-duration, 3s) ease-in-out;
+    animation: exhale-animation var(--exhale-duration, 3s) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .breathing-bubble.hold2 {
@@ -212,71 +229,122 @@
 }
 
 @keyframes inhale-animation {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(2); opacity: 1; }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 1;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.3),
+            0 30px 60px rgba(37, 99, 235, 0.4),
+            0 15px 30px rgba(37, 99, 235, 0.3);
+    }
 }
 
 @keyframes exhale-animation {
-    0% { transform: scale(2); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.8; }
+    0% {
+        transform: scale(2.5);
+        opacity: 1;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.3),
+            0 30px 60px rgba(37, 99, 235, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            0 10px 20px rgba(37, 99, 235, 0.2);
+    }
 }
 
 @keyframes hold-animation {
-    0%, 100% { transform: scale(var(--hold-scale, 1)); opacity: 1; }
+    0%, 100% {
+        transform: scale(var(--hold-scale, 1));
+        opacity: 0.9;
+    }
 }
 
-/* Breathing Instruction */
+/* Breathing Instruction - iOS Style */
 .breathing-instruction {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 600;
     color: var(--text-primary);
     text-align: center;
     pointer-events: none;
-    text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+    text-shadow: 0 2px 12px rgba(255,255,255,0.9);
     z-index: 10;
+    letter-spacing: -0.5px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Controls */
+/* Controls - iOS Style */
 .breathing-controls {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
     margin-bottom: 32px;
     flex-wrap: wrap;
 }
 
 .control-btn {
-    padding: 14px 28px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 14px;
-    font-size: 1rem;
+    border-radius: 10px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    background: var(--bg-dark);
-    color: white;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    min-width: 100px;
+    min-height: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .control-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
 }
 
 .control-btn:active {
-    transform: translateY(0);
+    transform: scale(0.97);
+    transition: all 0.1s;
 }
 
 .control-btn.primary {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 3px 12px rgba(74, 144, 226, 0.3);
+}
+
+.control-btn.primary:hover {
+    background: #3A7BC1;
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.35);
 }
 
 .control-btn.danger {
-    background: var(--danger);
+    background: rgba(217, 122, 122, 0.1);
+    color: var(--danger);
+    border: 1.5px solid var(--danger);
+}
+
+.control-btn.danger:hover {
+    background: rgba(217, 122, 122, 0.15);
 }
 
 /* Stats Panel */
@@ -566,55 +634,122 @@
     background: rgba(74, 144, 226, 0.08);
 }
 
-/* Responsive */
+/* Responsive - Optimized for iPhone/Android */
 @media (max-width: 768px) {
     .breathing-mode-selector {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .breathing-container {
-        min-height: 300px;
+        min-height: 400px;
+        margin: 24px 0;
+        border-radius: 24px;
     }
 
     .breathing-bubble {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .breathing-instruction {
+        font-size: 1.4rem;
+    }
+
+    .breathing-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 20px;
+    }
+
+    .history-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .control-btn {
+        padding: 14px 24px;
+        font-size: 16px;
+        min-width: 100px;
+        /* Ensure minimum touch target size (44x44px iOS standard) */
+        min-height: 44px;
+    }
+
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .summary-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .scale-selector-modal {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+    }
+
+    .scale-option-modal {
+        /* iOS touch target minimum */
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-buttons button {
+        width: 100%;
+        min-height: 50px;
+    }
+
+    .modal-content {
+        padding: 24px 20px;
+        max-width: 95%;
+        width: 95%;
+    }
+}
+
+/* Extra small devices - Optimize for smaller screens */
+@media (max-width: 380px) {
+    .breathing-container {
+        min-height: 350px;
+    }
+
+    .breathing-bubble {
+        width: 80px;
+        height: 80px;
     }
 
     .breathing-instruction {
         font-size: 1.2rem;
     }
 
-    .breathing-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .history-stats {
-        grid-template-columns: 1fr;
-    }
-
     .control-btn {
         padding: 12px 20px;
-        font-size: 0.95rem;
-    }
-
-    .preset-buttons {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .summary-stats {
-        grid-template-columns: 1fr;
+        font-size: 15px;
     }
 
     .scale-selector-modal {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
     }
+}
 
-    .modal-buttons {
-        flex-direction: column;
-    }
-
-    .modal-buttons button {
-        width: 100%;
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .breathing-bubble,
+    .breathing-bubble.inhale,
+    .breathing-bubble.exhale,
+    .breathing-bubble.hold1,
+    .breathing-bubble.hold2,
+    .control-btn,
+    .breathing-instruction {
+        animation: none !important;
+        transition: none !important;
     }
 }

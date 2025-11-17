@@ -31,9 +31,26 @@ class BreathingExercise {
       currentBPM: 0
     };
 
+    // Haptic feedback support
+    this.supportsHaptic = 'vibrate' in navigator;
+
     // Supabase (will be set from main app)
     this.supabase = null;
     this.currentUser = null;
+  }
+
+  // Haptic feedback for phase transitions
+  triggerHaptic(pattern = 'light') {
+    if (!this.supportsHaptic) return;
+
+    const patterns = {
+      light: [10],          // Light tap
+      medium: [20],         // Medium tap
+      heavy: [30],          // Heavy tap
+      success: [10, 50, 10] // Success pattern
+    };
+
+    navigator.vibrate(patterns[pattern] || patterns.light);
   }
 
   // Initialize with supabase instance
@@ -140,6 +157,9 @@ class BreathingExercise {
     this.totalPausedTime = 0;
     this.cycleCount = 0;
     this.phaseIndex = 0;
+
+    // Haptic feedback on start
+    this.triggerHaptic('medium');
 
     // Update UI
     document.getElementById('btn-start').style.display = 'none';
@@ -263,6 +283,13 @@ class BreathingExercise {
       return;
     }
 
+    // Haptic feedback for phase transitions
+    if (this.currentPhase === 'inhale') {
+      this.triggerHaptic('light');
+    } else if (this.currentPhase === 'exhale') {
+      this.triggerHaptic('light');
+    }
+
     // Update instruction
     const instruction = document.getElementById('breathing-instruction');
     instruction.textContent = phaseNames[this.currentPhase];
@@ -277,6 +304,8 @@ class BreathingExercise {
       // Completed a cycle
       if (this.phaseIndex === 0) {
         this.cycleCount++;
+        // Haptic on cycle completion
+        this.triggerHaptic('medium');
       }
 
       // Check if session duration reached
@@ -362,6 +391,9 @@ class BreathingExercise {
       cancelAnimationFrame(this.animationFrame);
       this.animationFrame = null;
     }
+
+    // Success haptic feedback
+    this.triggerHaptic('success');
 
     const instruction = document.getElementById('breathing-instruction');
     instruction.textContent = '✅ ¡Sesión Completada!';
