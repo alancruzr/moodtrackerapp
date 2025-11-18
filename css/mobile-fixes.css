@@ -1,0 +1,194 @@
+/* ============================================
+   MOBILE FIXES - Arreglos críticos para móvil
+   ============================================ */
+
+/* Fix header fixed positioning */
+.app-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Fix hamburger - NO ENCIMAR */
+.hamburger {
+    position: fixed !important;
+    top: 14px !important;
+    left: 14px !important;
+    z-index: 1002 !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix mode toggle - NO ENCIMAR */
+.mode-toggle {
+    position: fixed !important;
+    top: 14px !important;
+    right: 14px !important;
+    z-index: 1002 !important;
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix app container padding */
+.app-container {
+    padding-top: 70px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 16px !important;
+}
+
+/* Fix sidebar - Clean */
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    background: white !important;
+    z-index: 1001 !important;
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.15) !important;
+    transition: left 0.3s ease !important;
+    padding-top: 70px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+.sidebar.active {
+    left: 0 !important;
+}
+
+/* Fix sidebar overlay */
+.sidebar-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    z-index: 1000 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.3s ease !important;
+}
+
+.sidebar-overlay.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Mobile specific */
+@media (max-width: 768px) {
+    .hamburger {
+        top: 12px !important;
+        left: 12px !important;
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .mode-toggle {
+        top: 12px !important;
+        right: 12px !important;
+    }
+
+    .app-container {
+        padding-top: 65px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .sidebar {
+        width: 280px !important;
+        max-width: 80vw !important;
+    }
+}
+
+/* Fix cards - Clean spacing */
+.card {
+    margin-bottom: 16px !important;
+    padding: 20px !important;
+}
+
+/* Fix buttons - Not clunky */
+button, .btn-primary, .btn-secondary {
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    min-height: 44px !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-primary {
+    background: #2563EB !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-primary:hover {
+    background: #1D4ED8 !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-primary:active {
+    transform: scale(0.98) !important;
+}
+
+/* Fix inputs - Clean */
+input, textarea, select {
+    padding: 12px 16px !important;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    background: white !important;
+    transition: all 0.2s ease !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #2563EB !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+    outline: none !important;
+}
+
+/* Fix menu items - Touch friendly */
+.menu-item {
+    padding: 14px 20px !important;
+    min-height: 48px !important;
+    font-size: 15px !important;
+    transition: all 0.2s ease !important;
+}
+
+.menu-item:hover {
+    background: rgba(37, 99, 235, 0.08) !important;
+}
+
+.menu-item.active {
+    background: rgba(37, 99, 235, 0.12) !important;
+    color: #2563EB !important;
+    font-weight: 600 !important;
+}
+
+/* Ensure no overflow */
+html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+* {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}

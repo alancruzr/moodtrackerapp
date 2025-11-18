@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/badges.css">
     <link rel="stylesheet" href="css/fab.css">
     <link rel="stylesheet" href="css/modern-design.css">
+    <link rel="stylesheet" href="css/mobile-fixes.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
@@ -6413,6 +6414,112 @@
             alert.textContent = message;
             document.body.insertBefore(alert, document.body.firstChild);
             setTimeout(() => alert.remove(), 3500);
+        }
+
+        // Modern alert system
+        function showModernAlert(title, message, type = 'info') {
+          const colors = {
+            success: '#10B981',
+            warning: '#F59E0B',
+            info: '#3B82F6',
+            error: '#EF4444'
+          };
+
+          const icons = {
+            success: '✅',
+            warning: '⚠️',
+            info: 'ℹ️',
+            error: '❌'
+          };
+
+          const overlay = document.createElement('div');
+          overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+          `;
+
+          const modal = document.createElement('div');
+          modal.style.cssText = `
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          `;
+
+          modal.innerHTML = `
+            <div style="font-size: 48px; text-align: center; margin-bottom: 16px;">${icons[type]}</div>
+            <h3 style="margin: 0 0 12px 0; font-size: 22px; font-weight: 700; text-align: center; color: #1C1C1E; letter-spacing: -0.6px;">${title}</h3>
+            <p style="margin: 0 0 24px 0; font-size: 16px; color: #3C3C43; text-align: center; line-height: 1.5; letter-spacing: -0.3px;">${message}</p>
+            <button onclick="this.closest('.alert-overlay').remove()" style="
+              width: 100%;
+              padding: 14px;
+              border: none;
+              border-radius: 10px;
+              background: ${colors[type]};
+              color: white;
+              font-size: 16px;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              letter-spacing: -0.3px;
+            " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Entendido</button>
+          `;
+
+          overlay.className = 'alert-overlay';
+          overlay.appendChild(modal);
+          document.body.appendChild(overlay);
+
+          const style = document.createElement('style');
+          style.textContent = `
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes scaleIn {
+              from { transform: scale(0.9); opacity: 0; }
+              to { transform: scale(1); opacity: 1; }
+            }
+          `;
+          document.head.appendChild(style);
+
+          // Close on overlay click
+          overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+              overlay.remove();
+              style.remove();
+            }
+          });
+        }
+
+        // Show locked message (called when clicking locked tabs)
+        function showLockedMessage() {
+          if (!guidedMode || !guidedMode.userProgress) {
+            showModernAlert('🔒 Esta sección está bloqueada', 'Activa el Modo Libre para acceder a todo, o completa la fase actual en Modo Guiado para desbloquear.', 'warning');
+            return;
+          }
+
+          const currentPhase = guidedMode.userProgress.current_phase;
+          const phaseInfo = PHASES[currentPhase];
+
+          showModernAlert(
+            '🔒 Sección Bloqueada',
+            `Completa la Fase ${currentPhase}: ${phaseInfo.title} para desbloquear. Los ejercicios funcionan mejor en orden.`,
+            'info'
+          );
         }
 
         // ===================================================================
