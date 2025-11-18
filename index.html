@@ -3000,15 +3000,15 @@
             <span style="display: block; width: 22px; height: 3px; background: white; border-radius: 2px;"></span>
         </div>
 
-        <!-- Mode Toggle: Guided vs Free - VERDE -->
-        <div class="mode-toggle" style="position: fixed; top: 14px; right: 14px; z-index: 1002; background: white; border: 1px solid rgba(17, 153, 142, 0.2); border-radius: 12px; box-shadow: 0 4px 12px rgba(17, 153, 142, 0.2); padding: 4px; display: flex; gap: 4px;">
-            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided" style="padding: 10px 18px; border: none; border-radius: 10px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);">
-                <span>🎯</span>
-                <span>Guiado</span>
+        <!-- Mode Toggle: Guided vs Free - REFINADO VERTICAL -->
+        <div class="mode-toggle" style="position: fixed; top: 50%; right: 24px; transform: translateY(-50%); z-index: 1002; background: rgba(255,255,255,0.98); border: 1px solid rgba(17, 153, 142, 0.12); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(17, 153, 142, 0.06); padding: 10px; display: flex; flex-direction: column; gap: 12px; backdrop-filter: blur(12px);">
+            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided" style="padding: 16px; border: none; border-radius: 16px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1); min-width: 100px; text-align: center; position: relative; overflow: hidden;">
+                <span style="font-size: 28px; display: block; transform: scale(1); transition: transform 0.3s ease;">🎯</span>
+                <span style="font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">Guiado</span>
             </button>
-            <button class="mode-btn free" onclick="setMode('free')" id="btn-free" style="padding: 10px 18px; border: none; border-radius: 10px; background: #F3F4F6; color: #6B7280; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
-                <span>🗺️</span>
-                <span>Libre</span>
+            <button class="mode-btn free" onclick="setMode('free')" id="btn-free" style="padding: 16px; border: none; border-radius: 16px; background: transparent; color: #9CA3AF; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); min-width: 100px; text-align: center; position: relative; overflow: hidden;">
+                <span style="font-size: 28px; display: block; filter: grayscale(70%) opacity(0.6); transform: scale(0.95); transition: all 0.3s ease;">🗺️</span>
+                <span style="font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;">Libre</span>
             </button>
         </div>
 
@@ -5603,25 +5603,35 @@
             if (mode === 'guided') {
                 guidedBtn.classList.add('active');
                 freeBtn.classList.remove('active');
-                // Update inline styles for visual feedback - VERDE
+                // Update inline styles for visual feedback - REFINADO
                 guidedBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
                 guidedBtn.style.color = 'white';
-                guidedBtn.style.boxShadow = '0 4px 12px rgba(17, 153, 142, 0.3)';
-                freeBtn.style.background = '#F3F4F6';
-                freeBtn.style.color = '#6B7280';
+                guidedBtn.style.boxShadow = '0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1)';
+                guidedBtn.querySelector('span').style.filter = 'none';
+                guidedBtn.querySelector('span').style.transform = 'scale(1)';
+
+                freeBtn.style.background = 'transparent';
+                freeBtn.style.color = '#9CA3AF';
                 freeBtn.style.boxShadow = 'none';
+                freeBtn.querySelector('span').style.filter = 'grayscale(70%) opacity(0.6)';
+                freeBtn.querySelector('span').style.transform = 'scale(0.95)';
                 // Use the correct method from guidedMode instance
                 await guidedMode.toggleMode(true);
             } else {
                 guidedBtn.classList.remove('active');
                 freeBtn.classList.add('active');
-                // Update inline styles for visual feedback - VERDE
-                guidedBtn.style.background = '#F3F4F6';
-                guidedBtn.style.color = '#6B7280';
+                // Update inline styles for visual feedback - REFINADO
+                guidedBtn.style.background = 'transparent';
+                guidedBtn.style.color = '#9CA3AF';
                 guidedBtn.style.boxShadow = 'none';
+                guidedBtn.querySelector('span').style.filter = 'grayscale(70%) opacity(0.6)';
+                guidedBtn.querySelector('span').style.transform = 'scale(0.95)';
+
                 freeBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
                 freeBtn.style.color = 'white';
-                freeBtn.style.boxShadow = '0 4px 12px rgba(17, 153, 142, 0.3)';
+                freeBtn.style.boxShadow = '0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1)';
+                freeBtn.querySelector('span').style.filter = 'none';
+                freeBtn.querySelector('span').style.transform = 'scale(1)';
                 // Use the correct method from guidedMode instance
                 await guidedMode.toggleMode(false);
             }
