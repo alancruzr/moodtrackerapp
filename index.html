@@ -3725,21 +3725,11 @@
           });
         }
 
-        // Show locked message (called when clicking locked tabs)
+        // Guided mode system removed - stub for backward compatibility
+        const guidedMode = null;
+
         function showLockedMessage() {
-          if (!guidedMode || !guidedMode.userProgress) {
-            showModernAlert('🔒 Esta sección está bloqueada', 'Activa el Modo Libre para acceder a todo, o completa la fase actual en Modo Guiado para desbloquear.', 'warning');
-            return;
-          }
-
-          const currentPhase = guidedMode.userProgress.current_phase;
-          const phaseInfo = PHASES[currentPhase];
-
-          showModernAlert(
-            '🔒 Sección Bloqueada',
-            `Completa la Fase ${currentPhase}: ${phaseInfo.title} para desbloquear. Los ejercicios funcionan mejor en orden.`,
-            'info'
-          );
+          // All tabs now accessible (guided mode removed)
         }
 
     </script>
