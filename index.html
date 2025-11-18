@@ -2913,123 +2913,136 @@
         }
         
         // ===================================================================
-        // LOAD DASHBOARD
+        // DASHBOARD SIMPLE - Con datos reales de Supabase
         // ===================================================================
         async function loadDashboard() {
             try {
-                // Get panic records
+                // Cargar datos reales de Supabase
                 const { data: panicData } = await supabase
                     .from('panic_records')
                     .select('*')
                     .eq('user_id', currentUser.id);
-                
-                // Get mood records
+
                 const { data: moodData } = await supabase
                     .from('daily_mood_records')
                     .select('*')
                     .eq('user_id', currentUser.id)
                     .order('date', { ascending: false })
                     .limit(30);
-                
-                // Count all entries
-                let totalEntries = 0;
+
+                // Contar ejercicios completados
+                let exercisesCount = 0;
                 for (const table of Object.values(EXERCISE_TABLES)) {
                     const { count } = await supabase
                         .from(table)
                         .select('*', { count: 'exact', head: true })
                         .eq('user_id', currentUser.id);
-                    totalEntries += count || 0;
+                    exercisesCount += count || 0;
                 }
-                
-                // Update stats
-                document.getElementById('statTotal').textContent = totalEntries;
-                document.getElementById('statPanic').textContent = panicData?.length || 0;
-                document.getElementById('statMood').textContent = moodData?.length || 0;
-                
-                // Calculate average anxiety
-                const anxietyReadings = (moodData || [])
-                    .map(e => parseInt(e.avg_anxiety))
-                    .filter(v => !isNaN(v));
-                
-                if (anxietyReadings.length > 0) {
-                    const avg = (anxietyReadings.reduce((a, b) => a + b, 0) / anxietyReadings.length).toFixed(1);
-                    document.getElementById('statAvg').textContent = avg;
-                    updateChart(anxietyReadings);
-                } else {
-                    document.getElementById('statAvg').textContent = '-';
-                }
+
+                // Calcular días activos (días únicos con registros)
+                const allDates = new Set();
+                if (panicData) panicData.forEach(r => allDates.add(r.date));
+                if (moodData) moodData.forEach(r => allDates.add(r.date));
+
+                // Actualizar stats
+                document.getElementById('daysActive').textContent = allDates.size || 0;
+                document.getElementById('panicRecords').textContent = (panicData?.length || 0);
+                document.getElementById('exercisesCompleted').textContent = exercisesCount;
+
+                // Crear gráfica de actividad diaria
+                createActivityChart(moodData || []);
+
             } catch (error) {
                 console.error('Dashboard error:', error);
             }
         }
-        
-        function updateChart(data) {
-            const ctx = document.getElementById('progressChart');
+
+        function createActivityChart(moodData) {
+            const ctx = document.getElementById('activityChart');
             if (!ctx) return;
-            
-            const last14 = data.slice(-14);
-            const labels = last14.map((_, i) => `Day ${i + 1}`);
-            
+
+            // Preparar datos para últimos 30 días
+            const days = [];
+            const activity = [];
+            const today = new Date();
+
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+                days.push(dateStr);
+
+                // Buscar datos para este día
+                const dayData = moodData.find(d => {
+                    const recordDate = new Date(d.date);
+                    return recordDate.toDateString() === date.toDateString();
+                });
+
+                activity.push(dayData ? parseInt(dayData.avg_anxiety || 0) : 0);
+            }
+
+            // Destruir gráfica anterior si existe
             if (chartInstance) chartInstance.destroy();
-            
+
+            // Crear nueva gráfica
             chartInstance = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: labels,
+                    labels: days,
                     datasets: [{
-                        label: 'Anxiety Level',
-                        data: last14,
-                        borderColor: '#4A90E2',
-                        backgroundColor: 'rgba(74, 144, 226, 0.08)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#4A90E2',
-                        pointBorderColor: '#F9FAFB',
-                        pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        pointHoverBorderWidth: 3
+                        label: 'Actividad',
+                        data: activity,
+                        backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                        borderColor: 'rgba(37, 99, 235, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: 'rgba(47, 58, 71, 0.95)',
+                            backgroundColor: 'rgba(31, 41, 55, 0.95)',
                             padding: 12,
-                            titleFont: { size: 14, family: 'Inter' },
-                            bodyFont: { size: 13, family: 'Inter' },
-                            borderColor: '#BFC9D4',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(37, 99, 235, 0.5)',
                             borderWidth: 1,
-                            cornerRadius: 8
+                            cornerRadius: 8,
+                            displayColors: false
                         }
                     },
                     scales: {
-                        y: { 
-                            beginAtZero: true, 
-                            max: 10,
-                            ticks: { 
-                                stepSize: 2,
-                                color: '#707D8C',
-                                font: { family: 'Inter' }
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: '#6B7280',
+                                font: { family: 'Inter', size: 11 }
                             },
-                            grid: { color: 'rgba(191, 201, 212, 0.2)' }
+                            grid: {
+                                color: 'rgba(229, 231, 235, 0.5)',
+                                drawBorder: false
+                            }
                         },
-                        x: { 
+                        x: {
                             grid: { display: false },
-                            ticks: { 
-                                color: '#707D8C',
-                                font: { family: 'Inter' }
+                            ticks: {
+                                color: '#6B7280',
+                                font: { family: 'Inter', size: 10 },
+                                maxRotation: 45,
+                                minRotation: 45
                             }
                         }
                     }
                 }
             });
         }
-        
+
         // ===================================================================
         // DASHBOARD DE PROGRESO - FUNCIONES NUEVAS
         // ===================================================================
