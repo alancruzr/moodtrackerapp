@@ -2983,37 +2983,37 @@
         </div>
     </div>
 
-    <div id="appContainer" class="app-container">
-        <div class="app-header">
+    <div id="appContainer" class="app-container" style="padding-top: 70px; padding-left: 16px; padding-right: 16px; padding-bottom: 24px; min-height: 100vh; background: #F3F4F6;">
+        <div class="app-header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 12px 16px; display: none;">
             <div class="header-title">
-                <h1>🌟 Anxiety Tracker</h1>
+                <h1 style="font-size: 18px; margin: 0;">🌟 Anxiety Tracker</h1>
             </div>
             <div>
-                <div class="user-email" id="userEmail">user@email.com</div>
-                <button class="logout-btn" onclick="logout()">Salir</button>
+                <div class="user-email" id="userEmail" style="font-size: 12px; color: #6B7280;">user@email.com</div>
+                <button class="logout-btn" onclick="logout()" style="padding: 6px 12px; font-size: 14px; border: 1px solid #D1D5DB; border-radius: 6px; background: white; cursor: pointer;">Salir</button>
             </div>
         </div>
 
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="hamburger" onclick="toggleMenu()" style="position: fixed; top: 14px; left: 14px; z-index: 1002; width: 44px; height: 44px; background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer;">
+            <span style="display: block; width: 20px; height: 2px; background: #333; border-radius: 2px;"></span>
+            <span style="display: block; width: 20px; height: 2px; background: #333; border-radius: 2px;"></span>
+            <span style="display: block; width: 20px; height: 2px; background: #333; border-radius: 2px;"></span>
         </div>
 
         <!-- Mode Toggle: Guided vs Free -->
-        <div class="mode-toggle">
-            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided">
+        <div class="mode-toggle" style="position: fixed; top: 14px; right: 14px; z-index: 1002; background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 4px; display: flex; gap: 4px;">
+            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided" style="padding: 8px 16px; border: none; border-radius: 8px; background: #3B82F6; color: white; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
                 <span>🎯</span>
                 <span>Guiado</span>
             </button>
-            <button class="mode-btn free" onclick="setMode('free')" id="btn-free">
+            <button class="mode-btn free" onclick="setMode('free')" id="btn-free" style="padding: 8px 16px; border: none; border-radius: 8px; background: #F3F4F6; color: #6B7280; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
                 <span>🗺️</span>
                 <span>Libre</span>
             </button>
         </div>
 
-        <div class="sidebar-overlay" onclick="toggleMenu()"></div>
-        <div class="sidebar">
+        <div class="sidebar-overlay" onclick="toggleMenu()" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.3s;"></div>
+        <div class="sidebar" style="position: fixed; top: 0; left: -100%; width: 280px; height: 100vh; background: white; z-index: 1001; transition: left 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.1); overflow-y: auto;">
             <!-- INICIO -->
             <div class="menu-section" data-phase="0">
                 <div class="menu-section-title">📊 INICIO</div>
@@ -5562,9 +5562,24 @@
         // UI FUNCTIONS
         // ===================================================================
         function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const isOpen = sidebar.classList.contains('active');
+
             document.querySelector('.hamburger').classList.toggle('active');
-            document.querySelector('.sidebar').classList.toggle('active');
-            document.querySelector('.sidebar-overlay').classList.toggle('active');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+
+            // Update inline styles for guaranteed visibility
+            if (!isOpen) {
+                sidebar.style.left = '0';
+                overlay.style.opacity = '1';
+                overlay.style.pointerEvents = 'auto';
+            } else {
+                sidebar.style.left = '-100%';
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+            }
         }
 
         // Toggle accordion groups in sidebar
@@ -5588,11 +5603,21 @@
             if (mode === 'guided') {
                 guidedBtn.classList.add('active');
                 freeBtn.classList.remove('active');
+                // Update inline styles for visual feedback
+                guidedBtn.style.background = '#3B82F6';
+                guidedBtn.style.color = 'white';
+                freeBtn.style.background = '#F3F4F6';
+                freeBtn.style.color = '#6B7280';
                 // Use the correct method from guidedMode instance
                 await guidedMode.toggleMode(true);
             } else {
                 guidedBtn.classList.remove('active');
                 freeBtn.classList.add('active');
+                // Update inline styles for visual feedback
+                guidedBtn.style.background = '#F3F4F6';
+                guidedBtn.style.color = '#6B7280';
+                freeBtn.style.background = '#3B82F6';
+                freeBtn.style.color = 'white';
                 // Use the correct method from guidedMode instance
                 await guidedMode.toggleMode(false);
             }
@@ -7267,6 +7292,72 @@
         <span>🚀</span>
         <span>Iniciar Tour</span>
     </button>
+
+    <!-- Modern UI Inline Styles Enforcer -->
+    <script>
+        // Apply modern inline styles to ALL elements when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modern styles for all buttons
+            const buttons = document.querySelectorAll('button:not(.mode-btn):not(.hamburger)');
+            buttons.forEach(btn => {
+                btn.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
+                btn.style.fontSize = '16px';
+                btn.style.fontWeight = '500';
+                btn.style.padding = '12px 24px';
+                btn.style.borderRadius = '10px';
+                btn.style.border = '1px solid #D1D5DB';
+                btn.style.background = 'white';
+                btn.style.color = '#2D2D2D';
+                btn.style.cursor = 'pointer';
+                btn.style.transition = 'all 0.2s ease';
+                btn.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+            });
+
+            // Modern styles for all inputs, textareas, selects
+            const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], textarea, select');
+            inputs.forEach(input => {
+                input.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
+                input.style.fontSize = '16px';
+                input.style.padding = '12px 16px';
+                input.style.border = '1px solid #D1D5DB';
+                input.style.borderRadius = '10px';
+                input.style.background = 'white';
+                input.style.color = '#0A0A0A';
+                input.style.transition = 'all 0.2s ease';
+                input.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+            });
+
+            // Modern styles for all labels
+            const labels = document.querySelectorAll('label');
+            labels.forEach(label => {
+                label.style.fontSize = '14px';
+                label.style.fontWeight = '500';
+                label.style.color = '#2D2D2D';
+                label.style.marginBottom = '8px';
+                label.style.display = 'block';
+            });
+
+            // Modern styles for cards and containers
+            const cards = document.querySelectorAll('.card, .tab-content, .section');
+            cards.forEach(card => {
+                card.style.background = 'white';
+                card.style.border = '1px solid #D1D5DB';
+                card.style.borderRadius = '16px';
+                card.style.padding = '24px';
+                card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                card.style.marginBottom = '16px';
+            });
+
+            // Set body background
+            document.body.style.background = '#F3F4F6';
+            document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
+            document.body.style.color = '#2D2D2D';
+            document.body.style.fontSize = '16px';
+            document.body.style.lineHeight = '1.6';
+
+            console.log('✨ Modern inline styles applied to all elements');
+        });
+    </script>
 
 </body>
 </html>
