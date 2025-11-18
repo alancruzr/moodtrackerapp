@@ -1005,9 +1005,295 @@ textarea {
 }
 
 /* ============================================
-   20. PRINT STYLES
+   20. FAB (FLOATING ACTION BUTTON)
+   ============================================ */
+.fab-container {
+    position: fixed;
+    bottom: calc(var(--space-6) + env(safe-area-inset-bottom));
+    right: calc(var(--space-6) + env(safe-area-inset-right));
+    z-index: var(--z-modal);
+    pointer-events: none;
+}
+
+.fab-container.hidden {
+    display: none;
+}
+
+/* Main FAB Button */
+.fab-button {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-full);
+    border: none;
+    background: var(--gradient-mint);
+    color: white;
+    cursor: pointer;
+    pointer-events: all;
+
+    /* Shadows */
+    box-shadow:
+        0 8px 24px rgba(0, 217, 204, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+    /* Transition */
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+
+    /* Center content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Prevent text selection */
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.fab-button:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow:
+        0 12px 32px rgba(0, 217, 204, 0.45),
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.fab-button:active {
+    transform: scale(0.95);
+    transition-duration: 0.1s;
+}
+
+.fab-button.active {
+    transform: rotate(135deg);
+}
+
+.fab-button.active:hover {
+    transform: rotate(135deg) scale(1.1) translateY(-2px);
+}
+
+/* FAB Icons */
+.fab-icon {
+    position: absolute;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.fab-icon-plus {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+.fab-icon-close {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0);
+}
+
+.fab-button.active .fab-icon-plus {
+    opacity: 0;
+    transform: rotate(90deg) scale(0);
+}
+
+.fab-button.active .fab-icon-close {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* FAB Menu */
+.fab-menu {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fab-container.fab-open .fab-menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+/* FAB Menu Items */
+.fab-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: none;
+    border-radius: var(--radius-xl);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: var(--text-primary);
+    cursor: pointer;
+
+    /* Shadow */
+    box-shadow:
+        var(--shadow-lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+
+    /* Transition */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: right center;
+    white-space: nowrap;
+    min-width: 180px;
+
+    /* Typography */
+    font-family: var(--font-system);
+    font-size: var(--text-base);
+    font-weight: 600;
+
+    /* Prevent text selection */
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.fab-menu-item:hover {
+    transform: translateX(-4px) scale(1.05);
+    box-shadow:
+        var(--shadow-xl),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 0 0 1px rgba(0, 217, 204, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.fab-menu-item:active {
+    transform: translateX(-2px) scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* Menu Item Icon */
+.fab-menu-icon {
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Menu Item Label */
+.fab-menu-label {
+    flex: 1;
+    text-align: left;
+    color: var(--text-primary);
+}
+
+/* FAB Backdrop */
+.fab-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.fab-container.fab-open .fab-backdrop {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Pulse animation for attention */
+@keyframes fab-pulse {
+    0% {
+        box-shadow:
+            0 8px 24px rgba(0, 217, 204, 0.35),
+            0 4px 12px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow:
+            0 8px 24px rgba(0, 217, 204, 0.55),
+            0 4px 12px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            0 0 0 8px rgba(0, 217, 204, 0.1);
+    }
+    100% {
+        box-shadow:
+            0 8px 24px rgba(0, 217, 204, 0.35),
+            0 4px 12px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Optional: Add pulse on first visit */
+.fab-button.pulse {
+    animation: fab-pulse 2s ease-in-out infinite;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .fab-container {
+        bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+        right: calc(var(--space-4) + env(safe-area-inset-right));
+    }
+
+    .fab-button {
+        width: 56px;
+        height: 56px;
+    }
+
+    .fab-menu-item {
+        min-width: 160px;
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--text-sm);
+    }
+
+    .fab-menu-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 380px) {
+    .fab-button {
+        width: 52px;
+        height: 52px;
+    }
+
+    .fab-menu-item {
+        min-width: 140px;
+    }
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .fab-button,
+    .fab-menu,
+    .fab-menu-item,
+    .fab-backdrop {
+        transition-duration: 0.01ms !important;
+        animation: none !important;
+    }
+}
+
+/* ============================================
+   21. PRINT STYLES
    ============================================ */
 @media print {
+    .fab-container {
+        display: none !important;
+    }
+
     .app-header,
     .hamburger,
     .sidebar,
