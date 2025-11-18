@@ -24,6 +24,178 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
     <style>
+        /* ============================================
+           CRITICAL INLINE STYLES - No cache issues
+           ============================================ */
+
+        /* HAMBURGER - NO ENCIMAR */
+        .hamburger {
+            position: fixed !important;
+            top: 14px !important;
+            left: 14px !important;
+            z-index: 1002 !important;
+            width: 44px !important;
+            height: 44px !important;
+            background: white !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+        }
+
+        /* MODE TOGGLE - NO ENCIMAR */
+        .mode-toggle {
+            position: fixed !important;
+            top: 14px !important;
+            right: 14px !important;
+            z-index: 1002 !important;
+            background: white !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+            padding: 8px 12px !important;
+            font-size: 14px !important;
+        }
+
+        /* SIDEBAR - Clean positioning */
+        .sidebar {
+            position: fixed !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 280px !important;
+            height: 100vh !important;
+            background: white !important;
+            z-index: 1001 !important;
+            transition: left 0.3s ease !important;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .sidebar.open {
+            left: 0 !important;
+        }
+
+        /* SIDEBAR OVERLAY */
+        .sidebar-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(0, 0, 0, 0.5) !important;
+            z-index: 998 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: opacity 0.3s ease !important;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        /* APP CONTAINER - Proper padding */
+        .app-container {
+            padding-top: 70px !important;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+            padding-bottom: 24px !important;
+        }
+
+        /* MODERN DESIGN VARIABLES */
+        :root {
+            --text-xs: 12px;
+            --text-sm: 14px;
+            --text-base: 16px;
+            --text-lg: 18px;
+            --text-xl: 21px;
+            --text-2xl: 28px;
+            --text-3xl: 37px;
+
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-4: 16px;
+            --space-6: 24px;
+            --space-8: 32px;
+
+            --noir: #0A0A0A;
+            --charcoal: #2D2D2D;
+            --slate: #6B7280;
+            --silver: #D1D5DB;
+            --pearl: #F3F4F6;
+        }
+
+        /* MODERN BUTTONS */
+        button, .btn, input[type="button"], input[type="submit"] {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif !important;
+            font-size: var(--text-base) !important;
+            font-weight: 500 !important;
+            padding: 12px 24px !important;
+            border-radius: 10px !important;
+            border: 1px solid var(--silver) !important;
+            background: white !important;
+            color: var(--charcoal) !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button:hover, .btn:hover {
+            background: var(--pearl) !important;
+            border-color: var(--slate) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        button:active, .btn:active {
+            transform: scale(0.98) !important;
+        }
+
+        /* MODERN INPUTS */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        textarea,
+        select {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif !important;
+            font-size: var(--text-base) !important;
+            padding: 12px 16px !important;
+            border: 1px solid var(--silver) !important;
+            border-radius: 10px !important;
+            background: white !important;
+            color: var(--noir) !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none !important;
+            border-color: #3B82F6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+        }
+
+        /* MODERN CARDS */
+        .card, .auth-card, .breathing-container {
+            background: white !important;
+            border: 1px solid var(--silver) !important;
+            border-radius: 16px !important;
+            padding: 24px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* MODERN LABELS */
+        label {
+            font-size: var(--text-sm) !important;
+            font-weight: 500 !important;
+            color: var(--charcoal) !important;
+            margin-bottom: 8px !important;
+            display: block !important;
+        }
+
         html {
             overflow-x: hidden;
             width: 100%;
