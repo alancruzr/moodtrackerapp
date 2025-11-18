@@ -16,9 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/app-optimized.css?v=20251119">
     <link rel="stylesheet" href="css/breathing-exercise.css?v=20251119">
-    <link rel="stylesheet" href="css/gamification.css?v=20251119">
-    <link rel="stylesheet" href="css/badges.css?v=20251119">
-    <link rel="stylesheet" href="css/fab.css?v=20251119">
 </head>
 <body>
     <div id="authOverlay" class="auth-overlay">
@@ -85,20 +82,21 @@
             <span></span>
         </div>
 
-        <!-- Mode Toggle: Guided vs Free - REFINADO VERTICAL -->
-        <div class="mode-toggle">
-            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided">
-                <span>🎯</span>
-                <span>Guiado</span>
-            </button>
-            <button class="mode-btn free" onclick="setMode('free')" id="btn-free">
-                <span>🗺️</span>
-                <span>Libre</span>
-            </button>
-        </div>
-
         <div class="sidebar-overlay" onclick="toggleMenu()"></div>
         <div class="sidebar">
+            <!-- ACCESO RÁPIDO -->
+            <div class="menu-section quick-access" data-phase="quick">
+                <div class="menu-section-title">⚡ ACCESO RÁPIDO</div>
+                <div class="menu-item" onclick="quickBreathing()">
+                    <span class="menu-icon">🫁</span>
+                    Respiración
+                </div>
+                <div class="menu-item" onclick="quickPanicRecord()">
+                    <span class="menu-icon">🚨</span>
+                    Registrar Pánico
+                </div>
+            </div>
+
             <!-- INICIO -->
             <div class="menu-section" data-phase="0">
                 <div class="menu-section-title">📊 INICIO</div>
@@ -317,18 +315,6 @@
                 </div>
             </div>
 
-            <!-- ACCESO RÁPIDO -->
-            <div class="menu-section quick-access" data-phase="quick">
-                <div class="menu-section-title">⚡ ACCESO RÁPIDO</div>
-                <div class="menu-item" onclick="quickBreathing()">
-                    <span class="menu-icon">🫁</span>
-                    Respiración
-                </div>
-                <div class="menu-item" onclick="quickPanicRecord()">
-                    <span class="menu-icon">🚨</span>
-                    Registrar Pánico
-                </div>
-            </div>
         </div>
 
         <!-- TAB 0: DASHBOARD -->
@@ -2675,74 +2661,8 @@
             }
         }
 
-        // Set mode (guided or free) with new button design
-        async function setMode(mode) {
-            if (!guidedMode) {
-                console.error('Guided mode not initialized yet');
-                return;
-            }
-
-            const guidedBtn = document.getElementById('btn-guided');
-            const freeBtn = document.getElementById('btn-free');
-
-            if (mode === 'guided') {
-                guidedBtn.classList.add('active');
-                freeBtn.classList.remove('active');
-                // Update inline styles for visual feedback - REFINADO
-                guidedBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
-                guidedBtn.style.color = 'white';
-                guidedBtn.style.boxShadow = '0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1)';
-                guidedBtn.querySelector('span').style.filter = 'none';
-                guidedBtn.querySelector('span').style.transform = 'scale(1)';
-
-                freeBtn.style.background = 'transparent';
-                freeBtn.style.color = '#9CA3AF';
-                freeBtn.style.boxShadow = 'none';
-                freeBtn.querySelector('span').style.filter = 'grayscale(70%) opacity(0.6)';
-                freeBtn.querySelector('span').style.transform = 'scale(0.95)';
-                // Use the correct method from guidedMode instance
-                await guidedMode.toggleMode(true);
-            } else {
-                guidedBtn.classList.remove('active');
-                freeBtn.classList.add('active');
-                // Update inline styles for visual feedback - REFINADO
-                guidedBtn.style.background = 'transparent';
-                guidedBtn.style.color = '#9CA3AF';
-                guidedBtn.style.boxShadow = 'none';
-                guidedBtn.querySelector('span').style.filter = 'grayscale(70%) opacity(0.6)';
-                guidedBtn.querySelector('span').style.transform = 'scale(0.95)';
-
-                freeBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
-                freeBtn.style.color = 'white';
-                freeBtn.style.boxShadow = '0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1)';
-                freeBtn.querySelector('span').style.filter = 'none';
-                freeBtn.querySelector('span').style.transform = 'scale(1)';
-                // Use the correct method from guidedMode instance
-                await guidedMode.toggleMode(false);
-            }
-
-            // Update timeline view to reflect mode change
-            if (typeof updateTimelineView === 'function') {
-                updateTimelineView();
-            }
-
-            // Show notification
-            const modeText = mode === 'guided' ? '🎯 Modo Guiado' : '🗺️ Modo Libre';
-            const description = mode === 'guided'
-                ? 'Progresa paso a paso completando cada fase'
-                : 'Navega libremente por todos los ejercicios';
-
-            showAlert(`${modeText} activado - ${description}`, 'success');
-        }
 
         function showTab(index) {
-            // Check if tab is accessible in guided mode
-            if (guidedMode && guidedMode.isGuidedMode && !guidedMode.canAccessTab(index)) {
-                showLockedMessage();
-                if (window.innerWidth < 768) toggleMenu();
-                return;
-            }
-
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             document.getElementById('tab' + index).classList.add('active');
@@ -3805,58 +3725,18 @@
           });
         }
 
-        // Show locked message (called when clicking locked tabs)
+        // Guided mode system removed - stub for backward compatibility
+        const guidedMode = null;
+
         function showLockedMessage() {
-          if (!guidedMode || !guidedMode.userProgress) {
-            showModernAlert('🔒 Esta sección está bloqueada', 'Activa el Modo Libre para acceder a todo, o completa la fase actual en Modo Guiado para desbloquear.', 'warning');
-            return;
-          }
-
-          const currentPhase = guidedMode.userProgress.current_phase;
-          const phaseInfo = PHASES[currentPhase];
-
-          showModernAlert(
-            '🔒 Sección Bloqueada',
-            `Completa la Fase ${currentPhase}: ${phaseInfo.title} para desbloquear. Los ejercicios funcionan mejor en orden.`,
-            'info'
-          );
+          // All tabs now accessible (guided mode removed)
         }
 
-        // ===================================================================
-        // GUIDED MODE INITIALIZATION
-        // ===================================================================
-        // Note: guidedMode will be initialized after auth in guided-mode.js
-        let guidedMode = null;
-
-        // Initialize after user is loaded
-        async function initGuidedModeAfterAuth() {
-            if (currentUser && !guidedMode) {
-                guidedMode = initializeGuidedMode();
-                await guidedMode.initialize(supabase, currentUser);
-                console.log('Guided mode initialized');
-            }
-        }
-
-        // Hook into loadAllData to initialize guided mode
-        const originalLoadAllData = loadAllData;
-        loadAllData = async function() {
-            await originalLoadAllData();
-            await initGuidedModeAfterAuth();
-        };
     </script>
 
-    <!-- Guided Mode System -->
+    <!-- Core Scripts -->
     <script src="js/constants.js?v=20251118"></script>
-    <script src="js/guided-mode.js?v=20251118"></script>
-
-    <!-- Breathing Exercise -->
     <script src="js/breathing-exercise.js?v=20251118"></script>
-
-    <!-- Gamification System -->
-    <script src="js/gamification.js?v=20251118"></script>
-
-    <!-- Badge System -->
-    <script src="js/badges.js?v=20251118"></script>
 
     <!-- Initialize Systems -->
     <script>
@@ -4065,40 +3945,6 @@
         }
 
         // ===================================================================
-        // FAB (FLOATING ACTION BUTTON) CONTROL
-        // ===================================================================
-        function toggleFAB() {
-            const fabContainer = document.getElementById('fab-container');
-            const fabMenu = fabContainer.querySelector('.fab-menu');
-            const fabButton = fabContainer.querySelector('.fab');
-
-            fabContainer.classList.toggle('expanded');
-
-            if (fabContainer.classList.contains('expanded')) {
-                // Show menu
-                fabMenu.style.opacity = '1';
-                fabMenu.style.pointerEvents = 'auto';
-                fabButton.style.transform = 'rotate(45deg)';
-            } else {
-                // Hide menu
-                fabMenu.style.opacity = '0';
-                fabMenu.style.pointerEvents = 'none';
-                fabButton.style.transform = 'rotate(0deg)';
-            }
-        }
-
-        function fabQuickBreathing() {
-            showTab(11);
-            const fabContainer = document.getElementById('fab-container');
-            fabContainer.classList.remove('expanded');
-        }
-
-        function fabQuickPanic() {
-            showTab(1);
-            const fabContainer = document.getElementById('fab-container');
-            fabContainer.classList.remove('expanded');
-        }
-
         // Quick access functions for sidebar
         function quickBreathing() {
             showTab(11); // Go to breathing exercise
@@ -4131,52 +3977,7 @@
         };
     </script>
 
-    <!-- Floating Action Button - FIXED -->
-    <div id="fab-container" class="fab-container">
-        <div class="fab-menu">
-            <div class="fab-menu-item" onclick="quickBreathing(); toggleFAB();">
-                <div class="fab-menu-icon">🫁</div>
-                <div class="fab-menu-text">
-                    <div class="fab-menu-title">Respiración</div>
-                    <div class="fab-menu-subtitle">Ejercicio rápido</div>
-                </div>
-            </div>
-            <div class="fab-menu-item" onclick="quickPanicRecord(); toggleFAB();">
-                <div class="fab-menu-icon">🚨</div>
-                <div class="fab-menu-text">
-                    <div class="fab-menu-title">Registro Pánico</div>
-                    <div class="fab-menu-subtitle">Registrar ahora</div>
-                </div>
-            </div>
-            <div class="fab-menu-item" onclick="if(typeof showBadges === 'function') showBadges(); toggleFAB();">
-                <div class="fab-menu-icon">🏆</div>
-                <div class="fab-menu-text">
-                    <div class="fab-menu-title">Mis Logros</div>
-                    <div class="fab-menu-subtitle">Ver badges</div>
-                </div>
-            </div>
-        </div>
-        <button class="fab" onclick="toggleFAB()">
-            ➕
-        </button>
-    </div>
-
     <script>
-        // Show FAB after user is authenticated
-        if (typeof initializeAllAfterAuth !== 'undefined') {
-            const originalInitialize = initializeAllAfterAuth;
-            initializeAllAfterAuth = async function() {
-                await originalInitialize();
-                document.getElementById('fab-container').style.display = 'block';
-            };
-        } else {
-            // Fallback: show after 1 second
-            setTimeout(() => {
-                if (currentUser) {
-                    document.getElementById('fab-container').style.display = 'block';
-                }
-            }, 1000);
-        }
         // ===================================================================
         // GUIDED TOUR SYSTEM
         // ===================================================================
