@@ -2994,21 +2994,21 @@
             </div>
         </div>
 
-        <div class="hamburger" onclick="toggleMenu()" style="position: fixed; top: 14px; left: 14px; z-index: 1002; width: 44px; height: 44px; background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer;">
-            <span style="display: block; width: 20px; height: 2px; background: #333; border-radius: 2px;"></span>
-            <span style="display: block; width: 20px; height: 2px; background: #333; border-radius: 2px;"></span>
-            <span style="display: block; width: 20px; height: 2px; background: #333; border-radius: 2px;"></span>
+        <div class="hamburger" onclick="toggleMenu()" style="position: fixed; top: 14px; left: 14px; z-index: 1002; width: 48px; height: 48px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; transition: all 0.3s ease;">
+            <span style="display: block; width: 22px; height: 3px; background: white; border-radius: 2px;"></span>
+            <span style="display: block; width: 22px; height: 3px; background: white; border-radius: 2px;"></span>
+            <span style="display: block; width: 22px; height: 3px; background: white; border-radius: 2px;"></span>
         </div>
 
-        <!-- Mode Toggle: Guided vs Free -->
-        <div class="mode-toggle" style="position: fixed; top: 14px; right: 14px; z-index: 1002; background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 4px; display: flex; gap: 4px;">
-            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided" style="padding: 8px 16px; border: none; border-radius: 8px; background: #3B82F6; color: white; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
-                <span>🎯</span>
-                <span>Guiado</span>
+        <!-- Mode Toggle: Guided vs Free - REFINADO VERTICAL -->
+        <div class="mode-toggle" style="position: fixed; top: 50%; right: 24px; transform: translateY(-50%); z-index: 1002; background: rgba(255,255,255,0.98); border: 1px solid rgba(17, 153, 142, 0.12); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(17, 153, 142, 0.06); padding: 10px; display: flex; flex-direction: column; gap: 12px; backdrop-filter: blur(12px);">
+            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided" style="padding: 16px; border: none; border-radius: 16px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1); min-width: 100px; text-align: center; position: relative; overflow: hidden;">
+                <span style="font-size: 28px; display: block; transform: scale(1); transition: transform 0.3s ease;">🎯</span>
+                <span style="font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">Guiado</span>
             </button>
-            <button class="mode-btn free" onclick="setMode('free')" id="btn-free" style="padding: 8px 16px; border: none; border-radius: 8px; background: #F3F4F6; color: #6B7280; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
-                <span>🗺️</span>
-                <span>Libre</span>
+            <button class="mode-btn free" onclick="setMode('free')" id="btn-free" style="padding: 16px; border: none; border-radius: 16px; background: transparent; color: #9CA3AF; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); min-width: 100px; text-align: center; position: relative; overflow: hidden;">
+                <span style="font-size: 28px; display: block; filter: grayscale(70%) opacity(0.6); transform: scale(0.95); transition: all 0.3s ease;">🗺️</span>
+                <span style="font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;">Libre</span>
             </button>
         </div>
 
@@ -5603,21 +5603,35 @@
             if (mode === 'guided') {
                 guidedBtn.classList.add('active');
                 freeBtn.classList.remove('active');
-                // Update inline styles for visual feedback
-                guidedBtn.style.background = '#3B82F6';
+                // Update inline styles for visual feedback - REFINADO
+                guidedBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
                 guidedBtn.style.color = 'white';
-                freeBtn.style.background = '#F3F4F6';
-                freeBtn.style.color = '#6B7280';
+                guidedBtn.style.boxShadow = '0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1)';
+                guidedBtn.querySelector('span').style.filter = 'none';
+                guidedBtn.querySelector('span').style.transform = 'scale(1)';
+
+                freeBtn.style.background = 'transparent';
+                freeBtn.style.color = '#9CA3AF';
+                freeBtn.style.boxShadow = 'none';
+                freeBtn.querySelector('span').style.filter = 'grayscale(70%) opacity(0.6)';
+                freeBtn.querySelector('span').style.transform = 'scale(0.95)';
                 // Use the correct method from guidedMode instance
                 await guidedMode.toggleMode(true);
             } else {
                 guidedBtn.classList.remove('active');
                 freeBtn.classList.add('active');
-                // Update inline styles for visual feedback
-                guidedBtn.style.background = '#F3F4F6';
-                guidedBtn.style.color = '#6B7280';
-                freeBtn.style.background = '#3B82F6';
+                // Update inline styles for visual feedback - REFINADO
+                guidedBtn.style.background = 'transparent';
+                guidedBtn.style.color = '#9CA3AF';
+                guidedBtn.style.boxShadow = 'none';
+                guidedBtn.querySelector('span').style.filter = 'grayscale(70%) opacity(0.6)';
+                guidedBtn.querySelector('span').style.transform = 'scale(0.95)';
+
+                freeBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
                 freeBtn.style.color = 'white';
+                freeBtn.style.boxShadow = '0 6px 20px rgba(17, 153, 142, 0.4), inset 0 -2px 4px rgba(0,0,0,0.1)';
+                freeBtn.querySelector('span').style.filter = 'none';
+                freeBtn.querySelector('span').style.transform = 'scale(1)';
                 // Use the correct method from guidedMode instance
                 await guidedMode.toggleMode(false);
             }
@@ -6970,7 +6984,22 @@
         // ===================================================================
         function toggleFAB() {
             const fabContainer = document.getElementById('fab-container');
+            const fabMenu = fabContainer.querySelector('.fab-menu');
+            const fabButton = fabContainer.querySelector('.fab');
+
             fabContainer.classList.toggle('expanded');
+
+            if (fabContainer.classList.contains('expanded')) {
+                // Show menu
+                fabMenu.style.opacity = '1';
+                fabMenu.style.pointerEvents = 'auto';
+                fabButton.style.transform = 'rotate(45deg)';
+            } else {
+                // Hide menu
+                fabMenu.style.opacity = '0';
+                fabMenu.style.pointerEvents = 'none';
+                fabButton.style.transform = 'rotate(0deg)';
+            }
         }
 
         function fabQuickBreathing() {
@@ -6983,6 +7012,21 @@
             showTab(1);
             const fabContainer = document.getElementById('fab-container');
             fabContainer.classList.remove('expanded');
+        }
+
+        // Quick access functions for sidebar
+        function quickBreathing() {
+            showTab(11); // Go to breathing exercise
+            toggleMenu(); // Close sidebar
+        }
+
+        function quickPanic() {
+            showTab(1); // Go to panic register
+            toggleMenu(); // Close sidebar
+        }
+
+        function quickPanicRecord() {
+            showTab(1); // Go to panic register
         }
 
         // Hide FAB on breathing tab (tab 11)
@@ -7002,34 +7046,33 @@
         };
     </script>
 
-    <!-- Floating Action Button -->
-    <div id="fab-container" class="fab-container" style="display: none;">
-        <div class="fab-menu">
-            <div class="fab-menu-item" onclick="quickBreathing(); toggleFAB();">
-                <div class="fab-menu-icon">🫁</div>
+    <!-- Floating Action Button - FIXED -->
+    <div id="fab-container" class="fab-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 10000; display: none;">
+        <div class="fab-menu" style="position: absolute; bottom: 80px; right: 0; display: flex; flex-direction: column; gap: 12px; opacity: 0; pointer-events: none; transition: all 0.3s ease;">
+            <div class="fab-menu-item" onclick="quickBreathing(); toggleFAB();" style="background: white; border-radius: 12px; padding: 12px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; cursor: pointer; min-width: 200px;">
+                <div class="fab-menu-icon" style="width: 44px; height: 44px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">🫁</div>
                 <div class="fab-menu-text">
-                    <div class="fab-menu-title">Respiración</div>
-                    <div class="fab-menu-subtitle">Ejercicio rápido</div>
+                    <div class="fab-menu-title" style="font-weight: 600; font-size: 15px; color: #1a1a1a;">Respiración</div>
+                    <div class="fab-menu-subtitle" style="font-size: 13px; color: #666;">Ejercicio rápido</div>
                 </div>
             </div>
-            <div class="fab-menu-item" onclick="quickPanicRecord(); toggleFAB();">
-                <div class="fab-menu-icon">🚨</div>
+            <div class="fab-menu-item" onclick="quickPanicRecord(); toggleFAB();" style="background: white; border-radius: 12px; padding: 12px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; cursor: pointer; min-width: 200px;">
+                <div class="fab-menu-icon" style="width: 44px; height: 44px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">🚨</div>
                 <div class="fab-menu-text">
-                    <div class="fab-menu-title">Registro Pánico</div>
-                    <div class="fab-menu-subtitle">Registrar ahora</div>
+                    <div class="fab-menu-title" style="font-weight: 600; font-size: 15px; color: #1a1a1a;">Registro Pánico</div>
+                    <div class="fab-menu-subtitle" style="font-size: 13px; color: #666;">Registrar ahora</div>
                 </div>
             </div>
-            <div class="fab-menu-item" onclick="if(typeof showBadges === 'function') showBadges(); toggleFAB();">
-                <div class="fab-menu-icon">🏆</div>
+            <div class="fab-menu-item" onclick="if(typeof showBadges === 'function') showBadges(); toggleFAB();" style="background: white; border-radius: 12px; padding: 12px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; cursor: pointer; min-width: 200px;">
+                <div class="fab-menu-icon" style="width: 44px; height: 44px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">🏆</div>
                 <div class="fab-menu-text">
-                    <div class="fab-menu-title">Mis Logros</div>
-                    <div class="fab-menu-subtitle">Ver badges</div>
+                    <div class="fab-menu-title" style="font-weight: 600; font-size: 15px; color: #1a1a1a;">Mis Logros</div>
+                    <div class="fab-menu-subtitle" style="font-size: 13px; color: #666;">Ver badges</div>
                 </div>
             </div>
         </div>
-        <button class="fab" onclick="toggleFAB()">
+        <button class="fab" onclick="toggleFAB()" style="width: 64px; height: 64px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%; border: none; box-shadow: 0 8px 24px rgba(17, 153, 142, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 32px; transition: all 0.3s ease; position: relative;">
             ➕
-            <div class="fab-tooltip">Acceso Rápido</div>
         </button>
     </div>
 
@@ -7293,46 +7336,58 @@
         <span>Iniciar Tour</span>
     </button>
 
-    <!-- Modern UI Inline Styles Enforcer -->
+    <!-- Modern UI Inline Styles Enforcer - VERDE -->
     <script>
         // Apply modern inline styles to ALL elements when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Modern styles for all buttons
-            const buttons = document.querySelectorAll('button:not(.mode-btn):not(.hamburger)');
+            // Modern styles for all buttons - VERDE
+            const buttons = document.querySelectorAll('button:not(.mode-btn):not(.hamburger):not(.fab)');
             buttons.forEach(btn => {
-                btn.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
-                btn.style.fontSize = '16px';
-                btn.style.fontWeight = '500';
-                btn.style.padding = '12px 24px';
-                btn.style.borderRadius = '10px';
-                btn.style.border = '1px solid #D1D5DB';
-                btn.style.background = 'white';
-                btn.style.color = '#2D2D2D';
-                btn.style.cursor = 'pointer';
-                btn.style.transition = 'all 0.2s ease';
-                btn.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+                if (!btn.classList.contains('logout-btn') && !btn.classList.contains('tour-start-btn')) {
+                    btn.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
+                    btn.style.fontSize = '16px';
+                    btn.style.fontWeight = '600';
+                    btn.style.padding = '14px 28px';
+                    btn.style.borderRadius = '12px';
+                    btn.style.border = 'none';
+                    btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                    btn.style.color = 'white';
+                    btn.style.cursor = 'pointer';
+                    btn.style.transition = 'all 0.3s ease';
+                    btn.style.boxShadow = '0 4px 12px rgba(17, 153, 142, 0.3)';
+                }
             });
 
-            // Modern styles for all inputs, textareas, selects
+            // Modern styles for all inputs, textareas, selects - VERDE accent
             const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], textarea, select');
             inputs.forEach(input => {
                 input.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
                 input.style.fontSize = '16px';
-                input.style.padding = '12px 16px';
-                input.style.border = '1px solid #D1D5DB';
-                input.style.borderRadius = '10px';
+                input.style.padding = '14px 18px';
+                input.style.border = '2px solid #e0e0e0';
+                input.style.borderRadius = '12px';
                 input.style.background = 'white';
-                input.style.color = '#0A0A0A';
-                input.style.transition = 'all 0.2s ease';
-                input.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+                input.style.color = '#1a1a1a';
+                input.style.transition = 'all 0.3s ease';
+                input.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+
+                // Add focus listener for VERDE border
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#11998e';
+                    this.style.boxShadow = '0 0 0 4px rgba(17, 153, 142, 0.1)';
+                });
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#e0e0e0';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                });
             });
 
             // Modern styles for all labels
             const labels = document.querySelectorAll('label');
             labels.forEach(label => {
-                label.style.fontSize = '14px';
-                label.style.fontWeight = '500';
-                label.style.color = '#2D2D2D';
+                label.style.fontSize = '15px';
+                label.style.fontWeight = '600';
+                label.style.color = '#1a1a1a';
                 label.style.marginBottom = '8px';
                 label.style.display = 'block';
             });
@@ -7341,21 +7396,21 @@
             const cards = document.querySelectorAll('.card, .tab-content, .section');
             cards.forEach(card => {
                 card.style.background = 'white';
-                card.style.border = '1px solid #D1D5DB';
+                card.style.border = '1px solid #e8e8e8';
                 card.style.borderRadius = '16px';
-                card.style.padding = '24px';
-                card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
-                card.style.marginBottom = '16px';
+                card.style.padding = '28px';
+                card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                card.style.marginBottom = '20px';
             });
 
-            // Set body background
-            document.body.style.background = '#F3F4F6';
+            // Set body background - lighter modern
+            document.body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #e8f5f1 100%)';
             document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif';
-            document.body.style.color = '#2D2D2D';
+            document.body.style.color = '#1a1a1a';
             document.body.style.fontSize = '16px';
             document.body.style.lineHeight = '1.6';
 
-            console.log('✨ Modern inline styles applied to all elements');
+            console.log('✨ Modern VERDE styles applied to all elements');
         });
     </script>
 
