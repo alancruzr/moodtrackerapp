@@ -70,31 +70,33 @@
 
     <div id="appContainer" class="app-container">
         <div class="app-header">
-            <div class="header-title">
-                <h1>🌟 Anxiety Tracker</h1>
+            <div class="header-left">
+                <button class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="header-title">
+                    <h1>🌟 Anxiety Tracker</h1>
+                </div>
             </div>
-            <div>
-                <div class="user-email" id="userEmail">user@email.com</div>
+
+            <div class="header-center">
+                <div class="mode-toggle">
+                    <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided">
+                        <span>🎯</span>
+                        <span>Guiado</span>
+                    </button>
+                    <button class="mode-btn free" onclick="setMode('free')" id="btn-free">
+                        <span>🗺️</span>
+                        <span>Libre</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header-right">
                 <button class="logout-btn" onclick="logout()">Salir</button>
             </div>
-        </div>
-
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-        <!-- Mode Toggle: Guided vs Free - REFINADO VERTICAL -->
-        <div class="mode-toggle">
-            <button class="mode-btn guided active" onclick="setMode('guided')" id="btn-guided">
-                <span>🎯</span>
-                <span>Guiado</span>
-            </button>
-            <button class="mode-btn free" onclick="setMode('free')" id="btn-free">
-                <span>🗺️</span>
-                <span>Libre</span>
-            </button>
         </div>
 
         <div class="sidebar-overlay" onclick="toggleMenu()"></div>
