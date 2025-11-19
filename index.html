@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#4A90E2">
+    <meta name="theme-color" content="#2563EB">
     <!-- Cache Busting - Force browser to reload CSS/JS -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -14,6 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Ultra Modern CSS - Psychology-Based Design 2025 -->
+    <link rel="stylesheet" href="css/ultra-modern.css">
 
     <style>
         /* =================================================================
@@ -635,50 +638,137 @@
         <div class="sidebar">
             <div class="sidebar-scroll">
                 <!-- Panel -->
-                <div class="menu-item active" onclick="showTab(0)" data-tab="0">Panel de Progreso</div>
+                <div class="menu-item active" onclick="showTab(0)" data-tab="0">
+                    <span class="menu-icon">📊</span>
+                    <span>Panel de Progreso</span>
+                </div>
 
                 <!-- Guía -->
-                <div class="menu-item" onclick="showTab(23)" data-tab="23">Guía del Programa</div>
+                <div class="menu-item" onclick="showTab(23)" data-tab="23">
+                    <span class="menu-icon">📖</span>
+                    <span>Guía del Programa</span>
+                </div>
+
+                <!-- QUICK ACCESS - Acceso Rápido -->
+                <div class="quick-access-section">
+                    <div class="quick-access-title">
+                        ⚡ Acceso Rápido
+                    </div>
+                    <div class="quick-access-item" onclick="showTab(11)" data-tab="11">
+                        <span class="quick-access-icon">🫁</span>
+                        <span>Respiración</span>
+                    </div>
+                    <div class="quick-access-item" onclick="showTab(1)" data-tab="1">
+                        <span class="quick-access-icon">📝</span>
+                        <span>Registro de Ansiedad</span>
+                    </div>
+                </div>
 
                 <!-- Monitoreo -->
                 <div class="menu-section-title">Monitoreo Diario</div>
-                <div class="menu-item" onclick="showTab(1)" data-tab="1">Registrar Pánico</div>
-                <div class="menu-item" onclick="showTab(2)" data-tab="2">Estado de Ánimo</div>
-                <div class="menu-item" onclick="showTab(3)" data-tab="3">Ver Progreso</div>
+                <div class="menu-item" onclick="showTab(1)" data-tab="1">
+                    <span class="menu-icon">📝</span>
+                    <span>Registrar Pánico</span>
+                </div>
+                <div class="menu-item" onclick="showTab(2)" data-tab="2">
+                    <span class="menu-icon">😌</span>
+                    <span>Estado de Ánimo</span>
+                </div>
+                <div class="menu-item" onclick="showTab(3)" data-tab="3">
+                    <span class="menu-icon">📈</span>
+                    <span>Ver Progreso</span>
+                </div>
 
                 <!-- Entender -->
                 <div class="menu-section-title">Entender el Pánico</div>
-                <div class="menu-item" onclick="showTab(4)" data-tab="4">Componentes del Pánico</div>
-                <div class="menu-item" onclick="showTab(5)" data-tab="5">Componentes de Ansiedad</div>
-                <div class="menu-item" onclick="showTab(6)" data-tab="6">Análisis Profundo</div>
+                <div class="menu-item" onclick="showTab(4)" data-tab="4">
+                    <span class="menu-icon">🧩</span>
+                    <span>Componentes del Pánico</span>
+                </div>
+                <div class="menu-item" onclick="showTab(5)" data-tab="5">
+                    <span class="menu-icon">😰</span>
+                    <span>Componentes de Ansiedad</span>
+                </div>
+                <div class="menu-item" onclick="showTab(6)" data-tab="6">
+                    <span class="menu-icon">🔍</span>
+                    <span>Análisis Profundo</span>
+                </div>
 
                 <!-- Identificar -->
                 <div class="menu-section-title">Identificar Miedos</div>
-                <div class="menu-item" onclick="showTab(7)" data-tab="7">Situaciones que Evito</div>
-                <div class="menu-item" onclick="showTab(8)" data-tab="8">Jerarquía de Miedos</div>
-                <div class="menu-item" onclick="showTab(9)" data-tab="9">Objetos de Seguridad</div>
-                <div class="menu-item" onclick="showTab(10)" data-tab="10">Comportamientos de Evitación</div>
+                <div class="menu-item" onclick="showTab(7)" data-tab="7">
+                    <span class="menu-icon">🚫</span>
+                    <span>Situaciones que Evito</span>
+                </div>
+                <div class="menu-item" onclick="showTab(8)" data-tab="8">
+                    <span class="menu-icon">📊</span>
+                    <span>Jerarquía de Miedos</span>
+                </div>
+                <div class="menu-item" onclick="showTab(9)" data-tab="9">
+                    <span class="menu-icon">🛡️</span>
+                    <span>Objetos de Seguridad</span>
+                </div>
+                <div class="menu-item" onclick="showTab(10)" data-tab="10">
+                    <span class="menu-icon">🔄</span>
+                    <span>Comportamientos de Evitación</span>
+                </div>
 
                 <!-- Herramientas -->
                 <div class="menu-section-title">Herramientas</div>
-                <div class="menu-item" onclick="showTab(11)" data-tab="11">Respiración Terapéutica</div>
-                <div class="menu-item" onclick="showTab(12)" data-tab="12">Identificar Pensamientos</div>
-                <div class="menu-item" onclick="showTab(13)" data-tab="13">Cambiar Probabilidades</div>
-                <div class="menu-item" onclick="showTab(14)" data-tab="14">Cambiar Perspectiva</div>
+                <div class="menu-item" onclick="showTab(11)" data-tab="11">
+                    <span class="menu-icon">🫁</span>
+                    <span>Respiración Terapéutica</span>
+                </div>
+                <div class="menu-item" onclick="showTab(12)" data-tab="12">
+                    <span class="menu-icon">💭</span>
+                    <span>Identificar Pensamientos</span>
+                </div>
+                <div class="menu-item" onclick="showTab(13)" data-tab="13">
+                    <span class="menu-icon">🎲</span>
+                    <span>Cambiar Probabilidades</span>
+                </div>
+                <div class="menu-item" onclick="showTab(14)" data-tab="14">
+                    <span class="menu-icon">🔄</span>
+                    <span>Cambiar Perspectiva</span>
+                </div>
 
                 <!-- Exposición -->
                 <div class="menu-section-title">Exposición</div>
-                <div class="menu-item" onclick="showTab(15)" data-tab="15">Enfrentar Situaciones</div>
-                <div class="menu-item" onclick="showTab(16)" data-tab="16">Exposición Combinada</div>
-                <div class="menu-item" onclick="showTab(17)" data-tab="17">Evaluar Síntomas</div>
-                <div class="menu-item" onclick="showTab(18)" data-tab="18">Enfrentar Síntomas</div>
-                <div class="menu-item" onclick="showTab(19)" data-tab="19">Actividades Físicas</div>
-                <div class="menu-item" onclick="showTab(20)" data-tab="20">Práctica Regular</div>
+                <div class="menu-item" onclick="showTab(15)" data-tab="15">
+                    <span class="menu-icon">🏃</span>
+                    <span>Enfrentar Situaciones</span>
+                </div>
+                <div class="menu-item" onclick="showTab(16)" data-tab="16">
+                    <span class="menu-icon">🎯</span>
+                    <span>Exposición Combinada</span>
+                </div>
+                <div class="menu-item" onclick="showTab(17)" data-tab="17">
+                    <span class="menu-icon">📋</span>
+                    <span>Evaluar Síntomas</span>
+                </div>
+                <div class="menu-item" onclick="showTab(18)" data-tab="18">
+                    <span class="menu-icon">💪</span>
+                    <span>Enfrentar Síntomas</span>
+                </div>
+                <div class="menu-item" onclick="showTab(19)" data-tab="19">
+                    <span class="menu-icon">🏋️</span>
+                    <span>Actividades Físicas</span>
+                </div>
+                <div class="menu-item" onclick="showTab(20)" data-tab="20">
+                    <span class="menu-icon">📅</span>
+                    <span>Práctica Regular</span>
+                </div>
 
                 <!-- Mantenimiento -->
                 <div class="menu-section-title">Mantenimiento</div>
-                <div class="menu-item" onclick="showTab(21)" data-tab="21">Plan de Práctica</div>
-                <div class="menu-item" onclick="showTab(22)" data-tab="22">Metas a Largo Plazo</div>
+                <div class="menu-item" onclick="showTab(21)" data-tab="21">
+                    <span class="menu-icon">📝</span>
+                    <span>Plan de Práctica</span>
+                </div>
+                <div class="menu-item" onclick="showTab(22)" data-tab="22">
+                    <span class="menu-icon">🎯</span>
+                    <span>Metas a Largo Plazo</span>
+                </div>
             </div>
         </div>
 
@@ -711,9 +801,15 @@
 
                 <!-- Quick Actions -->
                 <div class="quick-actions">
-                    <button onclick="showTab(1)" class="action-btn">Registrar Pánico</button>
-                    <button onclick="showTab(2)" class="action-btn">Registrar Ánimo</button>
-                    <button onclick="showTab(11)" class="action-btn">Práctica de Respiración</button>
+                    <button onclick="showTab(11)" class="action-btn breathing">
+                        🫁 Respiración Terapéutica
+                    </button>
+                    <button onclick="showTab(1)" class="action-btn panic">
+                        📝 Registrar Pánico/Ansiedad
+                    </button>
+                    <button onclick="showTab(2)" class="action-btn">
+                        😌 Estado de Ánimo Diario
+                    </button>
                 </div>
             </div>
         </div>
@@ -2596,21 +2692,17 @@
         function toggleMenu() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.sidebar-overlay');
-            const isOpen = sidebar.classList.contains('active');
+            const hamburger = document.querySelector('.hamburger');
 
-            document.querySelector('.hamburger').classList.toggle('active');
+            hamburger.classList.toggle('active');
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
 
-            // Update inline styles for guaranteed visibility
-            if (!isOpen) {
-                sidebar.style.left = '0';
-                overlay.style.opacity = '1';
-                overlay.style.pointerEvents = 'auto';
+            // Prevent body scroll when sidebar is open
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
             } else {
-                sidebar.style.left = '-100%';
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
+                document.body.style.overflow = '';
             }
         }
 
@@ -2626,12 +2718,19 @@
         function showTab(index) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.quick-access-item').forEach(item => item.classList.remove('active'));
             document.getElementById('tab' + index).classList.add('active');
 
             // Find the menu item that has onclick with this index
             const menuItem = document.querySelector(`.menu-item[onclick*="showTab(${index})"]`);
             if (menuItem) {
                 menuItem.classList.add('active');
+            }
+
+            // Also highlight quick access item if clicked
+            const quickAccessItem = document.querySelector(`.quick-access-item[onclick*="showTab(${index})"]`);
+            if (quickAccessItem) {
+                quickAccessItem.classList.add('active');
             }
 
             if (index === 0) {
