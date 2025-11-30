@@ -214,6 +214,17 @@
                     <span class="menu-icon">🎯</span>
                     <span>Metas a Largo Plazo</span>
                 </div>
+
+                <!-- Recursos Adicionales -->
+                <div class="menu-section-title">Recursos</div>
+                <div class="menu-item" onclick="showTab(24)" data-tab="24">
+                    <span class="menu-icon">👥</span>
+                    <span>Guía para Ayudantes</span>
+                </div>
+                <div class="menu-item" onclick="showTab(25)" data-tab="25">
+                    <span class="menu-icon">💊</span>
+                    <span>Guía de Medicación</span>
+                </div>
             </div>
 
         <!-- Main Content Area -->
@@ -222,6 +233,31 @@
         <div id="tab0" class="tab-content active">
             <div class="dashboard-simple">
                 <h2>Mi Progreso</h2>
+
+                <!-- Gating Progress - 7 Day Monitoring -->
+                <div class="metric-card" style="margin-bottom: var(--space-4);">
+                    <div class="metric-header">
+                        <span class="metric-title">📊 Progreso de Monitoreo</span>
+                        <span class="tooltip-trigger" data-tooltip="El monitoreo es la base del programa. Completa 7 días para desbloquear las herramientas.">
+                            <span class="tooltip-icon">?</span>
+                        </span>
+                    </div>
+                    <div id="gatingProgress">
+                        <!-- Will be populated by JS -->
+                        <div class="gating-progress-bar">
+                            <div class="gating-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="gating-days">
+                            <div class="gating-day">1</div>
+                            <div class="gating-day">2</div>
+                            <div class="gating-day">3</div>
+                            <div class="gating-day">4</div>
+                            <div class="gating-day">5</div>
+                            <div class="gating-day">6</div>
+                            <div class="gating-day">7</div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Stats Cards -->
                 <div class="stats-row">
@@ -236,6 +272,73 @@
                     <div class="stat-box">
                         <div class="stat-number" id="exercisesCompleted">0</div>
                         <div class="stat-label">Ejercicios Realizados</div>
+                    </div>
+                </div>
+
+                <!-- DISCONFIRMATION METRIC - Key for Inhibitory Learning -->
+                <div id="disconfirmationMetric">
+                    <div class="metric-card disconfirmation-card highlight">
+                        <div class="metric-header">
+                            <span class="metric-title">Disconfirmación de Catástrofe</span>
+                            <span class="metric-badge positive">0/0 exposiciones</span>
+                        </div>
+                        <div class="disconfirmation-percentage">--%</div>
+                        <div class="disconfirmation-message">
+                            Completa exposiciones para ver este indicador clave.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milestones Grid -->
+                <div class="metric-card" style="margin-top: var(--space-4);">
+                    <div class="metric-header">
+                        <span class="metric-title">Hitos de Progreso</span>
+                    </div>
+                    <div class="milestones-grid" id="milestonesGrid">
+                        <div class="milestone-item">
+                            <div class="milestone-icon">📅</div>
+                            <div class="milestone-value">0</div>
+                            <div class="milestone-label">Días Activo</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-icon">📝</div>
+                            <div class="milestone-value">0</div>
+                            <div class="milestone-label">Registros</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-icon">⏱️</div>
+                            <div class="milestone-value">0h</div>
+                            <div class="milestone-label">Exposición</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-icon">🫁</div>
+                            <div class="milestone-value">0</div>
+                            <div class="milestone-label">Respiraciones</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hierarchy Progress Card -->
+                <div class="hierarchy-progress-card" id="hierarchyProgressCard" style="margin-top: var(--space-4);">
+                    <div class="hierarchy-progress-header">
+                        <span class="hierarchy-progress-title">Avance en Jerarquía</span>
+                        <span class="hierarchy-progress-count">0/0</span>
+                    </div>
+                    <div class="hierarchy-items-list">
+                        <p style="opacity: 0.8; text-align: center;">Crea tu jerarquía de situaciones para ver tu progreso aquí.</p>
+                    </div>
+                </div>
+
+                <!-- Habituation Chart -->
+                <div class="metric-card" style="margin-top: var(--space-4);">
+                    <div class="metric-header">
+                        <span class="metric-title">Reducción de Ansiedad (Habituación)</span>
+                        <span class="tooltip-trigger" data-tooltip="Este gráfico muestra cómo tu ansiedad disminuye con cada repetición de exposición.">
+                            <span class="tooltip-icon">?</span>
+                        </span>
+                    </div>
+                    <div class="habituation-chart-container">
+                        <canvas id="habituationChart"></canvas>
                     </div>
                 </div>
 
@@ -1404,6 +1507,55 @@
                         <div class="scale-selector" id="facing_anx"></div>
                         <input type="hidden" name="maxAnxiety" id="facing_anx_val" required>
                     </div>
+
+                    <!-- EXPOSURE TIMER -->
+                    <div class="exposure-timer">
+                        <div class="exposure-timer-display">00:00</div>
+                        <div class="exposure-timer-controls">
+                            <button type="button" class="timer-btn start" onclick="startExposureTimer()">Iniciar</button>
+                            <button type="button" class="timer-btn pause hidden" onclick="pauseExposureTimer()">Pausar</button>
+                            <button type="button" class="timer-btn stop" onclick="stopExposureTimer()">Detener</button>
+                        </div>
+                        <div class="timer-reminder">
+                            Continúa al menos 30 segundos después de notar los primeros síntomas
+                        </div>
+                        <input type="hidden" name="duration_seconds" id="exposure_duration">
+                    </div>
+
+                    <!-- INHIBITORY LEARNING SECTION -->
+                    <div class="learning-section">
+                        <h3><span>🧠</span> Aprendizaje Inhibitorio</h3>
+                        <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-4);">
+                            Esta sección es crucial para maximizar tu aprendizaje. Reflexiona sobre la diferencia entre lo que esperabas y lo que realmente sucedió.
+                        </p>
+
+                        <!-- Expectation vs Reality Contrast -->
+                        <div class="expectation-contrast">
+                            <div class="expectation-box expected">
+                                <div class="expectation-label">Lo que esperaba</div>
+                                <div class="expectation-value" id="expectedOutcome">Tu peor miedo...</div>
+                            </div>
+                            <div class="expectation-box actual">
+                                <div class="expectation-label">Lo que sucedió</div>
+                                <div class="expectation-value" id="actualOutcome">Resultado real...</div>
+                            </div>
+                        </div>
+
+                        <div class="learning-question">
+                            <label><span>📚</span> ¿Qué aprendiste de esta práctica?</label>
+                            <textarea name="learning" placeholder="Ej: Mi ansiedad bajó sola sin hacer nada especial. No perdí el control como pensaba."></textarea>
+                        </div>
+
+                        <div class="learning-question">
+                            <label><span>🏆</span> ¿Qué lograste hoy?</label>
+                            <textarea name="accomplishment" placeholder="Ej: Me quedé 10 minutos en el supermercado sin salir corriendo. Usé mi respiración."></textarea>
+                        </div>
+
+                        <div class="disconfirmation-badge" style="display: none;" id="disconfirmBadge">
+                            ✅ Tu peor miedo NO se cumplió
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn-primary">Guardar Práctica</button>
                 </form>
                 <h3>Registros Anteriores</h3>
@@ -1611,6 +1763,29 @@
                         <div class="scale-selector" id="symp3_anx"></div>
                         <input type="hidden" name="maxAnx3" id="symp3_anx_val" required>
                     </div>
+
+                    <!-- INHIBITORY LEARNING SECTION -->
+                    <div class="learning-section">
+                        <h3><span>🧠</span> Aprendizaje Inhibitorio</h3>
+                        <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-4);">
+                            Reflexiona sobre el contraste entre lo que temías y lo que realmente pasó durante los ejercicios.
+                        </p>
+
+                        <div class="learning-question">
+                            <label><span>📚</span> ¿Qué aprendiste de esta práctica?</label>
+                            <textarea name="learning" placeholder="Ej: Los síntomas son incómodos pero no peligrosos. Mi cuerpo puede manejar estas sensaciones."></textarea>
+                        </div>
+
+                        <div class="learning-question">
+                            <label><span>🏆</span> ¿Qué lograste hoy?</label>
+                            <textarea name="accomplishment" placeholder="Ej: Completé los 3 ejercicios sin detenerme. Mi ansiedad bajó de 8 a 4 en el tercer intento."></textarea>
+                        </div>
+
+                        <div style="background: rgba(107, 207, 126, 0.1); padding: var(--space-3); border-radius: var(--radius-md); margin-top: var(--space-3);">
+                            <strong style="color: #2D7A3F;">Recuerda:</strong> La práctica es un programa de <em>aprendizaje</em>. Cada repetición te enseña que puedes manejar estas sensaciones.
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn-primary">Guardar Práctica</button>
                 </form>
                 <h3>Registros Anteriores</h3>
@@ -1967,8 +2142,316 @@
                     </p>
                 </div>
             </div>
+        </div>
+
+        <!-- TAB 24: GUÍA PARA AYUDANTES (HELPERS) -->
+        <div id="tab24" class="tab-content">
+            <div class="card helpers-guide">
+                <span class="category-badge">👥 Apoyo Social</span>
+                <h2>👥 Guía para Ayudantes (Helpers)</h2>
+                <p>Información esencial para familiares, parejas o amigos que quieren ayudar en el proceso de recuperación</p>
+
+                <!-- Introducción -->
+                <div class="helper-section">
+                    <h3><span>💡</span> ¿Por Qué Es Importante Tu Rol?</h3>
+                    <p>Involucrar a otros en el proceso de tratamiento puede conducir a una <strong>mejora continua</strong> después de que la terapia formal termina. Tu apoyo es valioso, pero debe ser el tipo correcto de apoyo.</p>
+                    <div class="communication-scale">
+                        <h4>📊 Escala de Comunicación 0-10</h4>
+                        <p style="text-align: center; margin-bottom: var(--space-4);">Usa esta escala para que tu ser querido pueda comunicar su nivel de ansiedad de forma rápida y objetiva:</p>
+                        <div class="scale-visual">
+                            <div class="scale-point">
+                                <span class="number">0</span>
+                                <span class="label">Ninguna</span>
+                            </div>
+                            <div class="scale-point">
+                                <span class="number">2</span>
+                                <span class="label">Leve</span>
+                            </div>
+                            <div class="scale-point">
+                                <span class="number">5</span>
+                                <span class="label">Moderada</span>
+                            </div>
+                            <div class="scale-point">
+                                <span class="number">8</span>
+                                <span class="label">Fuerte</span>
+                            </div>
+                            <div class="scale-point">
+                                <span class="number">10</span>
+                                <span class="label">Extrema</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qué Hacer y Qué NO Hacer -->
+                <div class="helper-section">
+                    <h3><span>⚖️</span> Qué Hacer y Qué NO Hacer</h3>
+                    <div class="do-dont-grid">
+                        <div class="do-list">
+                            <h4>✅ SÍ HACER</h4>
+                            <ul>
+                                <li>Escuchar sin juzgar ni minimizar sus miedos</li>
+                                <li>Validar sus emociones ("Entiendo que esto es difícil")</li>
+                                <li>Animar la práctica de exposición, incluso cuando es incómoda</li>
+                                <li>Celebrar los pequeños logros y el esfuerzo</li>
+                                <li>Preguntar "¿En qué número estás?" usando la escala 0-10</li>
+                                <li>Recordarle que la ansiedad es incómoda pero no peligrosa</li>
+                                <li>Apoyar su independencia gradual</li>
+                                <li>Mantener la calma durante los ataques de pánico</li>
+                            </ul>
+                        </div>
+                        <div class="dont-list">
+                            <h4>❌ NO HACER</h4>
+                            <ul>
+                                <li>No te conviertas en una "señal de seguridad"</li>
+                                <li>No refuerces la evitación (ej. "Mejor no vayas")</li>
+                                <li>No sobre-magnificar los síntomas ("¡Esto es terrible!")</li>
+                                <li>No tomar decisiones por él/ella para evitar ansiedad</li>
+                                <li>No hacer las tareas de exposición por él/ella</li>
+                                <li>No mostrar ansiedad o pánico en respuesta al suyo</li>
+                                <li>No decir "Solo cálmate" o "No es para tanto"</li>
+                                <li>No acompañarlo siempre a todas partes por miedo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qué es una Señal de Seguridad -->
+                <div class="helper-section">
+                    <h3><span>🛡️</span> ¿Qué es una "Señal de Seguridad"?</h3>
+                    <p>Una señal de seguridad es cualquier persona, objeto o comportamiento que alguien usa para sentirse "a salvo" durante la ansiedad. Aunque parecen ayudar a corto plazo, <strong>mantienen el problema a largo plazo</strong>.</p>
+
+                    <div style="background: var(--gray-50); padding: var(--space-4); border-radius: var(--radius-lg); margin-top: var(--space-4);">
+                        <h4 style="color: var(--danger); margin-bottom: var(--space-3);">⚠️ Ejemplos de ser una señal de seguridad:</h4>
+                        <ul style="list-style: disc; padding-left: var(--space-5);">
+                            <li>Siempre acompañarlo al supermercado porque "no puede ir solo"</li>
+                            <li>Tener el teléfono siempre a mano para que pueda llamarte</li>
+                            <li>Manejar por él/ella porque "no puede conducir"</li>
+                            <li>Sentarse junto a la salida para que "se sienta seguro"</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(107, 207, 126, 0.1); padding: var(--space-4); border-radius: var(--radius-lg); margin-top: var(--space-4);">
+                        <h4 style="color: #2D7A3F; margin-bottom: var(--space-3);">💚 La meta: Independencia gradual</h4>
+                        <p>El objetivo es que tu ser querido aprenda que puede manejar la ansiedad <strong>por sí mismo</strong>. Tu rol es apoyar este proceso, no prevenir la ansiedad.</p>
+                    </div>
+                </div>
+
+                <!-- Cómo Apoyar Durante la Exposición -->
+                <div class="helper-section">
+                    <h3><span>💪</span> Cómo Apoyar Durante la Exposición</h3>
+                    <div style="display: grid; gap: var(--space-4);">
+                        <div style="padding: var(--space-4); background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--primary);">
+                            <strong>Antes:</strong> Anímalo a intentarlo, pero no lo presiones. Pregunta: "¿Cuál es tu meta para hoy?"
+                        </div>
+                        <div style="padding: var(--space-4); background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--secondary);">
+                            <strong>Durante:</strong> Mantén la calma. Si te pide ayuda, recuérdale usar su respiración. No lo "rescates" prematuramente.
+                        </div>
+                        <div style="padding: var(--space-4); background: var(--gray-50); border-radius: var(--radius-lg); border-left: 4px solid var(--success);">
+                            <strong>Después:</strong> Celebra el intento, no solo el resultado. Pregunta: "¿Qué aprendiste?" y "¿De qué te sientes orgulloso/a?"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qué Hacer Durante un Ataque de Pánico -->
+                <div class="helper-section">
+                    <h3><span>🆘</span> Qué Hacer Durante un Ataque de Pánico</h3>
+                    <ol style="list-style: decimal; padding-left: var(--space-5); display: grid; gap: var(--space-3);">
+                        <li><strong>Mantén la calma</strong> - Tu tranquilidad es contagiosa</li>
+                        <li><strong>No entres en pánico tú también</strong> - Esto empeora las cosas</li>
+                        <li><strong>Recuérdale que es pánico, no peligro</strong> - "Esto pasará"</li>
+                        <li><strong>Guíalo suavemente a respirar</strong> - "Respira conmigo, lento"</li>
+                        <li><strong>No lo saques corriendo del lugar</strong> - Esto refuerza la evitación</li>
+                        <li><strong>Quédate presente pero no sobreprotector</strong> - Dale espacio</li>
+                        <li><strong>Después, valida su experiencia</strong> - "Fue difícil y lo manejaste"</li>
+                    </ol>
+                </div>
+
+                <!-- Recursos Adicionales -->
+                <div class="helper-section" style="background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(80, 201, 206, 0.1)); border: 2px solid var(--primary);">
+                    <h3><span>📚</span> Para Saber Más</h3>
+                    <p>Esta guía está basada en el <strong>Capítulo 10: "Involving Others"</strong> del manual "Mastery of Your Anxiety and Panic" de Barlow & Craske.</p>
+                    <p style="margin-top: var(--space-3);"><strong>Puntos clave del capítulo:</strong></p>
+                    <ul style="list-style: disc; padding-left: var(--space-5);">
+                        <li>El apoyo social mejora los resultados del tratamiento</li>
+                        <li>Los ayudantes deben evitar convertirse en señales de seguridad</li>
+                        <li>La comunicación clara (escala 0-10) reduce malentendidos</li>
+                        <li>El objetivo final es la autonomía del paciente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 25: GUÍA DE MEDICACIÓN -->
+        <div id="tab25" class="tab-content">
+            <div class="card">
+                <span class="category-badge">💊 Medicación</span>
+                <h2>💊 Guía de Medicación</h2>
+                <p>Información sobre medicamentos comunes para trastorno de pánico y cómo usarlos de forma segura junto con este programa</p>
+
+                <!-- Advertencia Importante -->
+                <div class="medication-warning">
+                    <div class="medication-warning-icon">⚠️</div>
+                    <h3>Advertencia Importante</h3>
+                    <p><strong>Esta información es educativa, NO reemplaza la consulta médica.</strong></p>
+                    <p>Nunca inicies, cambies o suspendas medicamentos sin supervisión de un profesional de salud.</p>
+                    <p style="margin-top: var(--space-3);"><strong>Especialmente para las Benzodiazepinas:</strong> La descontinuación debe ser <u>gradual y supervisada</u> para evitar síntomas de abstinencia.</p>
+                </div>
+
+                <!-- SSRIs -->
+                <div class="medication-category">
+                    <h3>💙 Antidepresivos (SSRIs/SNRIs)</h3>
+                    <p>Primera línea de tratamiento farmacológico para el trastorno de pánico. Actúan sobre la serotonina y/o norepinefrina.</p>
+
+                    <div class="medication-list">
+                        <div class="medication-item">
+                            <span class="medication-name">Sertralina (Zoloft)</span>
+                            <span class="medication-type">SSRI</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Paroxetina (Paxil)</span>
+                            <span class="medication-type">SSRI</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Escitalopram (Lexapro)</span>
+                            <span class="medication-type">SSRI</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Fluoxetina (Prozac)</span>
+                            <span class="medication-type">SSRI</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Venlafaxina (Effexor)</span>
+                            <span class="medication-type">SNRI</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Duloxetina (Cymbalta)</span>
+                            <span class="medication-type">SNRI</span>
+                        </div>
+                    </div>
+
+                    <div class="tapering-info">
+                        <h4>📋 Información Importante</h4>
+                        <ul style="list-style: disc; padding-left: var(--space-5);">
+                            <li><strong>Inicio:</strong> 2-4 semanas para notar efecto</li>
+                            <li><strong>Efecto completo:</strong> 6-8 semanas</li>
+                            <li><strong>Efectos secundarios iniciales:</strong> Pueden incluir aumento temporal de ansiedad</li>
+                            <li><strong>Combinación con este programa:</strong> Segura y recomendada</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Benzodiazepinas -->
+                <div class="medication-category">
+                    <h3>🔴 Benzodiazepinas</h3>
+                    <p>Actúan rápidamente pero <strong>pueden crear dependencia</strong>. Generalmente se usan a corto plazo o según necesidad.</p>
+
+                    <div class="medication-list">
+                        <div class="medication-item">
+                            <span class="medication-name">Alprazolam (Xanax)</span>
+                            <span class="medication-type">Acción corta</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Lorazepam (Ativan)</span>
+                            <span class="medication-type">Acción intermedia</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Clonazepam (Klonopin)</span>
+                            <span class="medication-type">Acción larga</span>
+                        </div>
+                        <div class="medication-item">
+                            <span class="medication-name">Diazepam (Valium)</span>
+                            <span class="medication-type">Acción larga</span>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(232, 131, 121, 0.15); border: 2px solid var(--danger); border-radius: var(--radius-lg); padding: var(--space-4); margin-top: var(--space-4);">
+                        <h4 style="color: var(--danger); margin-bottom: var(--space-3);">⚠️ Precauciones con Benzodiazepinas</h4>
+                        <ul style="list-style: disc; padding-left: var(--space-5);">
+                            <li><strong>Dependencia:</strong> Puede desarrollarse con uso regular</li>
+                            <li><strong>Tolerancia:</strong> Se necesitan dosis mayores con el tiempo</li>
+                            <li><strong>Abstinencia:</strong> Síntomas al dejar de tomarlas abruptamente</li>
+                            <li><strong>Impacto en la exposición:</strong> Pueden reducir el aprendizaje durante la terapia</li>
+                        </ul>
+                    </div>
+
+                    <div class="tapering-info">
+                        <h4>📉 Reducción Gradual (Weaning Off)</h4>
+                        <p>Si actualmente usas benzodiazepinas y quieres reducirlas:</p>
+                        <ol style="list-style: decimal; padding-left: var(--space-5); margin-top: var(--space-3);">
+                            <li><strong>Consulta con tu médico</strong> - Nunca reduzcas por tu cuenta</li>
+                            <li><strong>Reducción gradual</strong> - Típicamente 10-25% cada 1-2 semanas</li>
+                            <li><strong>Combina con este programa</strong> - La TCC ayuda durante la reducción</li>
+                            <li><strong>Monitorea síntomas</strong> - Usa los registros de esta app</li>
+                            <li><strong>Ten paciencia</strong> - El proceso puede tomar meses</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Combinación con TCC -->
+                <div class="medication-category">
+                    <h3>🔄 Combinación Medicación + Este Programa</h3>
+                    <p>Aproximadamente el <strong>60% de los pacientes</strong> con trastorno de pánico usan medicación. Combinarla con este programa (TCC) es efectivo.</p>
+
+                    <div style="display: grid; gap: var(--space-4); margin-top: var(--space-4);">
+                        <div style="padding: var(--space-4); background: rgba(107, 207, 126, 0.1); border-radius: var(--radius-lg); border-left: 4px solid var(--success);">
+                            <strong>✅ Ventaja de combinar:</strong> La medicación puede facilitar la participación inicial en la terapia mientras las habilidades se desarrollan.
+                        </div>
+                        <div style="padding: var(--space-4); background: rgba(74, 144, 226, 0.1); border-radius: var(--radius-lg); border-left: 4px solid var(--primary);">
+                            <strong>📊 Evidencia:</strong> La TCC sola tiene efectos más duraderos que la medicación sola. La combinación puede ser superior a corto plazo.
+                        </div>
+                        <div style="padding: var(--space-4); background: rgba(245, 184, 65, 0.1); border-radius: var(--radius-lg); border-left: 4px solid var(--warning);">
+                            <strong>⚠️ Consideración:</strong> Si usas benzodiazepinas "según necesidad" durante la exposición, puede reducir el aprendizaje. Intenta hacer exposiciones sin ellas cuando sea posible.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuándo Considerar Medicación -->
+                <div class="medication-category" style="background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(80, 201, 206, 0.05));">
+                    <h3>🤔 ¿Cuándo Considerar Medicación?</h3>
+                    <p>Habla con un profesional si:</p>
+                    <ul style="list-style: disc; padding-left: var(--space-5); display: grid; gap: var(--space-2); margin-top: var(--space-3);">
+                        <li>Los síntomas son muy severos y dificultan iniciar la terapia</li>
+                        <li>Tienes depresión significativa junto con el pánico</li>
+                        <li>La TCC sola no está dando resultados suficientes después de 8-12 semanas</li>
+                        <li>Tienes otros trastornos que podrían beneficiarse de medicación</li>
+                    </ul>
+                </div>
+
+                <!-- Recursos -->
+                <div class="helper-section" style="background: linear-gradient(135deg, rgba(155, 138, 196, 0.1), rgba(80, 201, 206, 0.1)); border: 2px solid var(--accent);">
+                    <h3><span>📚</span> Fuente</h3>
+                    <p>Esta guía está basada en el <strong>Capítulo 11: "Medications"</strong> del manual "Mastery of Your Anxiety and Panic" de Barlow & Craske.</p>
+                    <p style="margin-top: var(--space-3);">Para cualquier decisión sobre medicación, <strong>siempre consulta con un psiquiatra o médico</strong>.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- BOTTOM NAVIGATION - MOBILE FIRST -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav-item active" onclick="showTab(0); updateBottomNav(0);" data-tab="0">
+            <span class="bottom-nav-icon">📊</span>
+            <span class="bottom-nav-label">Panel</span>
+        </button>
+        <button class="bottom-nav-item" onclick="showTab(1); updateBottomNav(1);" data-tab="1">
+            <span class="bottom-nav-icon">📝</span>
+            <span class="bottom-nav-label">Registro</span>
+        </button>
+        <button class="bottom-nav-item breathing-btn" onclick="showTab(11); updateBottomNav(11);" data-tab="11">
+            <span class="bottom-nav-icon">🫁</span>
+            <span class="bottom-nav-label">Respirar</span>
+        </button>
+        <button class="bottom-nav-item" onclick="showTab(15); updateBottomNav(15);" data-tab="15">
+            <span class="bottom-nav-icon">💪</span>
+            <span class="bottom-nav-label">Exposición</span>
+        </button>
+        <button class="bottom-nav-item" onclick="showTab(23); updateBottomNav(23);" data-tab="23">
+            <span class="bottom-nav-icon">📖</span>
+            <span class="bottom-nav-label">Guía</span>
+        </button>
+    </nav>
 
     <script>
         // ===================================================================
@@ -2155,9 +2638,13 @@
                 quickAccessItem.classList.add('active');
             }
 
+            // Update bottom navigation highlight
+            updateBottomNav(index);
+
             if (index === 0) {
                 loadDashboard();
                 loadProgressDashboard(); // Reload progress dashboard when viewing
+                loadAdvancedMetrics(); // Load new advanced metrics
             }
             else loadEntries(index);
 
@@ -3755,6 +4242,496 @@
                 updateTimelineView();
             }
         };
+
+        // ===================================================================
+        // BOTTOM NAVIGATION - UPDATE ACTIVE STATE
+        // ===================================================================
+        function updateBottomNav(tabIndex) {
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+            bottomNavItems.forEach(item => {
+                item.classList.remove('active');
+                const dataTab = item.getAttribute('data-tab');
+                if (dataTab && parseInt(dataTab) === tabIndex) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // ===================================================================
+        // ADVANCED METRICS DASHBOARD - INHIBITORY LEARNING
+        // ===================================================================
+        let disconfirmationChartInstance = null;
+        let habituationChartInstance = null;
+
+        async function loadAdvancedMetrics() {
+            if (!currentUser || !supabase) return;
+
+            try {
+                // Fetch exposure data for disconfirmation rate
+                const [situationsRes, symptomsRes, combinedRes, panicRes, moodRes, breathingRes] = await Promise.all([
+                    supabase.from('facing_situations').select('*').eq('user_id', currentUser.id).order('date', { ascending: false }).limit(50),
+                    supabase.from('facing_symptoms').select('*').eq('user_id', currentUser.id).order('date', { ascending: false }).limit(50),
+                    supabase.from('facing_combined').select('*').eq('user_id', currentUser.id).order('date', { ascending: false }).limit(50),
+                    supabase.from('panic_records').select('*').eq('user_id', currentUser.id),
+                    supabase.from('daily_mood_records').select('*').eq('user_id', currentUser.id),
+                    supabase.from('breathing_records').select('*').eq('user_id', currentUser.id)
+                ]);
+
+                const situations = situationsRes.data || [];
+                const symptoms = symptomsRes.data || [];
+                const combined = combinedRes.data || [];
+                const panicRecords = panicRes.data || [];
+                const moodRecords = moodRes.data || [];
+                const breathingRecords = breathingRes.data || [];
+
+                // Calculate Disconfirmation Rate
+                const allExposures = [...situations, ...symptoms, ...combined];
+                const disconfirmationData = calculateDisconfirmationRate(allExposures);
+
+                // Update Disconfirmation Card
+                updateDisconfirmationCard(disconfirmationData);
+
+                // Calculate Milestones
+                updateMilestones({
+                    daysActive: new Set(moodRecords.map(m => m.date)).size,
+                    panicRecords: panicRecords.length,
+                    exposureHours: calculateExposureTime(allExposures),
+                    breathingSessions: breathingRecords.length
+                });
+
+                // Calculate Habituation Data
+                updateHabituationChart(allExposures);
+
+                // Update Hierarchy Progress
+                updateHierarchyProgress();
+
+                // Check gating requirements
+                checkGatingRequirements(moodRecords, panicRecords);
+
+            } catch (error) {
+                console.error('Error loading advanced metrics:', error);
+            }
+        }
+
+        function calculateDisconfirmationRate(exposures) {
+            if (exposures.length === 0) {
+                return { rate: 0, total: 0, disconfirmed: 0 };
+            }
+
+            // Count exposures where feared outcome didn't occur
+            // Look for fields like 'fear_occurred', 'outcome', 'actual_outcome'
+            let disconfirmed = 0;
+            let totalWithOutcome = 0;
+
+            exposures.forEach(exp => {
+                // Check various possible field names for outcome tracking
+                if (exp.fear_occurred !== undefined) {
+                    totalWithOutcome++;
+                    if (exp.fear_occurred === false || exp.fear_occurred === 'no') {
+                        disconfirmed++;
+                    }
+                } else if (exp.outcome && exp.outcome.toLowerCase().includes('no')) {
+                    totalWithOutcome++;
+                    disconfirmed++;
+                } else {
+                    // For records without explicit outcome, assume success if completed
+                    totalWithOutcome++;
+                    disconfirmed++; // Default to success for completed exposures
+                }
+            });
+
+            const rate = totalWithOutcome > 0 ? Math.round((disconfirmed / totalWithOutcome) * 100) : 0;
+
+            return {
+                rate: rate,
+                total: totalWithOutcome,
+                disconfirmed: disconfirmed
+            };
+        }
+
+        function updateDisconfirmationCard(data) {
+            const container = document.getElementById('disconfirmationMetric');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="metric-card disconfirmation-card highlight">
+                    <div class="metric-header">
+                        <span class="metric-title">Disconfirmación de Catástrofe</span>
+                        <span class="metric-badge positive">${data.disconfirmed}/${data.total} exposiciones</span>
+                    </div>
+                    <div class="disconfirmation-percentage">${data.rate}%</div>
+                    <div class="disconfirmation-message">
+                        ${data.rate >= 90 ?
+                            'El pánico es incómodo, NO peligroso.' :
+                            data.rate >= 70 ?
+                            'Tus miedos rara vez se cumplen.' :
+                            'Sigue practicando para ver el patrón.'}
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculateExposureTime(exposures) {
+            // Estimate based on number of exposures (average 15 min each)
+            const totalMinutes = exposures.length * 15;
+            return Math.round(totalMinutes / 60 * 10) / 10; // Hours with 1 decimal
+        }
+
+        function updateMilestones(data) {
+            const container = document.getElementById('milestonesGrid');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="milestone-item">
+                    <div class="milestone-icon">📅</div>
+                    <div class="milestone-value">${data.daysActive}</div>
+                    <div class="milestone-label">Días Activo</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-icon">📝</div>
+                    <div class="milestone-value">${data.panicRecords}</div>
+                    <div class="milestone-label">Registros</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-icon">⏱️</div>
+                    <div class="milestone-value">${data.exposureHours}h</div>
+                    <div class="milestone-label">Exposición</div>
+                </div>
+                <div class="milestone-item">
+                    <div class="milestone-icon">🫁</div>
+                    <div class="milestone-value">${data.breathingSessions}</div>
+                    <div class="milestone-label">Respiraciones</div>
+                </div>
+            `;
+        }
+
+        function updateHabituationChart(exposures) {
+            const container = document.getElementById('habituationChart');
+            if (!container || !container.getContext) return;
+
+            // Group exposures by situation/type and track anxiety over repetitions
+            const situationData = {};
+
+            exposures.forEach(exp => {
+                const key = exp.situation || exp.symptom || exp.activity || 'General';
+                if (!situationData[key]) {
+                    situationData[key] = [];
+                }
+                const anxiety = exp.anxiety_level || exp.max_anxiety || exp.final_anxiety || 5;
+                situationData[key].push(anxiety);
+            });
+
+            // Get top 3 most practiced situations
+            const sortedSituations = Object.entries(situationData)
+                .sort((a, b) => b[1].length - a[1].length)
+                .slice(0, 3);
+
+            if (sortedSituations.length === 0) return;
+
+            // Prepare chart data
+            const datasets = sortedSituations.map((item, index) => {
+                const colors = ['#4A90E2', '#6BCF7E', '#9B8AC4'];
+                return {
+                    label: item[0].substring(0, 20),
+                    data: item[1].slice(0, 10), // Last 10 repetitions
+                    borderColor: colors[index],
+                    backgroundColor: colors[index] + '20',
+                    fill: true,
+                    tension: 0.4
+                };
+            });
+
+            const maxLength = Math.max(...datasets.map(d => d.data.length));
+            const labels = Array.from({length: maxLength}, (_, i) => `Rep ${i + 1}`);
+
+            if (habituationChartInstance) habituationChartInstance.destroy();
+
+            habituationChartInstance = new Chart(container, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12 } },
+                        title: { display: true, text: 'Reducción de Ansiedad por Repetición' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 10, title: { display: true, text: 'Ansiedad (0-10)' } },
+                        x: { title: { display: true, text: 'Repeticiones' } }
+                    }
+                }
+            });
+        }
+
+        async function updateHierarchyProgress() {
+            const container = document.getElementById('hierarchyProgressCard');
+            if (!container || !currentUser) return;
+
+            try {
+                const { data: hierarchy } = await supabase
+                    .from('hierarchy_records')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('order_position', { ascending: true });
+
+                const { data: facedSituations } = await supabase
+                    .from('facing_situations')
+                    .select('situation')
+                    .eq('user_id', currentUser.id);
+
+                const completedSituations = new Set(facedSituations?.map(f => f.situation?.toLowerCase()) || []);
+
+                const items = hierarchy || [];
+                const completed = items.filter(item =>
+                    completedSituations.has(item.situation?.toLowerCase())
+                ).length;
+
+                container.innerHTML = `
+                    <div class="hierarchy-progress-header">
+                        <span class="hierarchy-progress-title">Avance en Jerarquía</span>
+                        <span class="hierarchy-progress-count">${completed}/${items.length}</span>
+                    </div>
+                    <div class="hierarchy-items-list">
+                        ${items.slice(0, 5).map(item => `
+                            <div class="hierarchy-item-progress">
+                                <div class="hierarchy-item-status ${completedSituations.has(item.situation?.toLowerCase()) ? 'completed' : 'pending'}">
+                                    ${completedSituations.has(item.situation?.toLowerCase()) ? '✓' : ''}
+                                </div>
+                                <span class="hierarchy-item-name">${item.situation?.substring(0, 25) || 'Situación'}...</span>
+                                <span class="hierarchy-item-rating">${item.anxiety_level || 0}/10</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error updating hierarchy progress:', error);
+            }
+        }
+
+        // ===================================================================
+        // GATING SYSTEM - 7 DAY MONITORING REQUIREMENT
+        // ===================================================================
+        let gatingState = { daysCompleted: 0, isUnlocked: false };
+
+        async function checkGatingRequirements(moodRecords, panicRecords) {
+            // Count unique days with any record
+            const uniqueDays = new Set([
+                ...(moodRecords || []).map(m => m.date),
+                ...(panicRecords || []).map(p => p.date)
+            ]);
+
+            gatingState.daysCompleted = uniqueDays.size;
+            gatingState.isUnlocked = gatingState.daysCompleted >= 7;
+
+            // Update gating indicator in dashboard if exists
+            const gatingIndicator = document.getElementById('gatingProgress');
+            if (gatingIndicator) {
+                const progress = Math.min(100, (gatingState.daysCompleted / 7) * 100);
+                gatingIndicator.innerHTML = `
+                    <div class="gating-progress-bar">
+                        <div class="gating-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="gating-days">
+                        ${Array.from({length: 7}, (_, i) => `
+                            <div class="gating-day ${i < gatingState.daysCompleted ? 'completed' : i === gatingState.daysCompleted ? 'current' : ''}">
+                                ${i + 1}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <p style="text-align: center; font-size: var(--text-sm); color: var(--gray-600);">
+                        ${gatingState.isUnlocked ?
+                            '¡Monitoreo completado! Todas las funciones desbloqueadas.' :
+                            `${gatingState.daysCompleted}/7 días de monitoreo completados`}
+                    </p>
+                `;
+            }
+
+            return gatingState;
+        }
+
+        function showGatingMessage(targetTab) {
+            if (gatingState.isUnlocked) return false;
+
+            // Tabs that require 7 days of monitoring (Skills and Exposure)
+            const gatedTabs = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+            if (gatedTabs.includes(targetTab)) {
+                showModernAlert(
+                    'Monitoreo Requerido',
+                    `El monitoreo es la base del programa y esencial para el éxito. Necesitas completar ${7 - gatingState.daysCompleted} días más de registro antes de acceder a esta sección.`,
+                    'info'
+                );
+                return true;
+            }
+            return false;
+        }
+
+        // ===================================================================
+        // ENHANCED SCALE SLIDER FUNCTIONS
+        // ===================================================================
+        const severityLabels = {
+            0: 'Ninguna',
+            1: 'Muy Leve',
+            2: 'Leve',
+            3: 'Leve-Moderada',
+            4: 'Moderada',
+            5: 'Moderada',
+            6: 'Moderada-Fuerte',
+            7: 'Fuerte',
+            8: 'Muy Fuerte',
+            9: 'Severa',
+            10: 'Extrema'
+        };
+
+        const severityLevels = {
+            0: 'none', 1: 'none', 2: 'mild',
+            3: 'mild', 4: 'moderate', 5: 'moderate',
+            6: 'strong', 7: 'strong', 8: 'extreme',
+            9: 'extreme', 10: 'extreme'
+        };
+
+        function initializeEnhancedSlider(containerId, hiddenInputId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            // Check if already initialized
+            if (container.querySelector('.scale-slider')) return;
+
+            container.innerHTML = `
+                <div class="scale-slider-container">
+                    <input type="range" class="scale-slider" min="0" max="10" value="5"
+                           oninput="updateSliderDisplay('${containerId}', this.value, '${hiddenInputId}')">
+                    <div class="scale-labels">
+                        <span>0 - Ninguna</span>
+                        <span>5 - Moderada</span>
+                        <span>10 - Extrema</span>
+                    </div>
+                    <div class="scale-value-display" data-level="moderate">
+                        <span class="scale-value-number">5</span>
+                        <span class="scale-value-label">Moderada</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateSliderDisplay(containerId, value, hiddenInputId) {
+            const container = document.getElementById(containerId);
+            const display = container.querySelector('.scale-value-display');
+            const numberEl = display.querySelector('.scale-value-number');
+            const labelEl = display.querySelector('.scale-value-label');
+            const hiddenInput = document.getElementById(hiddenInputId);
+
+            const numValue = parseInt(value);
+            numberEl.textContent = numValue;
+            labelEl.textContent = severityLabels[numValue];
+            display.setAttribute('data-level', severityLevels[numValue]);
+
+            if (hiddenInput) {
+                hiddenInput.value = numValue;
+            }
+        }
+
+        // ===================================================================
+        // EXPOSURE TIMER SYSTEM
+        // ===================================================================
+        let exposureTimer = { seconds: 0, interval: null, isRunning: false };
+
+        function startExposureTimer() {
+            if (exposureTimer.isRunning) return;
+
+            exposureTimer.isRunning = true;
+            exposureTimer.interval = setInterval(() => {
+                exposureTimer.seconds++;
+                updateTimerDisplay();
+
+                // Show reminder after 30 seconds
+                if (exposureTimer.seconds === 30) {
+                    const reminder = document.querySelector('.timer-reminder');
+                    if (reminder) {
+                        reminder.style.background = 'rgba(107, 207, 126, 0.3)';
+                        reminder.textContent = '30+ segundos - ¡Buen trabajo! Continúa si puedes.';
+                    }
+                }
+            }, 1000);
+
+            // Update button states
+            document.querySelector('.timer-btn.start')?.classList.add('hidden');
+            document.querySelector('.timer-btn.pause')?.classList.remove('hidden');
+        }
+
+        function pauseExposureTimer() {
+            exposureTimer.isRunning = false;
+            clearInterval(exposureTimer.interval);
+
+            document.querySelector('.timer-btn.start')?.classList.remove('hidden');
+            document.querySelector('.timer-btn.pause')?.classList.add('hidden');
+        }
+
+        function stopExposureTimer() {
+            pauseExposureTimer();
+            const totalSeconds = exposureTimer.seconds;
+            exposureTimer.seconds = 0;
+            updateTimerDisplay();
+
+            // Update hidden duration field if exists
+            const durationInput = document.getElementById('exposure_duration');
+            if (durationInput) {
+                durationInput.value = totalSeconds;
+            }
+
+            return totalSeconds;
+        }
+
+        function updateTimerDisplay() {
+            const display = document.querySelector('.exposure-timer-display');
+            if (!display) return;
+
+            const minutes = Math.floor(exposureTimer.seconds / 60);
+            const seconds = exposureTimer.seconds % 60;
+            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // ===================================================================
+        // PHASE CHECKLIST SYSTEM
+        // ===================================================================
+        function updatePhaseChecklist() {
+            const container = document.getElementById('phaseChecklist');
+            if (!container) return;
+
+            const phases = [
+                { name: 'Monitoreo Diario (7 días)', completed: gatingState.daysCompleted >= 7 },
+                { name: 'Entender el Ciclo del Pánico', completed: false },
+                { name: 'Identificar Situaciones', completed: false },
+                { name: 'Crear Jerarquía', completed: false },
+                { name: 'Practicar Respiración', completed: false },
+                { name: 'Desafiar Pensamientos', completed: false },
+                { name: 'Exposición a Síntomas', completed: false },
+                { name: 'Exposición a Situaciones', completed: false },
+                { name: 'Plan de Mantenimiento', completed: false }
+            ];
+
+            const completedCount = phases.filter(p => p.completed).length;
+
+            container.innerHTML = `
+                <div class="phase-checklist-header">
+                    <span class="phase-checklist-title">Progreso del Programa</span>
+                    <span class="phase-checklist-progress">${completedCount}/${phases.length} completados</span>
+                </div>
+                ${phases.map((phase, index) => `
+                    <div class="phase-item ${phase.completed ? 'completed' : ''}">
+                        <div class="phase-item-checkbox">${phase.completed ? '✓' : ''}</div>
+                        <div class="phase-item-content">
+                            <div class="phase-item-name">${phase.name}</div>
+                            <div class="phase-item-status">${phase.completed ? 'Completado' : 'Pendiente'}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
 
     </script>
 
